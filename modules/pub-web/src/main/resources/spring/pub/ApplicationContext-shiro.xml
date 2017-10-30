@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!-- =========================================================
+         Shiro Core Components - Not Spring Specific
+         ========================================================= -->
+
+    <!-- Shiro's main business-tier object for web-enabled applications
+         (use DefaultSecurityManager instead when there is no web environment)-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="redisCacheManager"/>
+        <!--<property name="sessionMode" value="native"/>-->
+        <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
+        <!--<property name="realm" ref="myRealm"/>-->
+        <property name="realm" ref="jdbcRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <!--<property name="rememberMeManager" ref="rememberMeManager"/>-->
+    </bean>
+
+    <!--<bean id="rememberMeManager"-->
+    <!--class="org.apache.shiro.web.mgt.CookieRememberMeManager">-->
+    <!--<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+    <!--<property name="cookie" ref="rememberMeCookie"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">-->
+    <!--<constructor-arg value="rememberMe"/>-->
+    <!--<property name="httpOnly" value="true"/>-->
+    <!--<property name="maxAge" value="3600"/>-->
+    <!--&lt;!&ndash; 1个小时 &ndash;&gt;-->
+    <!--</bean>-->
+
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="customShiroSessionDAO"/>
+        <property name="globalSessionTimeout" value="28800000"/>
+    </bean>
+
+    <bean id="customShiroSessionDAO" class="com.elichn.pub.web.shiro.session.CustomShiroSessionDAO">
+        <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
+    </bean>
+
+    <bean id="jedisShiroSessionRepository"
+          class="com.elichn.pub.web.shiro.session.JedisShiroSessionRepository">
+        <property name="securityGroup" value="#{commonProps['security.group']}"/>
+    </bean>
+
+    <!--<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">-->
+    <!--<property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>-->
+    <!--<property name="cacheManager" ref="cacheManager"/>-->
+    <!--</bean>-->
+
+    <!-- Let's use some enterprise caching support for better performance.  You can replace this with any enterprise
+         caching framework implementation that you like (Terracotta+Ehcache, Coherence, GigaSpaces, etc -->
+
+    <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
+    <!--&lt;!&ndash; Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one-->
+    <!--will be creaed with a default config:                &ndash;&gt;-->
+    <!--<property name="cacheManager" ref="ehCacheManager"/>-->
+    <!--&lt;!&ndash; If you don't have a pre-built net.sf.ehcache.CacheManager instance to inject, but you want-->
+    <!--a specific Ehcache configuration to be used, specify that here.  If you don't, a default-->
+    <!--will be used.:-->
+    <!--<property name="cacheManagerConfigFile" value="classpath:some/path/to/ehcache.xml"/> &ndash;&gt;-->
+    <!--</bean>-->
+
+    <!-- Used by the SecurityManager to access security data (users, roles, etc).
+         Many other realm implementations can be used too (PropertiesRealm,
+         LdapRealm, etc. -->
+
+    <bean id="redisCacheManager" class="com.elichn.pub.web.shiro.cache.RedisCacheManager">
+        <property name="securityGroup" value="#{commonProps['security.group']}"/>
+    </bean>
+
+    <bean id="customPermissionResolver"
+          class="com.elichn.pub.web.shiro.permission.CustomPermissionResolver"/>
+
+    <bean id="jdbcRealm" class="com.elichn.pub.web.shiro.realm.CustomJdbcRealm">
+        <property name="permissionResolver" ref="customPermissionResolver"/>
+        <property name="name" value="jdbcRealm"/>
+        <!--基于注入 不需要dataSource了-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+        <property name="permissionsLookupEnabled" value="true"/>
+        <property name="credentialsMatcher">
+            <!-- The 'bootstrapDataPopulator' Sha256 hashes the password
+                 (using the username as the salt) then base64 encodes it: -->
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!-- true means hex encoded, false means base64 encoded -->
+                <property name="storedCredentialsHexEncoded" value="true"/>
+                <property name="hashAlgorithmName" value="MD5"/>
+                <!-- We salt the password using the username, the most common practice: -->
+                <!--<property name="hashSalted" value="true"/>-->
+            </bean>
+        </property>
+        <property name="authorizationCacheName" value="shiro.authorizationCache"/>
+    </bean>
+
+    <!-- =========================================================
+         Shiro Spring-specific integration
+         ========================================================= -->
+    <!-- Post processor that automatically invokes init() and destroy() methods
+         for Spring-configured Shiro objects so you don't have to
+         1) specify an init-method and destroy-method attributes for every bean
+            definition and
+         2) even know which Shiro objects require these methods to be
+            called. -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- Enable Shiro Annotations for Spring-configured beans.  Only run after
+         the lifecycleBeanProcessor has run: -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+    <!-- Secure Spring remoting:  Ensure any Spring Remoting method invocations can be associated
+         with a Subject for security checks. -->
+    <!--<bean id="secureRemoteInvocationExecutor" class="org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor">-->
+    <!--<property name="securityManager" ref="securityManager"/>-->
+    <!--</bean>-->
+
+    <!-- Define the Shiro Filter here (as a FactoryBean) instead of directly in web.xml -
+         web.xml uses the DelegatingFilterProxy to access this bean.  This allows us
+         to wire things with more control as well utilize nice Spring things such as
+         PropertiesPlaceholderConfigurer and abstract beans or anything else we might need: -->
+
+    <bean name="rescFilter" class="com.elichn.pub.web.shiro.filter.RescFilter">
+        <property name="ignoreList">
+            <list>
+                <value>/checkCode</value>
+                <value>/login</value>
+                <value>/index</value>
+                <value>/index4horizontally</value>
+                <value>/welcome</value>
+                <value>/homePageNotice/getNotice</value>
+                <value>/accessDenied</value>
+                <value>/logout</value>
+                <value>/menuList</value>
+                <value>/favicon.ico</value>
+                <value>/checkCodeVerify</value>
+                <value>/getSessionId</value>
+                <value>/ping</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="shiroFilter" class="com.elichn.pub.web.shiro.factorybean.CustomShiroFilterFactoryBean">
+        <!--<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="/accessDenied"/>
+        <!--验证没有权限的返回地址 -->
+        <!-- The 'filters' property is not necessary since any declared javax.servlet.Filter bean
+             defined will be automatically acquired and available via its beanName in chain
+             definitions, but you can perform overrides or parent/child consolidated configuration
+             here if you like: -->
+        <property name="filters">
+            <util:map>
+                <entry key="rescFilter" value-ref="rescFilter"/>
+            </util:map>
+        </property>
+
+        <!--<property name="filterChainDefinitions">-->
+        <!--<value>-->
+        <!--classpath:IniShiroFilterTest.ini-->
+        <!--</value>-->
+        <!--</property>-->
+
+        <property name="filterChainDefinitions" value=""/>
+    </bean>
+</beans>

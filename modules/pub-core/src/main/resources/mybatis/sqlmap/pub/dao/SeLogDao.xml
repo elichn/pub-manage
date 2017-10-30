@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SeLogDao">
+    <select id="getList"
+            parameterType="com.elichn.pub.core.model.pub.bvo.QueryBvo"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeLogMapper.BaseResultMap">
+        select * from se_log
+        <include refid="logListSql"/>
+        order by id desc
+        limit #{offset},#{rows}
+    </select>
+
+    <select id="getListCount"
+            parameterType="com.elichn.pub.core.model.pub.bvo.QueryBvo" resultType="int">
+        select count(1) from se_log
+        <include refid="logListSql"/>
+    </select>
+
+    <sql id="logListSql">
+        <where>
+            <if test="queryBean.userName != null and queryBean.userName.trim() != ''">
+                and instr(user_name, #{queryBean.userName}) > 0
+            </if>
+
+            <if test="queryBean.logTime != null">
+                and log_time >= #{queryBean.logTime, jdbcType=DATE}
+                and DATE_ADD(#{queryBean.logTime, jdbcType=DATE}, INTERVAL 1 DAY) > log_time
+            </if>
+
+            <if test="queryBean.logType != null and queryBean.logType.trim() != ''">
+                and INSTR(log_type, #{queryBean.logType}) > 0
+            </if>
+
+            <if test="queryBean.logContent != null and queryBean.logContent.trim() != ''">
+                and instr(log_content, #{queryBean.logContent}) > 0
+            </if>
+        </where>
+    </sql>
+</mapper>

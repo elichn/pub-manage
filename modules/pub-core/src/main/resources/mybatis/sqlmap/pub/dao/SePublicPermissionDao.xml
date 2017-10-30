@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SePublicPermissionDao">
+    <select id="selectBySystem"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SePublicPermissionMapper.BaseResultMap">
+        select * from se_public_permission
+        <where>
+            <if test="system != null and system.trim() != ''">
+                and system = #{system}
+            </if>
+            or system is null
+        </where>
+
+    </select>
+</mapper>

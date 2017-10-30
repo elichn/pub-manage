@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <bean id="dataSource"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="#{mysqlProps['datasource.driverClassName']}"/>
+        <property name="jdbcUrl" value="#{mysqlProps['datasource.url']}"/>
+        <property name="user" value="#{mysqlProps['datasource.username']}"/>
+        <property name="password" value="#{mysqlProps['datasource.password']}"/>
+        <property name="acquireIncrement" value="#{mysqlProps['c3p0.acquireIncrement']}"/>
+        <property name="initialPoolSize" value="#{mysqlProps['c3p0.initialPoolSize']}"/>
+        <property name="minPoolSize" value="#{mysqlProps['c3p0.minPoolSize']}"/>
+        <property name="maxPoolSize" value="#{mysqlProps['c3p0.maxPoolSize']}"/>
+        <property name="maxIdleTime" value="#{mysqlProps['c3p0.maxIdleTime']}"/>
+        <property name="idleConnectionTestPeriod" value="#{mysqlProps['c3p0.idleConnectionTestPeriod']}"/>
+        <property name="maxStatements" value="#{mysqlProps['c3p0.maxStatements']}"/>
+        <property name="numHelperThreads" value="#{mysqlProps['c3p0.numHelperThreads']}"/>
+    </bean>
+
+    <!-- 創建SqlSessionFactory，同時指定數據源 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:mybatis/sqlmap/**/*.xml</value>
+            </array>
+        </property>
+    </bean>
+    <!-- Mapper接口所在包名，Spring會自動查找其下的Mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.elichn.pub.core.model.pub.mapper,com.elichn.pub.core.model.pub.dao"/>
+    </bean>
+
+    <!-- (事務管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 可通過注解控制事務 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false"
+                       rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException"/>
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false"
+                       rollback-for="java.lang.RuntimeException"/>
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"
+                       rollback-for="java.lang.Exception"/>
+            <tx:method name="add*" propagation="REQUIRED" read-only="false"
+                       rollback-for="java.lang.Exception"/>
+
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"
+                       rollback-for="java.lang.Exception"/>
+
+            <tx:method name="save*" propagation="REQUIRED" read-only="false"
+                       rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--注册aspectj-->
+    <aop:aspectj-autoproxy/>
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="interceptorPointCuts" expression="execution(* com.elichn.pub.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts"/>
+    </aop:config>
+</beans>

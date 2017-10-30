@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SeRoleRescDao">
+    <select id="selectRescs" resultType="com.elichn.pub.core.model.pub.pojo.security.SeResc"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRescMapper.BaseResultMap">
+          select * from se_resc order by priority;
+    </select>
+
+    <select id="getRescByUserId" parameterType="java.lang.Integer"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRescMapper.BaseResultMap">
+        select
+          distinct r.*
+        from se_user u, se_user_role ur, se_resc_role rr, se_resc r
+        where
+        u.id = ur.user_id
+        and ur.role_id = rr.role_id
+        and rr.resc_id = r.id
+        and u.id = #{id}
+    </select>
+
+    <select id="getRescByRole" parameterType="java.lang.Integer"
+            resultType="com.elichn.pub.core.model.pub.pojo.security.SeResc"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRescMapper.BaseResultMap">
+        select s.* from se_resc_role rr join se_resc s on rr.resc_id = s.id where rr.role_id = #{id}
+    </select>
+
+    <select id="getRescList" parameterType="List"
+            resultType="com.elichn.pub.core.model.pub.pojo.security.SeResc"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRescMapper.BaseResultMap">
+        select s.* from se_resc_role rr join se_resc s on rr.resc_id = s.id
+        <where>
+            rr.role_id in
+            <foreach collection="list" item="e" open="(" close=")" separator=",">
+                #{e}
+            </foreach>
+        </where>
+    </select>
+</mapper>

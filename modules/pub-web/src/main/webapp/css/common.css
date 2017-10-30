@@ -1,0 +1,17 @@
+.table th, .table td {
+    text-align: center;
+}
+
+.container {
+    min-width: 1250px;
+}
+
+div.error {
+    /*width: 300px;*/
+    border: 1px solid;
+    border-radius: 5px;
+    /*background-color: yellow;*/
+    color: red;
+    text-align: left;
+    padding: 10px;
+}

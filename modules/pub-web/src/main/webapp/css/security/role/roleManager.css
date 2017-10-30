@@ -1,0 +1,42 @@
+body {
+    padding: 10px 0;
+}
+
+div.ztree {
+    /*margin-top: 10px;*/
+    /*border: 1px solid #617775;*/
+    background: #f0f6e4;
+    width: 300px;
+    height: 400px;
+    /*overflow-y: scroll;*/
+    overflow-x: auto;
+}
+
+div.panel {
+    margin-top: 10px;
+    margin-left: 20px;
+    width: 200px;
+    height: 400px;
+}
+
+.rMenu {
+    border: 1px solid #999999;
+    background: #FFFFFF;
+    padding-top: 0px;
+    margin-left: -1px;
+    width: 170px;
+    display: none;
+    max-height: 180px;
+    overflow: auto;
+    position: absolute;
+    border-radius: 2px;
+}
+
+.rMenu table {
+    width: 100%;
+}
+
+.rMenu table tr td:hover {
+    background-color: #FF9999;
+    cursor: pointer
+}

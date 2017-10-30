@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SeHomePageNoticeDao">
+    <select id="getHomePageNoticeByRole"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeHomePageNoticeMapper.ResultMapWithBLOBs"
+            parameterType="int">
+        select hn.* from se_role_notice rn left join se_home_page_notice hn
+        on rn.notice_id = hn.id
+        <where>
+            rn.role_id = #{_paramater}
+            and hn.status = 1
+        </where>
+
+        order by hn.update_time desc limit 1;
+    </select>
+
+    <select id="getRelationRole"
+            resultType="int"
+            parameterType="int">
+        select rn.role_id from se_role_notice rn WHERE rn.notice_id = #{_paramater}
+    </select>
+
+    <sql id="homePageNoticeSql">
+        <where>
+            <if test="queryBean.type != null">
+                and o.type = #{queryBean.type}
+            </if>
+
+            <if test="queryBean.status != null">
+                and o.status = #{queryBean.status}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getHomePageNoticeList"
+            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeHomePageNoticeMapper.ResultMapWithBLOBs"
+            parameterType="com.elichn.pub.core.model.pub.bvo.QueryBvo">
+        select o.* from se_home_page_notice o
+
+        <include refid="homePageNoticeSql"/>
+
+        order by o.update_time desc
+    </select>
+
+    <select id="getHomePageNoticeListCount" parameterType="com.elichn.pub.core.model.pub.bvo.QueryBvo"
+            resultType="int">
+        select count(*) from se_home_page_notice o
+
+        <include refid="homePageNoticeSql"/>
+    </select>
+</mapper>

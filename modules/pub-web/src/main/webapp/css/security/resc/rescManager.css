@@ -1,0 +1,39 @@
+body {
+    padding: 10px 0;
+}
+
+span.required {
+    color: red;
+}
+
+div.ztree {
+    margin-top: 10px;
+    margin-left: 20px;
+    /*border: 1px solid #617775;*/
+    background: #f0f6e4;
+    width: 300px;
+    height: 600px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#rMenu {
+    border: 1px solid #999999;
+    background: #FFFFFF;
+    padding-top: 0;
+    margin-left: -1px;
+    width: 170px;
+    display: none;
+    max-height: 180px;
+    overflow: auto;
+    position: absolute;
+}
+
+#rMenu table {
+    width: 100%;
+}
+
+#rMenu table tr td:hover {
+    background-color: #FF9999;
+    cursor: pointer
+}
