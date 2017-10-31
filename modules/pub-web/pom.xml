@@ -3,18 +3,17 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.elichn.pub</groupId>
         <artifactId>pub-manage</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.elichn.pub</groupId>
     <artifactId>pub-web</artifactId>
-    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
     <name>pub-web</name>
+    <packaging>war</packaging>
     <properties>
         <appname>pub-manage</appname>
     </properties>
@@ -186,12 +185,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.elichn.pub</groupId>
-            <artifactId>pub-service</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
         </dependency>
@@ -242,6 +235,11 @@
             <version>20140107</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.elichn.pub</groupId>
+            <artifactId>pub-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 </project>
