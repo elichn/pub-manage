@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class ThreadContext {
 
-    private static final ThreadLocal<Map<String, Object>> context = new ThreadLocal<Map<String, Object>>();
+    private static final ThreadLocal<Map<String, Object>> CONTEXT = new ThreadLocal<Map<String, Object>>();
 
     /**
      * get get
@@ -23,7 +23,7 @@ public class ThreadContext {
      * @return Object
      */
     public static Object get(String key) {
-        Map<String, Object> perThreadResources = context.get();
+        Map<String, Object> perThreadResources = CONTEXT.get();
         return perThreadResources != null ? perThreadResources.get(key) : null;
     }
 
@@ -42,15 +42,15 @@ public class ThreadContext {
             return;
         }
         ensureResourcesInitialized();
-        context.get().put(key, value);
+        CONTEXT.get().put(key, value);
     }
 
     /**
      * ensureResourcesInitialized
      */
     private static void ensureResourcesInitialized() {
-        if (context.get() == null) {
-            context.set(new HashMap<String, Object>());
+        if (CONTEXT.get() == null) {
+            CONTEXT.set(new HashMap<String, Object>());
         }
     }
 
@@ -61,7 +61,7 @@ public class ThreadContext {
      * @return Object
      */
     public static Object remove(String key) {
-        Map<String, Object> perThreadResources = context.get();
+        Map<String, Object> perThreadResources = CONTEXT.get();
         return perThreadResources != null ? perThreadResources.remove(key) : null;
     }
 
@@ -71,10 +71,10 @@ public class ThreadContext {
      * @return Map<String, Object>
      */
     public static Map<String, Object> getContext() {
-        if (context.get() == null) {
+        if (CONTEXT.get() == null) {
             return Collections.emptyMap();
         } else {
-            return new HashMap<String, Object>(context.get());
+            return new HashMap<String, Object>(CONTEXT.get());
         }
     }
 }

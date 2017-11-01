@@ -46,6 +46,7 @@ public class CustomJdbcRealm extends JdbcRealm {
     @Autowired
     private RedisCacheManager redisCacheManager;
 
+    @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String username = upToken.getUsername();

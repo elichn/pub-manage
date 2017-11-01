@@ -261,7 +261,8 @@ public class SeLoginController extends BaseController {
         if (isNeedCheckCode) {
             if (userCheckCode != null && StringUtils.isNotBlank(checkCode)) {
                 String inputCheckCode = userCheckCode.toLowerCase();
-                if (inputCheckCode.length() != 4 || !inputCheckCode.equals(checkCode)) {
+                int inputCheckCodeLength = 4;
+                if (inputCheckCode.length() != inputCheckCodeLength || !inputCheckCode.equals(checkCode)) {
                     model.addAttribute(ERROR_KEY, "验证码错误");
                     return login(model, request, response, url);
                 }

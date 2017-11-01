@@ -29,6 +29,7 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
     @Autowired
     private SePublicPermissionService sePublicPermissionService;
 
+    @Override
     public void setFilterChainDefinitions(String definitions) {
         List<SePublicPermission> list = sePublicPermissionService.selectBySystem(null);
 

@@ -33,6 +33,7 @@ public class ByteRedisSerializer implements RedisSerializer<byte[]> {
      * @return byte[]
      * @throws SerializationException serializationException
      */
+    @Override
     public byte[] serialize(byte[] t) throws SerializationException {
         return t == null ? EMPTY_ARRAY : t;
     }
@@ -44,6 +45,7 @@ public class ByteRedisSerializer implements RedisSerializer<byte[]> {
      * @return byte[]
      * @throws SerializationException serializationException
      */
+    @Override
     public byte[] deserialize(byte[] bytes) throws SerializationException {
         return isEmpty(bytes) ? null : bytes;
     }

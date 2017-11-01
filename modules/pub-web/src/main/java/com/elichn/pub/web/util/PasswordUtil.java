@@ -31,6 +31,11 @@ public class PasswordUtil {
             '.', ',', '?', '\\', '/', '+', '-', '%', '\'', '!', '@', '#', '$', '^', '&', '*', '(', ')', '[', ']'
     };
 
+    private static Pattern numberCheck = Pattern.compile("\\d");
+    private static Pattern lowerCaseCheck = Pattern.compile("[a-z]");
+    private static Pattern upperCaseCheck = Pattern.compile("[A-Z]");
+    private static Pattern otherCaseCheck = Pattern.compile("\\W");
+
     /**
      * randomPassword  randomPassword
      *
@@ -86,20 +91,27 @@ public class PasswordUtil {
      * @return int
      */
     public static int isComplexPassword(String password) {
-
-        if (StringUtils.isBlank(password) || password.length() < 6) {
+        int length = 6;
+        if (StringUtils.isBlank(password) || password.length() < length) {
             return 0;
         }
         int n = 0;
-
-        Pattern numberCheck = Pattern.compile("\\d");
-        Pattern lowerCaseCheck = Pattern.compile("[a-z]");
-        Pattern upperCaseCheck = Pattern.compile("[A-Z]");
-        Pattern otherCaseCheck = Pattern.compile("\\W");
-        if (numberCheck.matcher(password).find()) n++;    // 包含数字
-        if (lowerCaseCheck.matcher(password).find()) n++; // 包含小写字母
-        if (upperCaseCheck.matcher(password).find()) n++; // 包含大写字母
-        if (otherCaseCheck.matcher(password).find()) n++; // 包含其他字符
+        // 包含数字
+        if (numberCheck.matcher(password).find()) {
+            n++;
+        }
+        // 包含小写字母
+        if (lowerCaseCheck.matcher(password).find()) {
+            n++;
+        }
+        // 包含大写字母
+        if (upperCaseCheck.matcher(password).find()) {
+            n++;
+        }
+        // 包含其他字符
+        if (otherCaseCheck.matcher(password).find()) {
+            n++;
+        }
 
         return n;
     }

@@ -10,7 +10,13 @@ package com.elichn.pub.core.constant;
  */
 public enum UserTypeEnum {
 
+    /**
+     * 标准账号
+     */
     STANDARD(2),
+    /**
+     * ldap账号
+     */
     LDAP(1);
 
     private int typeValue;

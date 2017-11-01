@@ -100,7 +100,8 @@ public class SeHomePageNoticeController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public void add(Model model, SeHomePageNotice hn, int[] roleIds) {
         if (hn.getType() == 1) {
-            if (StringUtils.isBlank(hn.getUrl()) || hn.getUrl().equals("/welcome")) {
+            String welcomePath = "/welcome";
+            if (StringUtils.isBlank(hn.getUrl()) || welcomePath.equals(hn.getUrl())) {
                 model.addAttribute("msg", INVALID_PARAM);
                 return;
             }

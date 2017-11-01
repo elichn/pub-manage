@@ -91,6 +91,7 @@ public class SeUserServiceImpl implements SeUserService {
         return flag;
     }
 
+    @Override
     public int updateByPrimaryKey(SeUser record) {
         return seUserMapper.updateByPrimaryKey(record);
     }

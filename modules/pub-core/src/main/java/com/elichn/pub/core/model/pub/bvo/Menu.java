@@ -67,8 +67,9 @@ public class Menu implements Serializable {
     }
 
     public static Menu copy(SeResc r) {
-        if (r == null) return null;
-        else {
+        if (r == null) {
+            return null;
+        } else {
             Menu menu = new Menu();
             menu.setId(r.getId());
             menu.setName(r.getName());

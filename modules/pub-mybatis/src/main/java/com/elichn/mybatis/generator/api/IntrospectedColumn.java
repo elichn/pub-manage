@@ -14,14 +14,16 @@ import java.sql.Types;
  */
 public class IntrospectedColumn extends org.mybatis.generator.api.IntrospectedColumn {
 
+    private static final String DATE_TIME_STR = "org.joda.time.DateTime";
+
     @Override
     public void setFullyQualifiedJavaType(FullyQualifiedJavaType fullyQualifiedJavaType) {
         super.setFullyQualifiedJavaType(fullyQualifiedJavaType);
-        if (Types.DATE == this.getJdbcType() && "org.joda.time.DateTime".equals(fullyQualifiedJavaType.getFullyQualifiedName())) {
+        if (Types.DATE == this.getJdbcType() && DATE_TIME_STR.equals(fullyQualifiedJavaType.getFullyQualifiedName())) {
             this.typeHandler = "com.elichn.mybatis.typehandler.JodaDateTime2DateTypeHandler";
-        } else if (Types.TIMESTAMP == this.getJdbcType() && "org.joda.time.DateTime".equals(fullyQualifiedJavaType.getFullyQualifiedName())) {
+        } else if (Types.TIMESTAMP == this.getJdbcType() && DATE_TIME_STR.equals(fullyQualifiedJavaType.getFullyQualifiedName())) {
             this.typeHandler = "com.elichn.mybatis.typehandler.JodaDateTime2TimestampTypeHandler";
-        } else if (Types.TIME == this.getJdbcType() && "org.joda.time.DateTime".equals(fullyQualifiedJavaType.getFullyQualifiedName())) {
+        } else if (Types.TIME == this.getJdbcType() && DATE_TIME_STR.equals(fullyQualifiedJavaType.getFullyQualifiedName())) {
             this.typeHandler = "com.elichn.mybatis.typehandler.JodaDateTime2TimeTypeHandler";
         }
     }

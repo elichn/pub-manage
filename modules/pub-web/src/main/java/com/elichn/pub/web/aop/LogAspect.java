@@ -123,8 +123,9 @@ public class LogAspect {
         if (remoteAddr == null || "".equals(remoteAddr)) {
             remoteAddr = request.getRemoteAddr();
         } else {
-            if (remoteAddr.contains(",")) {
-                remoteAddr = remoteAddr.substring(0, remoteAddr.indexOf(","));
+            String comma = ",";
+            if (remoteAddr.contains(comma)) {
+                remoteAddr = remoteAddr.substring(0, remoteAddr.indexOf(comma));
             }
         }
         return remoteAddr;

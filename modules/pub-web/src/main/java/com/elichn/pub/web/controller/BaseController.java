@@ -32,25 +32,45 @@ public class BaseController {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
-    // 成功
+    /**
+     * 成功
+     */
     public static final String SUCCESS = "SUCCESS";
-    // 失败
+    /**
+     * 失败
+     */
     public static final String FAIL = "FAIL";
-    // 参数错误
+    /**
+     * 参数错误
+     */
     public static final String INVALID_PARAM = "INVALID_PARAM";
-    // 重复
+    /**
+     * 重复
+     */
     public static final String DUPLICATE = "DUPLICATE";
-    // 超时
+    /**
+     * 超时
+     */
     public static final String SESSION_TIME_OUT = "SESSION_TIME_OUT";
-    // 没有权限
+    /**
+     * 没有权限
+     */
     public static final String ACCESS_DENY = "ACCESS_DENY";
-    // 用户不存在
+    /**
+     * 用户不存在
+     */
     public static final String USER_NOT_EXIST = "USER_NOT_EXIST";
-    // 记录不存在
+    /**
+     * 记录不存在
+     */
     public static final String RECORD_NOT_EXIST = "RECORD_NOT_EXIST";
-    // 已锁定
+    /**
+     * 已锁定
+     */
     public static final String LOCKED = "LOCKED";
-    // 错误
+    /**
+     * 错误
+     */
     public static final String ERROR_KEY = "errorKey";
 
     @Autowired
@@ -119,8 +139,9 @@ public class BaseController {
         if (remoteAddr == null || "".equals(remoteAddr)) {
             remoteAddr = request.getRemoteAddr();
         } else {
-            if (remoteAddr.contains(",")) {
-                remoteAddr = remoteAddr.substring(0, remoteAddr.indexOf(","));
+            String comma = ",";
+            if (remoteAddr.contains(comma)) {
+                remoteAddr = remoteAddr.substring(0, remoteAddr.indexOf(comma));
             }
         }
         return remoteAddr;

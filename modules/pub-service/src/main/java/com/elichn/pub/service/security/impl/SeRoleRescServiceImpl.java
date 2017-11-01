@@ -113,7 +113,8 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
 
     @Override
     public List<SeResc> getRescByRole(Integer id) {
-        return seRoleRescDao.getRescByRole(id);       //通过角色获得资源
+        // 通过角色获得资源
+        return seRoleRescDao.getRescByRole(id);
     }
 
     @Override

@@ -35,8 +35,9 @@ public class CustomShiroSessionDAO extends AbstractSessionDAO {
             return;
         }
         Serializable id = session.getId();
-        if (id != null)
+        if (id != null) {
             getShiroSessionRepository().deleteSession(id);
+        }
     }
 
     @Override

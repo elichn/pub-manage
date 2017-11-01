@@ -10,7 +10,6 @@ import com.elichn.pub.service.security.SeRoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,6 @@ public class SeRoleServiceImpl implements SeRoleService {
         return seUserRoleMapper.deleteByPrimaryKey(userRoleKey);
     }
 
-    @Transactional
     @Override
     public SeRole insertRole(SeRole role) {
         seRoleMapper.insert(role);

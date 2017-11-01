@@ -23,9 +23,13 @@ public class RedisCache<K, V> implements Cache<K, V> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RedisCache.class);
 
-    // The wrapped Jedis instance.
+    /**
+     * The wrapped Jedis instance.
+     */
     private RedisTemplate<K, V> redisTemplate;
-    // The Redis key prefix for the sessions
+    /**
+     * The Redis key prefix for the sessions
+     */
     private String keyPrefix = "shiro-redis-cache:";
 
     /**
@@ -50,11 +54,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
             if (key == null) {
                 return null;
             } else {
-                // byte[] rawValue = redisTemplate.get(getByteKey(key));
                 return redisTemplate.opsForValue().get(keyPrefix + key);
-                // @SuppressWarnings("unchecked")
-                // V value = (V) SerializeUtils.deserialize(rawValue);
-                // return value;
             }
         } catch (Throwable t) {
             throw new CacheException(t);

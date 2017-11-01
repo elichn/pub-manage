@@ -69,12 +69,13 @@ public class CaptchaServiceImpl implements CaptchaService {
      * @return Color
      */
     private Color getRandColor(int fc, int bc) {
+        int maxFc = 255;
         Random random = new Random();
-        if (fc > 255) {
-            fc = 255;
+        if (fc > maxFc) {
+            fc = maxFc;
         }
-        if (bc > 255) {
-            bc = 255;
+        if (bc > maxFc) {
+            bc = maxFc;
         }
         int r = fc + random.nextInt(bc - fc);
         int g = fc + random.nextInt(bc - fc);
@@ -91,7 +92,7 @@ public class CaptchaServiceImpl implements CaptchaService {
      */
     private Font getFont(int fontStyle, int fontSize) {
         Random random = new Random();
-        Font font[] = new Font[5];
+        Font[] font = new Font[5];
         font[0] = new Font("Arial", fontStyle, fontSize);
         font[1] = new Font("Helvetica", fontStyle, fontSize);
         font[2] = new Font("Geneva", fontStyle, fontSize);
@@ -109,7 +110,8 @@ public class CaptchaServiceImpl implements CaptchaService {
     private String generateCaptchaCode() {
         // 该变量用于保存系统生成的随机字符串
         String randStr = "";
-        for (int i = 0; i < 6; i++) {
+        int length = 6;
+        for (int i = 0; i < length; i++) {
             // 获得一个随机字符
             String tmp = RandCharUtil.getRandChar();
             randStr += tmp;
@@ -173,22 +175,14 @@ public class CaptchaServiceImpl implements CaptchaService {
         int verticalGaps = imageWidth / (verticalLines + 1);
 
         Color c = new Color(10, 10, 10);
-        // draw the horizontal stripes
-        // for (int i = horizontalGaps; i < imageHeight; i = i + horizontalGaps) {
-        //     graph.setColor(c);
-        //     graph.drawLine(0, i, imageWidth, i);
-        // }
-        //  draw the vertical stripes
-        //  for (int i = verticalGaps; i < imageWidth; i = i + verticalGaps) {
-        //      graph.setColor(c);
-        //      graph.drawLine(i, 0, i, imageHeight);
-        //  }
+
         int startv = imageWidth / 2;
         // draw the vertical stripes
-        for (int i = 0; i < imageWidth; i = i + 5) {
+        int fixedValue = 5;
+        for (int i = 0; i < imageWidth; i = i + fixedValue) {
             graph.setColor(c);
-            startv = startv - random.nextInt(5);
-            graph.drawLine(startv, i, startv, i + 5);
+            startv = startv - random.nextInt(fixedValue);
+            graph.drawLine(startv, i, startv, i + fixedValue);
         }
 
         return baseImage;
@@ -205,7 +199,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         int imageWidth = baseImage.getWidth();
         // create a pixel array of the original image.
         // we need this later to do the operations on..
-        int pix[] = new int[imageHeight * imageWidth];
+        int[] pix = new int[imageHeight * imageWidth];
         int j = 0;
 
         for (int j1 = 0; j1 < imageWidth; j1++) {
@@ -259,12 +253,16 @@ public class CaptchaServiceImpl implements CaptchaService {
      * @return double
      */
     private double fishEyeFormula(double s) {
-        if (s < 0.0D)
-            return 0.0D;
-        if (s > 1.0D)
+        double minValue = 0.0D;
+        double maxValue = 0.0D;
+        if (s < minValue) {
+            return minValue;
+        }
+        if (s > maxValue) {
             return s;
-        else
+        } else {
             return -0.75D * s * s * s + 1.5D * s * s + 0.25D * s;
+        }
     }
 
     /**
@@ -310,7 +308,6 @@ public class CaptchaServiceImpl implements CaptchaService {
             GlyphVector gv = chosenFont.createGlyphVector(frc, charToDraw);
             double charWidth = gv.getVisualBounds().getWidth();
 
-            // g2D.drawChars(charToDraw, 0, charToDraw.length, startPosX, startPosY);
             g2D.drawChars(charToDraw, 0, charToDraw.length, startPosX - random.nextInt(3), random.nextInt(height - fontSize) / 2 + fontSize);
             startPosX = startPosX + (int) charWidth + 2;
         }
@@ -348,14 +345,10 @@ public class CaptchaServiceImpl implements CaptchaService {
             String tmp = String.valueOf(text.charAt(i));
             // 将系统生成的随机字符添加到图形验证码上
             g.setColor(new Color(0, 0, 0));
-            // g.setColor(new Color(20 + random.nextInt(110), 20 + random
-            //         .nextInt(110), 20 + random.nextInt(110)));
-            // x = x - random.nextInt(fontSize / 2) + fontSize + 4;
             x = x - random.nextInt(3) + fontSize;
             int y = random.nextInt(height - fontSize) / 2 + fontSize;
 
             g.drawString(tmp, x, y);
-            // LOG.debug("tmp:[" + tmp + "]   x:[" + x + "]   y:[" + y + "]  fontStyle :[" + fontStyle + "]   fontSize  :  [" + fontSize + "]");
         }
         g.dispose();
         image = getDistortedImage(image);

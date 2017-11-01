@@ -27,7 +27,9 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
 
     private String securityGroup = "";
 
-    // saveSession
+    /**
+     * saveSession
+     */
     private final String REDIS_SHIRO_SESSION = "shiro-session:";
 
     @Autowired

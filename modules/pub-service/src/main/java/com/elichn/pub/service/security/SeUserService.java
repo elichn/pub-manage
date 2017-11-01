@@ -60,6 +60,9 @@ public interface SeUserService {
     /**
      * selectUsersByPage 分页查询用户
      *
+     * @param pageNo   pageNo
+     * @param pageSize pageSize
+     * @param map      map
      * @return List<SeUserRoleBvo>
      */
     List<SeUserRoleBvo> selectUsersByPage(int pageNo, int pageSize, Map map);
@@ -67,6 +70,7 @@ public interface SeUserService {
     /**
      * getRowsByName 根据名字查找用户的总记录数
      *
+     * @param map map
      * @return Integer
      */
     Integer getRowsByName(Map map);

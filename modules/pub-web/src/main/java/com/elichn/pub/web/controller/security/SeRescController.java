@@ -68,8 +68,9 @@ public class SeRescController extends BaseController {
                 resc.setShowUrl(null);
             }
             resc = seRoleRescService.insertResc(resc);
+            // 记录日志
             writeLog(request, CommonConstats.ADD_RESOURCE, CommonConstats.ADD_RESOURCE
-                    + "(资源名:" + resc.getName() + ",资源ID:" + resc.getId() + ")", getUserName());     //记录历史
+                    + "(资源名:" + resc.getName() + ",资源ID:" + resc.getId() + ")", getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("{}", e);
@@ -99,8 +100,9 @@ public class SeRescController extends BaseController {
         String newInfo = "修改信息:资源名:" + resc.getName() + ",资源ShowUrl:" + resc.getShowUrl() + ",资源ResString:" + resc.getResString();
         try {
             seRoleRescService.updateResc(resc);
+            // 记录日志
             writeLog(request, CommonConstats.UPDATE_RESOURCE, CommonConstats.UPDATE_RESOURCE
-                    + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>" + "详细信息:<br>" + oldInfo + "<br>" + newInfo, getUserName());     //记录历史
+                    + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>" + "详细信息:<br>" + oldInfo + "<br>" + newInfo, getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("{}", e);
@@ -146,8 +148,10 @@ public class SeRescController extends BaseController {
      * @return
      */
     private List<SeResc> getRescListByRole() {
-        SeUser currentUser = seUserService.selectByName(getUserName());  //获得当前用户
-        List<SeRole> currentRoles = seRoleService.selectRoleListByUser(currentUser.getId().toString());   //根据当前用户活动当前用户的所有角色
+        // 获得当前用户
+        SeUser currentUser = seUserService.selectByName(getUserName());
+        // 根据当前用户活动当前用户的所有角色
+        List<SeRole> currentRoles = seRoleService.selectRoleListByUser(currentUser.getId().toString());
 
         Set<Integer> rescSet = new HashSet<Integer>();
         // 获取当前角色的资源 id

@@ -193,7 +193,8 @@ public class SeUserController extends BaseController {
         }
         SeUser user = new SeUser();
         user.setUsername(userName.trim());
-        if (PasswordUtil.isComplexPassword(password) < 3) {
+        int passwordLength = 3;
+        if (PasswordUtil.isComplexPassword(password) < passwordLength) {
             model.addAttribute("success", false);
             model.addAttribute("msg", "密码强度不够");
         }

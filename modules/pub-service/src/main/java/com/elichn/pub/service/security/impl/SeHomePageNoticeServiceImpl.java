@@ -15,7 +15,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,7 +38,6 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
     @Autowired
     private SeRoleDao seRoleDao;
 
-    @Transactional
     @Override
     public void insert(SeHomePageNotice record, int[] roleIds) {
         record.setCreateTime(DateTime.now());
@@ -69,7 +67,6 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
         return 0;
     }
 
-    @Transactional
     @Override
     public void updateRoleNotice(int hnId, List<Integer> roleIds) {
         List<Integer> old = seHomePageNoticeDao.getRelationRole(hnId);
@@ -114,8 +111,8 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
         SeHomePageNotice pn = null;
         for (SeRole r : roles) {
             SeHomePageNotice hn = seHomePageNoticeDao.getHomePageNoticeByRole(r.getId());
-
-            if (hn != null && (pn == null || pn.getUpdateTime().isBefore(hn.getUpdateTime()))) {
+            boolean isHn = (pn == null || pn.getUpdateTime().isBefore(hn.getUpdateTime()));
+            if (hn != null && isHn) {
                 pn = hn;
             }
         }

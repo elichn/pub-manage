@@ -24,10 +24,15 @@ import java.util.List;
 public class RescFilter extends AuthorizationFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RescFilter.class);
-    // 忽略的url
+    /**
+     * 忽略的url
+     */
     private List<String> ignoreList;
-    // 忽略 指定前缀
+    /**
+     * 忽略 指定前缀
+     */
     private List<String> ignoreHeadList;
+    private String jsonName = ".json";
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request,
@@ -35,13 +40,13 @@ public class RescFilter extends AuthorizationFilter {
         String path = getPathWithinApplication(request);
 
         // 去除.json的后缀
-        if (path.endsWith(".json")) {
+        if (path.endsWith(jsonName)) {
             path = path.substring(0, path.length() - 5);
         }
 
         // 忽略（通过）特定后缀的访问
         String ext = getExt(path);
-        if (ext != null && !ext.equals(".json")) {
+        if (ext != null && !jsonName.equals(ext)) {
             return true;
         }
 
@@ -108,8 +113,8 @@ public class RescFilter extends AuthorizationFilter {
 
             String path = getPathWithinApplication(request);
             // 如果以.json的形式访问 则返回.json形式的提醒
-            if (path.endsWith(".json")) {
-                unauthorizedUrl += ".json";
+            if (path.endsWith(jsonName)) {
+                unauthorizedUrl += jsonName;
             }
 
             // SHIRO-142 - ensure that redirect _or_ error code occurs - both cannot happen due to response commit:
