@@ -5,11 +5,11 @@
     <!-- Le styles -->
     <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/common/artDialog/skins/default.css" rel="stylesheet">
-    <link href="/common/jquery-plugin/validate/style.css" type="text/css">
-    <link href="/common/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
-    <link href="/common/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
-    <link href="/css/common.css" rel="stylesheet">
-    <link href="/css/security/notice/view.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
+    <link rel="stylesheet" href="/common/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" href="/common/umeditor/themes/default/css/umeditor.css" type="text/css">
+    <link rel="stylesheet" href="/css/security/notice/view.css" type="text/css">
+    <link rel="stylesheet"href="/css/common.css" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -90,7 +90,7 @@
     </div>
 
     <div id="treeContent" class="ztree" style="display:none;">
-        <ul id="roleTree" class="ztree" style="margin-top:0; width:300px; height: 400px; overflow-y: auto"></ul>
+        <ul id="roleTree" class="ztree" style="margin-top:0; width:300px; height: 350px; overflow-y: auto"></ul>
     </div>
 </div>
 
@@ -106,14 +106,14 @@
 <script type="text/javascript" src="/common/ztree/js/jquery.ztree.excheck.min.js"></script>
 <script type="text/javascript" src="/js/page/notice/view.js"></script>
 <script type="text/javascript">
-    function showEditWin() {
-        var style = ${style};
-        if (style == 0) {
-            parent.addTab(18, "添加首页通知", "/homePageNotice/add");
-        } else if (style == 1) {
-            window.location.href = "/homePageNotice/add";
-        }
+function showEditWin() {
+    var style = ${style};
+    if (style == 0) {
+        parent.addTab(18, "添加首页通知", "/homePageNotice/add");
+    } else if (style == 1) {
+        window.location.href = "/homePageNotice/add";
     }
+}
 </script>
 </body>
 </html>

@@ -42,6 +42,7 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
     @Transactional
     @Override
     public void insert(SeHomePageNotice record, int[] roleIds) {
+        record.setCreateTime(DateTime.now());
         seHomePageNoticeMapper.insert(record);
         if (roleIds != null) {
             for (int roleId : roleIds) {
@@ -62,7 +63,7 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
             } else {
                 h.setContent(record.getContent());
             }
-
+            h.setUpdateTime(DateTime.now());
             return seHomePageNoticeMapper.updateByPrimaryKeyWithBLOBs(h);
         }
         return 0;
@@ -100,6 +101,7 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
         if (h != null) {
             status = status != 0 ? 1 : 0;
             h.setStatus(status);
+            h.setUpdateTime(DateTime.now());
             seHomePageNoticeMapper.updateByPrimaryKey(h);
             return 1;
         }

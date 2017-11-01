@@ -9,6 +9,7 @@ import com.elichn.pub.core.model.pub.mapper.security.SeUserRoleMapper;
 import com.elichn.pub.core.model.pub.pojo.security.SeUser;
 import com.elichn.pub.core.model.pub.pojo.security.SeUserRoleExample;
 import com.elichn.pub.service.security.SeUserService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,7 @@ public class SeUserServiceImpl implements SeUserService {
 
     @Override
     public int insertUser(SeUser user) {
+        user.setCreateTime(DateTime.now());
         return seUserMapper.insert(user);
     }
 

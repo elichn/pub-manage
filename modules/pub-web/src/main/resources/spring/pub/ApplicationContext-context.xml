@@ -24,7 +24,7 @@
         <property name="numHelperThreads" value="#{mysqlProps['c3p0.numHelperThreads']}"/>
     </bean>
 
-    <!-- 創建SqlSessionFactory，同時指定數據源 -->
+    <!-- 创建SqlSessionFactory，同时指定数据源 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
         <property name="dataSource" ref="dataSource"/>
@@ -34,17 +34,17 @@
             </array>
         </property>
     </bean>
-    <!-- Mapper接口所在包名，Spring會自動查找其下的Mapper -->
+    <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.elichn.pub.core.model.pub.mapper,com.elichn.pub.core.model.pub.dao"/>
     </bean>
 
-    <!-- (事務管理)transaction manager, use JtaTransactionManager for global tx -->
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!-- 可通過注解控制事務 -->
+    <!-- 可通过注解控制事务 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">

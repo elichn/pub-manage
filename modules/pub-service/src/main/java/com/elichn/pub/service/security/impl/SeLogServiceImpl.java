@@ -33,7 +33,7 @@ public class SeLogServiceImpl implements SeLogService {
 
     @Override
     public int insert(SeLog log) {
-        log.setLogTime(new DateTime());
+        log.setLogTime(DateTime.now());
         return seLogMapper.insert(log);
     }
 
