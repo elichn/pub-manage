@@ -55,14 +55,7 @@ public class CustomJdbcRealm extends JdbcRealm {
         }
         // 暂定都是标准用户,密码都保存在db中
         String password = getDbPassword(username);
-
-        /* String password = "";
-        if ("admin".equals(username)) {
-            password = getDbPassword(username);
-        }/* else {   ldap验证口
-            password = getPassWordByLdap(upToken);
-        }*/
-
+        // password = getPassWordByLdap(upToken);  // ldap验证口
         if (StringUtils.isBlank(password)) {
             throw new UnknownAccountException("No account found for user [" + username + "]");
         }

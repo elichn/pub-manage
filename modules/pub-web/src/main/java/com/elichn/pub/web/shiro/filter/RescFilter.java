@@ -103,12 +103,14 @@ public class RescFilter extends AuthorizationFilter {
             String path = getPathWithinApplication(request);
             Cookie cookie = new Cookie("refer", path);
             cookie.setPath("/");
-            // cookie.setDomain(".yourwebsite.com");
+            /** cookie.setDomain(".yourwebsite.com");*/
             ((HttpServletResponse) response).addCookie(cookie);
             saveRequestAndRedirectToLogin(request, response);
         } else {
-            // If subject is known but not authorized, redirect to the unauthorized URL if there is one
-            // If no unauthorized URL is specified, just return an unauthorized HTTP status code
+            /**
+             *  If subject is known but not authorized, redirect to the unauthorized URL if there is one
+             *  If no unauthorized URL is specified, just return an unauthorized HTTP status code
+             */
             String unauthorizedUrl = getUnauthorizedUrl();
 
             String path = getPathWithinApplication(request);

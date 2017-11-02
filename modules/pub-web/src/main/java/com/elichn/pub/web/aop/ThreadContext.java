@@ -50,7 +50,7 @@ public class ThreadContext {
      */
     private static void ensureResourcesInitialized() {
         if (CONTEXT.get() == null) {
-            CONTEXT.set(new HashMap<String, Object>());
+            CONTEXT.set(new HashMap<String, Object>(16));
         }
     }
 
@@ -76,5 +76,13 @@ public class ThreadContext {
         } else {
             return new HashMap<String, Object>(CONTEXT.get());
         }
+    }
+
+
+    /**
+     * remove
+     */
+    public static void remove() {
+        CONTEXT.remove();
     }
 }

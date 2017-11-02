@@ -275,7 +275,7 @@ public class SeLoginController extends BaseController {
 
         String remoteAddr = getRemoteAddr(request);
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password, remoteAddr);
-        // token.setRememberMe(true);
+        /** token.setRememberMe(true);*/
         try {
             currentUser.login(token);
             SeUser user = seUserService.selectByName(getUserName());
@@ -328,8 +328,8 @@ public class SeLoginController extends BaseController {
      */
     @RequestMapping(value = "logout")
     public String logout(Model model, HttpServletRequest request) {
-        // LOG.info("用户退出登录");
         String userName = getUserName();
+        LOG.info("用户={}退出登录", userName);
         if (userName != null) {
             SecurityUtils.getSubject().logout();
             writeLog(request, "用户注销", null, userName);
@@ -403,19 +403,10 @@ public class SeLoginController extends BaseController {
         List<SeResc> rescs = new ArrayList<SeResc>();
         for (SeRole r : currentRoles) {
             List<SeResc> rescList = seRoleRescService.getRescByRole(r.getId());
-            // for (SeResc resc : rescList) {
-            //     if (StringUtils.isNotBlank(resc.getShowUrl())) {
-            //        if (resc.getShowUrl().contains("?")) {
-            //            resc.setShowUrl(resc.getShowUrl() + "&rescId=" + resc.getId());
-            //        } else {
-            //             resc.setShowUrl(resc.getShowUrl() + "?rescId=" + resc.getId());
-            //         }
-            //     }
-            //  }
             rescs.addAll(rescList);
         }
 
-        Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+        Map<Integer, Boolean> map = new HashMap<Integer, Boolean>(16);
         List<SeResc> list = new ArrayList<SeResc>();
         for (SeResc resc : rescs) {
             if (map.get(resc.getId()) == null && resc.getShowMenu() != 0) {
@@ -452,7 +443,7 @@ public class SeLoginController extends BaseController {
             rescs.addAll(rescList);
         }
         List<Menu> menus = new ArrayList<>();
-        Map<Integer, List<Menu>> menuMap = new HashMap<>();
+        Map<Integer, List<Menu>> menuMap = new HashMap<>(128);
         Set<Integer> set = new HashSet<>();
         for (SeResc resc : rescs) {
             if (!set.contains(resc.getId()) && resc.getShowMenu() != 0) {

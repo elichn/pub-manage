@@ -124,7 +124,7 @@ public class SeUserController extends BaseController {
                           @RequestParam(value = "searchType", required = false, defaultValue = "0") Integer searchType,
                           Model model) {
         List<SeRole> roles = getSubRoleOfCurrentUser();
-        Map map = new HashMap();
+        Map map = new HashMap(16);
         map.put("username", username);
         map.put("searchType", searchType);
         map.put("roleName", roleName);
@@ -292,12 +292,6 @@ public class SeUserController extends BaseController {
             if (user != null) {
                 // 获取当前用户的所有角色
                 List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
-                // List<SeRole> directRoleList = seRoleService.selectRoleListByUser(user.getId().toString()); //获取当前用户的所有直接角色
-                // List<Integer> directRoleIdList = new ArrayList<Integer>();
-                // for (SeRole role : directRoleList) {
-                //     directRoleIdList.add(role.getId());
-                // }
-
                 if (roles != null) {
                     List<Integer> roleIdList = new ArrayList<Integer>();
                     for (SeRole role : roles) {
@@ -314,11 +308,6 @@ public class SeUserController extends BaseController {
                             bvo.setChecked(false);
                         }
 
-                        // if (directRoleIdList.contains(role.getId())) {
-                        //     bvo.setNocheck(true);
-                        // } else {
-                        //     bvo.setNocheck(false);
-                        // }
                         bvo.setNocheck(false);
                         bvos.add(bvo);
                     }
@@ -329,11 +318,6 @@ public class SeUserController extends BaseController {
                     List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
                     for (SeRole role : list) {
                         SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(role);
-                        // if (directRoleIdList.contains(role.getId())) {
-                        //     bvo.setNocheck(true);
-                        // } else {
-                        //     bvo.setNocheck(false);
-                        // }
                         bvo.setNocheck(false);
                         bvos.add(bvo);
                     }

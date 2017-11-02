@@ -60,7 +60,7 @@ public class LogAspect {
             MethodSignature ms = (MethodSignature) jp.getSignature();
             Method method = ms.getMethod();
             CrudMethodBefore before = method.getAnnotation(CrudMethodBefore.class);
-            writeLog(jp, before.methodDesc(), before.log());
+            this.writeLog(jp, before.methodDesc(), before.log());
         } catch (Exception e) {
             LOG.warn("before AOP异常,", e);
         }
@@ -72,7 +72,7 @@ public class LogAspect {
             MethodSignature ms = (MethodSignature) jp.getSignature();
             Method method = ms.getMethod();
             CrudMethodAfter after = method.getAnnotation(CrudMethodAfter.class);
-            writeLog(jp, after.methodDesc(), after.log());
+            this.writeLog(jp, after.methodDesc(), after.log());
         } catch (Exception e) {
             LOG.warn("after AOP异常,", e);
         }
@@ -99,6 +99,7 @@ public class LogAspect {
             for (Map.Entry<String, Object> e : map.entrySet()) {
                 context.put(e.getKey(), e.getValue());
             }
+            ThreadContext.remove();
             sw = new StringWriter();
             Velocity.evaluate(context, sw, "LogAspect", logTemplate);
             logWriter.write(methodDesc, sw.toString(), getRemoteAddr(request), getUserName());
