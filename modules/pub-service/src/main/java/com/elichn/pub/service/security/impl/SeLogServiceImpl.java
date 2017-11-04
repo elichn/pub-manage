@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>Title: SeLogServiceImpl</p>
  * <p>Description: SeLogServiceImpl</p>
@@ -72,6 +75,11 @@ public class SeLogServiceImpl implements SeLogService {
         resultBvo.setList(seLogDao.getList(queryBvo));
         resultBvo.setTotal(seLogDao.getListCount(queryBvo));
         return resultBvo;
+    }
+
+    @Override
+    public List<Map<String, Object>> getLogsList() {
+        return seLogDao.getLogsList();
     }
 
     /**

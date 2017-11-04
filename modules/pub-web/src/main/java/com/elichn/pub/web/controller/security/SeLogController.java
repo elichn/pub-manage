@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * <p>Title: SeLogController</p>
  * <p>Description: SeLogController</p>
@@ -55,5 +57,20 @@ public class SeLogController extends BaseController {
     @RequestMapping(value = "/logManager")
     public String logManger() {
         return PREFIX + "logManager";
+    }
+
+
+    /**
+     * exportExcel 导出统计数据
+     *
+     * @param response     response
+     * @param fileName     fileName
+     * @param templateName templateName
+     */
+    @RequestMapping(value = "exportExcel")
+    public void exportExcel(HttpServletResponse response,
+                            @RequestParam(value = "templateName", required = false) String templateName,
+                            @RequestParam(value = "fileName", required = false) String fileName) {
+        super.exportExcel(response, fileName, templateName, seLogService.getLogsList());
     }
 }

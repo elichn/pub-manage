@@ -4,6 +4,7 @@ import com.elichn.pub.core.model.pub.bvo.QueryBvo;
 import com.elichn.pub.core.model.pub.pojo.security.SeLog;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: SeLogDao</p>
@@ -30,4 +31,11 @@ public interface SeLogDao {
      * @return int
      */
     int getListCount(QueryBvo<SeLog> queryBvo);
+
+    /**
+     * getLogsList getLogsList
+     *
+     * @return List<Map<String,Object>>
+     */
+    List<Map<String, Object>> getLogsList();
 }

@@ -16,6 +16,19 @@
         <include refid="logListSql"/>
     </select>
 
+    <select id="getLogsList" resultType="map">
+        select
+          id,
+          ip,
+          user_name,
+          log_type,
+          log_content,
+          log_time
+        from
+          se_log
+        order by id desc
+    </select>
+
     <sql id="logListSql">
         <where>
             <if test="queryBean.userName != null and queryBean.userName.trim() != ''">

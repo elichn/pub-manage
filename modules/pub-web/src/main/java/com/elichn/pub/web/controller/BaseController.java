@@ -6,6 +6,7 @@ import com.elichn.pub.service.security.SeLogService;
 import com.elichn.pub.service.security.SeUserService;
 import com.elichn.pub.web.aop.LogAspect;
 import com.elichn.pub.web.util.DateTimeEditor;
+import com.elichn.pub.web.util.ExcelUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -19,6 +20,10 @@ import org.springframework.web.servlet.support.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: BaseController</p>
@@ -28,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  * @date 2017/10/28
  */
-public class BaseController {
+public class BaseController<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
@@ -182,6 +187,34 @@ public class BaseController {
             response.getWriter().print(msg);
         } catch (Exception e) {
             LOG.warn("返回操作信息异常,msg={}", msg, e);
+        }
+    }
+
+    /**
+     * exportExcel exportExcel
+     *
+     * @param response     response
+     * @param fileName     fileName
+     * @param templateName templateName
+     * @param dataList     dataList
+     */
+    protected void exportExcel(HttpServletResponse response, String fileName,
+                               String templateName, List<T> dataList) {
+        try {
+            // 清空输出流
+            response.reset();
+            // 设定输出文件头
+            response.setHeader("Content-disposition", "attachment; filename="
+                    + new String(fileName.getBytes(), "ISO-8859-1"));
+            // 定义输出类型
+            response.setContentType("application/msexcel");
+            Map<String, Object> dataMap = new HashMap<String, Object>(16);
+            dataMap.put("datas", dataList);
+            // 取得输出流
+            OutputStream outputStream = response.getOutputStream();
+            ExcelUtil.buildExcelByTemplate("/exceltemplate/" + templateName, dataMap, outputStream);
+        } catch (Exception e) {
+            LOG.error("导出fileName={},templateName={},异常", fileName, templateName, e);
         }
     }
 }

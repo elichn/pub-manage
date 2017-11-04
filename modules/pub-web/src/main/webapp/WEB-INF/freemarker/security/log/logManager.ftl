@@ -4,6 +4,7 @@
     <title>日志管理</title>
     <!-- Le styles -->
     <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/common/artDialog/skins/default.css" rel="stylesheet">
     <link href="/css/common.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -42,7 +43,8 @@
 
             <div class="form-group">
                 <div class="col-md-12 text-right">
-                    <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary">查 询</button>
+                    <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>&nbsp;
+                    <button type="button" style="width: 80px;" class="btn btn-success" onclick="downLoadTableData();"><span class="glyphicon glyphicon-download"></span>&nbsp;下 载</button>
                 </div>
             </div>
         </fieldset>
@@ -74,30 +76,9 @@
 <script type="text/javascript" src="/common/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="/common/bootstrap-table.js"></script>
 <script type="text/javascript" src="/common/dateformat.js"></script>
+<script type="text/javascript" src="/common/artDialog/jquery.artDialog.min.js"></script>
+<script type="text/javascript" src="/common/artDialog/artDialog.plugins.min.js"></script>
 <script type="text/javascript" src="/common/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript">
-    $(function () {
-        var param = $("#form").serialize();
-        var s = $("#resultTable").bsTable({
-            url: '/log/loglist.json',
-            ajaxType: "POST",  //ajax 提交方式 post 或者 get
-            pageNo: 1,
-            pageSize: 10,
-            pagingAlign: "right",
-            param: param,
-            countRoot: "total",
-            dataRoot: "list"
-        });
-
-        $("#searchBtn").on('click', function () {
-            var param = $("#form").serialize();
-            s.reload(param);
-        });
-
-//        window.onresize = function () {
-//            window.top.autoIFrame();
-//        }
-    });
-</script>
+<script type="text/javascript" src="/js/page/log/log.js"></script>
 </body>
 </html>

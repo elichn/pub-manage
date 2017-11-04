@@ -4,6 +4,9 @@ import com.elichn.pub.core.model.pub.bvo.QueryBvo;
 import com.elichn.pub.core.model.pub.bvo.ResultBvo;
 import com.elichn.pub.core.model.pub.pojo.security.SeLog;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>Title: SeLogService</p>
  * <p>Description: SeLogService</p>
@@ -50,4 +53,11 @@ public interface SeLogService {
      * @return int
      */
     int insert(String logType, String logContent, String ip, String userName);
+
+    /**
+     * getLogsList getLogsList
+     *
+     * @return List<Map<String,Object>>
+     */
+    List<Map<String, Object>> getLogsList();
 }
