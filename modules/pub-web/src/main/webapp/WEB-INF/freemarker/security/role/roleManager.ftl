@@ -1,6 +1,6 @@
 <#assign shiro=JspTaglibs["http://shiro.apache.org/tags"]>
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>角色管理</title>
@@ -26,13 +26,13 @@
 
         <div id="rescDiv" class="col-md-4" style="display: none;">
             <div class="row">
-                <a href="javascript:void(0);" id="rescSaveBtn" style="display:none; margin-right: 5px; width: 80px;"
-                   class="btn btn-primary"
-                   onclick="saveRescModify();">保存修改
+                <a href="javascript:void(0);" id="rescSaveBtn" style="display:none; margin-right: 5px; width: 100px;"
+                   class="btn btn-info"
+                   onclick="saveRescModify();"><span class="glyphicon glyphicon-ok"></span>&nbsp;保存修改
                 </a>
                 <a href="javascript:void(0);" class="btn btn-success" style="margin:10px 0;"
-                   onclick="showCheckedNodes();">仅显示选中资源</a>
-                <a href="javascript:void(0);" class="btn btn-warning" onclick="showAllNodes();">显示所有资源</a>
+                   onclick="showCheckedNodes();"><span class="glyphicon glyphicon-resize-small"></span>&nbsp;仅显示选中资源</a>&nbsp;
+                <a href="javascript:void(0);" class="btn btn-warning" onclick="showAllNodes();"><span class="glyphicon glyphicon-resize-full"></span>&nbsp;显示所有资源</a>
             </div>
 
             <div class="row" style="margin-top: 10px;">

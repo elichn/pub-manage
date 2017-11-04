@@ -41,8 +41,8 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-4">
-                    <button class="btn btn-primary" type="submit" style="width: 80px;">保 存</button>
-                    <button class="btn btn-danger" type="reset" style="width: 80px;">重 置</button>
+                    <button class="btn btn-info" type="submit" style="width: 80px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;保 存</button>&nbsp;
+                    <button class="btn btn-warning" type="reset" style="width: 80px;"><span class="glyphicon glyphicon-remove"></span>&nbsp;重 置</button>
                 </div>
             </div>
         </fieldset>

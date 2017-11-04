@@ -67,8 +67,8 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="col-md-12 text-center">
-                        <button type="button" style="width: 80px;" class="btn btn-primary" onclick="addNotice()">保 存</button>
-                        <button type="button" style="width: 80px;margin-left: 50px" class="btn btn-success" onclick="resetForm();">重 置
+                        <button type="button" style="width: 80px;" class="btn btn-info" onclick="addNotice()"><span class="glyphicon glyphicon-ok"></span>&nbsp;保 存</button>
+                        <button type="button" style="width: 80px;margin-left: 50px" class="btn btn-success" onclick="resetForm();"><span class="glyphicon glyphicon-remove"></span>&nbsp;重 置
                         </button>
                     </div>
                 </div>

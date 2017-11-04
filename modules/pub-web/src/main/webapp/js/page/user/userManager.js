@@ -48,13 +48,13 @@ function renderStatus(status) {
 
 function getOperate(row) {
     if (row) {
-        var html = "<a href='javascript:void(0);' onclick='editUser(" + row.userId + ")'>编辑</a>";
+        var html = "<a href='javascript:void(0);' onclick='editUser(" + row.userId + ")' class='btn btn-info btn-xs'>编辑</a>";
         if (row.userType == 2) {
-            html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='resetPassword(" + row.userId + ")'>重置密码</a>";
+            html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='resetPassword(" + row.userId + ")' class='btn btn-warning btn-xs'>重置密码</a>";
             if (row.status == 1) {
-                html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='setStatus(" + row.userId + ")'>禁用</a>";
+                html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='setStatus(" + row.userId + ")' class='btn btn-danger btn-xs'>禁用</a>";
             } else {
-                html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='setStatus(" + row.userId + ")'>启用</a>";
+                html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='setStatus(" + row.userId + ")' class='btn btn-success btn-xs'>启用</a>";
             }
         }
 

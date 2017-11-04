@@ -43,8 +43,8 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="col-md-12 text-right">
-                        <button type="button" onclick="showEditWin()" style="width: 80px;" class="btn btn-success">添 加</button>
-                        <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary">查 询</button>
+                        <button type="button" onclick="showEditWin()" style="width: 80px;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添 加</button>&nbsp;
+                        <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
                     </div>
                 </div>
             </div>

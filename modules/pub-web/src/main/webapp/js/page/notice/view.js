@@ -45,19 +45,19 @@ function search() {
 function getOperate(row) {
     var html = "";
     if (row.status == 1) {
-        html += "<a href='javascript:void(0);' onclick='undeploy(" + row.id + ")'>不发布</a>";
+        html += "<a href='javascript:void(0);' onclick='undeploy(" + row.id + ")' class='btn btn-danger btn-xs'>不发布</a>";
     } else {
-        html += "<a href='javascript:void(0);' onclick='deploy(" + row.id + ")'>发布</a>";
+        html += "<a href='javascript:void(0);' onclick='deploy(" + row.id + ")' class='btn btn-danger btn-xs'>发布</a>";
     }
 
     if (row.type == 1) {
-        html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateLink(" + row.id + ")'>编辑</a>";
+        html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateLink(" + row.id + ")' class='btn btn-info btn-xs'>编辑</a>";
     } else {
-        html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateContent(" + row.id + ")'>编辑</a>";
+        html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateContent(" + row.id + ")' class='btn btn-info btn-xs'>编辑</a>";
     }
 
-    html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateRn(" + row.id + ")'>展示给</a>";
-    html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateAsNew(" + row.id + ")'>设为最新通知</a>";
+    html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateRn(" + row.id + ")' class='btn btn-success btn-xs'>展示给</a>";
+    html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateAsNew(" + row.id + ")' class='btn btn-warning btn-xs'>设为最新通知</a>";
     return html;
 }
 

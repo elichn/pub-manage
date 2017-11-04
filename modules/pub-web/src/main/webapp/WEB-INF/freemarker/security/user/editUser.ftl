@@ -65,7 +65,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-4">
-                    <button style="width: 80px" class="btn btn-primary" type="submit">保 存</button>
+                    <button style="width: 80px" class="btn btn-info" type="submit"><span class="glyphicon glyphicon-ok"></span>&nbsp;保 存</button>
                 </div>
             </div>
         </fieldset>

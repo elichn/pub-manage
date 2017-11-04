@@ -72,8 +72,8 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-4">
-                    <button class="btn btn-primary" style="width: 80px;" type="submit">保 存</button>
-                    <button class="btn btn-danger" style="width: 80px;" onclick="window.close();">取 消</button>
+                    <button class="btn btn-info" style="width: 80px;" type="submit"><span class="glyphicon glyphicon-ok"></span>&nbsp;保 存</button>&nbsp;
+                    <button class="btn btn-warning" style="width: 80px;" onclick="window.close();"><span class="glyphicon glyphicon-remove"></span>&nbsp;取 消</button>
                 </div>
             </div>
         </fieldset>

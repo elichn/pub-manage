@@ -1,6 +1,6 @@
 <#assign shiro=JspTaglibs["http://shiro.apache.org/tags"]>
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>资源管理</title>

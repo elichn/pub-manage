@@ -61,9 +61,9 @@
 
             <div class="form-group">
                 <div class="col-md-12 text-right">
-                    <a style="width: 80px;" href="javascript:void(0)" onclick="addUser();" class="btn btn-success">添加用户</a>
+                    <a style="width: 90px;" href="javascript:void(0)" onclick="addUser();" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户</a>&nbsp;
                     <#--<a style="width: 80px;" href="javascript:void(0)" onclick="pullUser();" class="btn btn-warning">拉取用户</a>-->   <#--ldap拉取用户开启-->
-                    <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary">查 询</button>
+                    <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
                 </div>
             </div>
         </fieldset>

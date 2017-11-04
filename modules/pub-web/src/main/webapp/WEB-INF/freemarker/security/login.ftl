@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-cn">
 <head>
     <title>${misName!''}-登录</title>
     <!-- Le styles -->
@@ -56,7 +56,7 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-4 col-sm-offset-4 col-xs-4 col-sm-4">
-                    <button style="width: 100%;" type="submit" class="btn btn-info">登 录</button>
+                    <button style="width: 100%;" type="submit" class="btn btn-info"><span class="glyphicon glyphicon-log-in"></span>&nbsp;登 录</button>
                 </div>
             </div>
         </form>

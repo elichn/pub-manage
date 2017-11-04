@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-<div class="container" id="indexContainer">
+<div class="container">
 
 </div>
 <script type="text/javascript" src="/common/jquery-1.8.2.min.js"></script>
