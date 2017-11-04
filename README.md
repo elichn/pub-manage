@@ -1,10 +1,18 @@
-# 说明
-基于shiro控制权限，bootstrap3控制样式，freemaker做页面的后台权限管理系统，缓存使用redis
+## 说明
+基于SpringMVC + Spring + MyBatis实现的MIS权限后台系统.  
+权限控制：Shiro  
+页面模板：Freemaker  
+页面样式：Bootstrap3  
+缓存计数：Redis
 
 ## 环境
-redis、mysql、java7
+redis、mysql、java7及以上  
+导入IDE，初始化数据库使用init.sql
 
 ## 访问
-http://localhost:8866/index
-帐号:admin 密码:123456
+http://localhost:8866/index  
+* 管理员       
+帐号：admin 密码：123456  
+* 普通账号  
+帐号：test 密码：123456  
 
