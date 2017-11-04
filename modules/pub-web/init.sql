@@ -121,12 +121,12 @@ INSERT INTO `se_resc` VALUES ('13', '编辑用户', null, '/user:editUser,isUser
 INSERT INTO `se_resc` VALUES ('14', '添加用户', '/user/addUserPage', '/user:addUserPage,addUser,isUser,getRoleTree', '105000', '', '1', '0', null);
 INSERT INTO `se_resc` VALUES ('15', '修改密码', '/user/password', '/user:password,updatePassword', '106000', '修改密码', '1', '1', '0');
 INSERT INTO `se_resc` VALUES ('16', '日志管理', null, null, '110000', '', '0', '1', '0');
-INSERT INTO `se_resc` VALUES ('17', '操作日志列表', '/log/logManager', '/log:logManager,loglist', '111000', '操作日志列表', '16', '1', null);
+INSERT INTO `se_resc` VALUES ('17', '操作日志列表', '/log/logManager', '/log:*', '111000', '操作日志列表', '16', '1', null);
 INSERT INTO `se_resc` VALUES ('18', '首页通知', '/homePageNotice/view', '/homePageNotice:view,list,add,edit,updateRoleNotice,getNotice,changeStatus,getRelationRole,updateAsNew', '106001', '首页通知', '1', '1', '0');
-INSERT INTO `se_resc` VALUES ('19', '二级菜单test', null, null, '99', '二级菜单test', '16', '1', '0');
-INSERT INTO `se_resc` VALUES ('20', '操作日志列表test', '/log/logManager', '/log:logManager,loglist', '101', '操作日志列表test', '19', '1', '0');
-INSERT INTO `se_resc` VALUES ('21', '三级菜单test', null, null, '103', '三级菜单test', '19', '1', '0');
-INSERT INTO `se_resc` VALUES ('22', '操作日志列表test', '/log/logManager', '/log:logManager,loglist', '104', '操作日志列表test', '21', '1', '0');
+INSERT INTO `se_resc` VALUES ('19', '二级菜单', null, null, '99', '二级菜单', '16', '1', '0');
+INSERT INTO `se_resc` VALUES ('20', '操作日志列表', '/log/logManager', '/log:*', '101', '操作日志列表', '19', '1', '0');
+INSERT INTO `se_resc` VALUES ('21', '三级菜单', null, null, '103', '三级菜单', '19', '1', '0');
+INSERT INTO `se_resc` VALUES ('22', '操作日志列表', '/log/logManager', '/log:*', '104', '操作日志列表', '21', '1', '0');
 
 -- ----------------------------
 -- Table structure for `se_resc_role`
