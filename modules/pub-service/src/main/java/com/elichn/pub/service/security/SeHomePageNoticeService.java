@@ -1,8 +1,8 @@
 package com.elichn.pub.service.security;
 
-import com.elichn.pub.core.model.pub.bvo.QueryBvo;
-import com.elichn.pub.core.model.pub.bvo.ResultBvo;
-import com.elichn.pub.core.model.pub.pojo.security.SeHomePageNotice;
+import com.elichn.pub.core.model.bvo.QueryBvo;
+import com.elichn.pub.core.model.bvo.ResultBvo;
+import com.elichn.pub.core.model.pojo.security.SeHomePageNotice;
 
 import java.util.List;
 

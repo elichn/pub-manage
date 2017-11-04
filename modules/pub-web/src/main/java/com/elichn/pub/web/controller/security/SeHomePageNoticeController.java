@@ -1,12 +1,12 @@
 package com.elichn.pub.web.controller.security;
 
 import com.elichn.pub.core.constant.CommonConstats;
-import com.elichn.pub.core.model.pub.bvo.QueryBvo;
-import com.elichn.pub.core.model.pub.bvo.ResultBvo;
-import com.elichn.pub.core.model.pub.bvo.SeRoleTreeBvo;
-import com.elichn.pub.core.model.pub.pojo.security.SeHomePageNotice;
-import com.elichn.pub.core.model.pub.pojo.security.SeRole;
-import com.elichn.pub.core.model.pub.pojo.security.SeUser;
+import com.elichn.pub.core.model.bvo.QueryBvo;
+import com.elichn.pub.core.model.bvo.ResultBvo;
+import com.elichn.pub.core.model.bvo.SeRoleTreeBvo;
+import com.elichn.pub.core.model.pojo.security.SeHomePageNotice;
+import com.elichn.pub.core.model.pojo.security.SeRole;
+import com.elichn.pub.core.model.pojo.security.SeUser;
 import com.elichn.pub.service.security.SeHomePageNoticeService;
 import com.elichn.pub.service.security.SeRoleService;
 import com.elichn.pub.service.security.SeUserService;

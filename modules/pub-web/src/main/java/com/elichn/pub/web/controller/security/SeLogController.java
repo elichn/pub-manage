@@ -1,8 +1,8 @@
 package com.elichn.pub.web.controller.security;
 
-import com.elichn.pub.core.model.pub.bvo.QueryBvo;
-import com.elichn.pub.core.model.pub.bvo.ResultBvo;
-import com.elichn.pub.core.model.pub.pojo.security.SeLog;
+import com.elichn.pub.core.model.bvo.QueryBvo;
+import com.elichn.pub.core.model.bvo.ResultBvo;
+import com.elichn.pub.core.model.pojo.security.SeLog;
 import com.elichn.pub.service.security.SeLogService;
 import com.elichn.pub.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;

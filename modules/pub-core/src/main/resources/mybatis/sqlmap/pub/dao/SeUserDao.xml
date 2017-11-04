@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SeUserDao">
-    <select id="selectUserByUserName" resultType="com.elichn.pub.core.model.pub.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeUserMapper.BaseResultMap"
+<mapper namespace="com.elichn.pub.core.dao.security.SeUserDao">
+    <select id="selectUserByUserName" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="java.lang.String">
         select * from se_user where username=#{username};
     </select>
@@ -47,7 +47,7 @@
     </sql>
 
     <!-- 查询用户列表，不包含广告主用户和联盟用户 -->
-    <select id="selectUsersByPage" resultType="com.elichn.pub.core.model.pub.bvo.SeUserRoleBvo"
+    <select id="selectUsersByPage" resultType="com.elichn.pub.core.model.bvo.SeUserRoleBvo"
             parameterType="map">
         select b.id userId,b.username userName, b.cn_name cnName,b.user_type userType, b.descn
         userDescn, b.status, b.email, b.role_id
@@ -63,14 +63,14 @@
         <include refid="selectUsersByPageSql"/>
     </select>
 
-    <select id="selectUserByEmail" resultType="com.elichn.pub.core.model.pub.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeUserMapper.BaseResultMap"
+    <select id="selectUserByEmail" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="java.lang.String">
         select * from se_user where email=#{email};
     </select>
 
-    <select id="getUserByRole" resultType="com.elichn.pub.core.model.pub.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeUserMapper.BaseResultMap"
+    <select id="getUserByRole" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="List">
         select distinct u.* from se_user_role ur join se_user u on ur.user_id = u.id and u.status = 1 and ur.role_id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -78,15 +78,15 @@
         </foreach>
     </select>
 
-    <select id="getUserByRoleId" resultType="com.elichn.pub.core.model.pub.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeUserMapper.BaseResultMap"
+    <select id="getUserByRoleId" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="int">
         select distinct u.* from se_user_role ur join se_user u
         on ur.user_id = u.id and ur.role_id = #{_parameter}
     </select>
 
-    <select id="getUsersByCode" resultType="com.elichn.pub.core.model.pub.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeUserMapper.BaseResultMap"
+    <select id="getUsersByCode" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="List">
         select distinct u.id, u.username, u.cn_name from se_user_role ur
         join se_user u on ur.user_id = u.id and u.status = 1
@@ -96,7 +96,7 @@
         </foreach>
     </select>
 
-    <select id="getUserInfo" resultType="com.elichn.pub.core.model.pub.bvo.SeUserBvo">
+    <select id="getUserInfo" resultType="com.elichn.pub.core.model.bvo.SeUserBvo">
         select
             u.id,
             u.username,
@@ -111,7 +111,7 @@
         where u.username = #{userName}
     </select>
 
-    <select id="getUserInfoById" resultType="com.elichn.pub.core.model.pub.bvo.SeUserBvo">
+    <select id="getUserInfoById" resultType="com.elichn.pub.core.model.bvo.SeUserBvo">
         select
         u.id,
         u.username,

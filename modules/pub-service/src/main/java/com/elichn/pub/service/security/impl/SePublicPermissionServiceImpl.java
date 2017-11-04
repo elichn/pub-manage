@@ -1,7 +1,7 @@
 package com.elichn.pub.service.security.impl;
 
-import com.elichn.pub.core.model.pub.dao.security.SePublicPermissionDao;
-import com.elichn.pub.core.model.pub.pojo.security.SePublicPermission;
+import com.elichn.pub.core.dao.security.SePublicPermissionDao;
+import com.elichn.pub.core.model.pojo.security.SePublicPermission;
 import com.elichn.pub.service.security.SePublicPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

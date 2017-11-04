@@ -1,7 +1,7 @@
 package com.elichn.pub.service.security;
 
-import com.elichn.pub.core.model.pub.pojo.security.SeResc;
-import com.elichn.pub.core.model.pub.pojo.security.SeRescRoleKey;
+import com.elichn.pub.core.model.pojo.security.SeResc;
+import com.elichn.pub.core.model.pojo.security.SeRescRoleKey;
 
 import java.util.List;
 

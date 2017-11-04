@@ -1,7 +1,7 @@
 package com.elichn.pub.service.pub;
 
 
-import com.elichn.pub.core.model.pub.bvo.Captcha;
+import com.elichn.pub.core.model.bvo.Captcha;
 
 /**
  * <p>Title: CaptchaService</p>

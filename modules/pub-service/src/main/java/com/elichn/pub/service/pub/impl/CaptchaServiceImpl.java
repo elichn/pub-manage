@@ -1,6 +1,6 @@
 package com.elichn.pub.service.pub.impl;
 
-import com.elichn.pub.core.model.pub.bvo.Captcha;
+import com.elichn.pub.core.model.bvo.Captcha;
 import com.elichn.pub.core.util.RandCharUtil;
 import com.elichn.pub.service.pub.CaptchaService;
 import org.springframework.stereotype.Service;

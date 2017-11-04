@@ -27,29 +27,14 @@
         </property>
     </bean>
 
-    <!--<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
-        <!--<property name="defaultErrorView" value="managesecurity/exception"/>-->
-        <!--<property name="exceptionAttribute" value="ex"/>-->
-    <!--</bean>-->
-
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 
     <!-- Application Message Bundle -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <!--<property name="basename" value="classpath:messages/messages"/>-->
-        <!--<property name="useCodeAsDefaultMessage" value="true" />   -->
-
         <!--默认cacheSeconds是-1，代表一直缓存。0适用于开发阶段，会每次检查资源文件的最后修改时间-->
         <!--<property name="cacheSeconds" value="0"/>-->
         <property name="defaultEncoding" value="utf-8"/>
         <property name="fallbackToSystemLocale" value="false"/>
-
-        <!--<property name="basenames">-->
-        <!--<list>-->
-        <!--<value>classpath:messages/messages</value>-->
-        <!--<value>classpath:messages/validation</value>-->
-        <!--</list>-->
-        <!--</property>-->
     </bean>
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -22,19 +22,6 @@
         <!--<property name="rememberMeManager" ref="rememberMeManager"/>-->
     </bean>
 
-    <!--<bean id="rememberMeManager"-->
-    <!--class="org.apache.shiro.web.mgt.CookieRememberMeManager">-->
-    <!--<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>-->
-    <!--<property name="cookie" ref="rememberMeCookie"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">-->
-    <!--<constructor-arg value="rememberMe"/>-->
-    <!--<property name="httpOnly" value="true"/>-->
-    <!--<property name="maxAge" value="3600"/>-->
-    <!--&lt;!&ndash; 1个小时 &ndash;&gt;-->
-    <!--</bean>-->
-
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="sessionDAO" ref="customShiroSessionDAO"/>
         <property name="globalSessionTimeout" value="28800000"/>
@@ -49,28 +36,8 @@
         <property name="securityGroup" value="#{commonProps['security.group']}"/>
     </bean>
 
-    <!--<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">-->
-    <!--<property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>-->
-    <!--<property name="cacheManager" ref="cacheManager"/>-->
-    <!--</bean>-->
-
     <!-- Let's use some enterprise caching support for better performance.  You can replace this with any enterprise
          caching framework implementation that you like (Terracotta+Ehcache, Coherence, GigaSpaces, etc -->
-
-    <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">-->
-    <!--&lt;!&ndash; Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one-->
-    <!--will be creaed with a default config:                &ndash;&gt;-->
-    <!--<property name="cacheManager" ref="ehCacheManager"/>-->
-    <!--&lt;!&ndash; If you don't have a pre-built net.sf.ehcache.CacheManager instance to inject, but you want-->
-    <!--a specific Ehcache configuration to be used, specify that here.  If you don't, a default-->
-    <!--will be used.:-->
-    <!--<property name="cacheManagerConfigFile" value="classpath:some/path/to/ehcache.xml"/> &ndash;&gt;-->
-    <!--</bean>-->
-
-    <!-- Used by the SecurityManager to access security data (users, roles, etc).
-         Many other realm implementations can be used too (PropertiesRealm,
-         LdapRealm, etc. -->
-
     <bean id="redisCacheManager" class="com.elichn.pub.web.shiro.cache.RedisCacheManager">
         <property name="securityGroup" value="#{commonProps['security.group']}"/>
     </bean>
@@ -117,13 +84,6 @@
         <property name="securityManager" ref="securityManager"/>
     </bean>
 
-
-    <!-- Secure Spring remoting:  Ensure any Spring Remoting method invocations can be associated
-         with a Subject for security checks. -->
-    <!--<bean id="secureRemoteInvocationExecutor" class="org.apache.shiro.spring.remoting.SecureRemoteInvocationExecutor">-->
-    <!--<property name="securityManager" ref="securityManager"/>-->
-    <!--</bean>-->
-
     <!-- Define the Shiro Filter here (as a FactoryBean) instead of directly in web.xml -
          web.xml uses the DelegatingFilterProxy to access this bean.  This allows us
          to wire things with more control as well utilize nice Spring things such as
@@ -165,12 +125,6 @@
                 <entry key="rescFilter" value-ref="rescFilter"/>
             </util:map>
         </property>
-
-        <!--<property name="filterChainDefinitions">-->
-        <!--<value>-->
-        <!--classpath:IniShiroFilterTest.ini-->
-        <!--</value>-->
-        <!--</property>-->
 
         <property name="filterChainDefinitions" value=""/>
     </bean>

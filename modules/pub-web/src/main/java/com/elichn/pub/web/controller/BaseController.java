@@ -1,7 +1,7 @@
 package com.elichn.pub.web.controller;
 
 import com.elichn.pub.core.constant.CommonConstats;
-import com.elichn.pub.core.model.pub.pojo.security.SeUser;
+import com.elichn.pub.core.model.pojo.security.SeUser;
 import com.elichn.pub.service.security.SeLogService;
 import com.elichn.pub.service.security.SeUserService;
 import com.elichn.pub.web.aop.LogAspect;

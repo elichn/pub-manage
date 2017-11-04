@@ -1,6 +1,6 @@
 package com.elichn.pub.web.shiro.factorybean;
 
-import com.elichn.pub.core.model.pub.pojo.security.SePublicPermission;
+import com.elichn.pub.core.model.pojo.security.SePublicPermission;
 import com.elichn.pub.service.security.SePublicPermissionService;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.FilterChainManager;

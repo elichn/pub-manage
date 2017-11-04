@@ -36,7 +36,7 @@
     </bean>
     <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.elichn.pub.core.model.pub.mapper,com.elichn.pub.core.model.pub.dao"/>
+        <property name="basePackage" value="com.elichn.pub.core.model.mapper,com.elichn.pub.core.dao"/>
     </bean>
 
     <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->

@@ -1,8 +1,8 @@
 package com.elichn.pub.service.security.impl;
 
-import com.elichn.pub.core.model.pub.mapper.security.SeRescMapper;
-import com.elichn.pub.core.model.pub.pojo.security.SeResc;
-import com.elichn.pub.core.model.pub.pojo.security.SeRescExample;
+import com.elichn.pub.core.model.mapper.security.SeRescMapper;
+import com.elichn.pub.core.model.pojo.security.SeResc;
+import com.elichn.pub.core.model.pojo.security.SeRescExample;
 import com.elichn.pub.service.security.SeRescService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

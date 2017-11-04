@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SeRoleDao">
+<mapper namespace="com.elichn.pub.core.dao.security.SeRoleDao">
 
     <select id="selectRoleListByUser"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRoleMapper.BaseResultMap"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeRoleMapper.BaseResultMap"
             parameterType="java.lang.String">
         select r.* from se_role r join se_user_role ur on
         r.id = ur.role_id
@@ -11,12 +11,12 @@
     </select>
 
     <select id="selectRolesByUser" parameterType="java.lang.Integer"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRoleMapper.BaseResultMap">
+            resultMap="com.elichn.pub.core.model.mapper.security.SeRoleMapper.BaseResultMap">
         select r.* from se_role r, se_user_role ur  where r.id = ur.role_id and ur.user_id = #{id};
     </select>
 
     <select id="selectRoleByCode" parameterType="java.lang.String"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeRoleMapper.BaseResultMap">
+            resultMap="com.elichn.pub.core.model.mapper.security.SeRoleMapper.BaseResultMap">
             select * from se_role where code = #{code};
     </select>
 </mapper>

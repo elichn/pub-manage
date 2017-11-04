@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.elichn.pub.core.model.pub.dao.security.SeLogDao">
+<mapper namespace="com.elichn.pub.core.dao.security.SeLogDao">
     <select id="getList"
-            parameterType="com.elichn.pub.core.model.pub.bvo.QueryBvo"
-            resultMap="com.elichn.pub.core.model.pub.mapper.security.SeLogMapper.BaseResultMap">
+            parameterType="com.elichn.pub.core.model.bvo.QueryBvo"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeLogMapper.BaseResultMap">
         select * from se_log
         <include refid="logListSql"/>
         order by id desc
@@ -11,7 +11,7 @@
     </select>
 
     <select id="getListCount"
-            parameterType="com.elichn.pub.core.model.pub.bvo.QueryBvo" resultType="int">
+            parameterType="com.elichn.pub.core.model.bvo.QueryBvo" resultType="int">
         select count(1) from se_log
         <include refid="logListSql"/>
     </select>

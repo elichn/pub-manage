@@ -1,6 +1,6 @@
 package com.elichn.pub.service.security;
 
-import com.elichn.pub.core.model.pub.pojo.security.SePublicPermission;
+import com.elichn.pub.core.model.pojo.security.SePublicPermission;
 
 import java.util.List;
 
