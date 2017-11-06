@@ -35,8 +35,8 @@ public class SeUserServiceImpl implements SeUserService {
     private SeUserRoleMapper seUserRoleMapper;
 
     @Override
-    public SeUser selectByName(String username) {
-        return seUserDao.selectUserByUserName(username);
+    public SeUser selectByName(String userName) {
+        return seUserDao.selectUserByUserName(userName);
     }
 
     @Override

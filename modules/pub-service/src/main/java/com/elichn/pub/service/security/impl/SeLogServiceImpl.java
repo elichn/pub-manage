@@ -85,15 +85,15 @@ public class SeLogServiceImpl implements SeLogService {
     /**
      * getWheresString getWheresString
      *
-     * @param username username
+     * @param userName userName
      * @param datetime datetime
      * @param logtype  logtype
      * @return String
      */
-    private String getWheresString(String username, String datetime, String logtype) {
+    private String getWheresString(String userName, String datetime, String logtype) {
         String where = "";
-        if (StringUtils.isNotBlank(username)) {
-            where += " and user_name like '%" + username + "%'";
+        if (StringUtils.isNotBlank(userName)) {
+            where += " and user_name like '%" + userName + "%'";
         }
         if (datetime != null && StringUtils.isNotBlank(datetime)) {
             where += " and date(log_time)='" + datetime + "'";

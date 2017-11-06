@@ -227,7 +227,7 @@ public class SeRoleController extends BaseController {
         }
         SeRole cr = seRoleService.insertRole(role);
         model.addAttribute("role", cr);
-        writeLog(request, "添加角色", "添加角色(" + roleName + ")");
+        super.writeLog(request, "添加角色", "添加角色(" + roleName + ")");
     }
 
     /**
@@ -330,7 +330,7 @@ public class SeRoleController extends BaseController {
         seRoleService.deleteRoleById(roleId);
         seRoleRescService.deleteRescRoleByRoleId(roleId);
         seUserService.deleteUserRoleByRoleId(roleId);
-        writeLog(request, "删除角色", "删除角色(id:" + roleId + ")");
+        super.writeLog(request, "删除角色", "删除角色(id:" + roleId + ")");
     }
 
     /**

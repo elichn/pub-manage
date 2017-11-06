@@ -279,7 +279,7 @@ public class SeLoginController extends BaseController {
         try {
             currentUser.login(token);
             SeUser user = seUserService.selectByName(getUserName());
-            writeLog(request, "用户登录", null, user.getUsername());
+            super.writeLog(request, "用户登录", null, user.getUserName());
             if (StringUtils.isNotBlank(url)) {
                 response.sendRedirect(url);
             } else {
@@ -290,7 +290,7 @@ public class SeLoginController extends BaseController {
             return null;
         } catch (AuthenticationException ae) {
             model.addAttribute(ERROR_KEY, "用户名或密码错误");
-            writeLog(request, "登录失败", "试图使用用户名:" + userName + "登录");
+            super.writeLog(request, "登录失败", "试图使用用户名:" + userName + "登录");
             LOG.error("登录失败，用户名或密码错误", ae);
             this.incrCheckCodeWrongTimes(request);
             this.incrCheckCodeTimes(request);
@@ -332,7 +332,7 @@ public class SeLoginController extends BaseController {
         LOG.info("用户={}退出登录", userName);
         if (userName != null) {
             SecurityUtils.getSubject().logout();
-            writeLog(request, "用户注销", null, userName);
+            super.writeLog(request, "用户注销", null, userName);
         }
         return "redirect:/login";
     }

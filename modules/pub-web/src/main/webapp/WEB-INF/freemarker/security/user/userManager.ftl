@@ -18,7 +18,7 @@
                 <div class="col-md-3">
                     <label class="col-md-4 control-label" for="userName">用户名</label>
                     <div class="col-md-8">
-                        <input id="userName" name="username" type="text" class="form-control"/>
+                        <input id="userName" name="userName" type="text" class="form-control"/>
                     </div>
                 </div>
 
@@ -105,7 +105,7 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="userName">用户名</label>
         <div class="col-md-8">
-            <input id="userNameEdit" name="username" type="text" class="form-control"/>
+            <input id="userNameEdit" name="userName" type="text" class="form-control"/>
         </div>
     </div>
 </div>

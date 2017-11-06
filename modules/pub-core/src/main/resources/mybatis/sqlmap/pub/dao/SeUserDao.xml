@@ -4,16 +4,16 @@
     <select id="selectUserByUserName" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
             resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="java.lang.String">
-        select * from se_user where username=#{username};
+        select * from se_user where user_name=#{userName};
     </select>
 
     <sql id="selectUsersByPageSql">
-        (select a.id, a.username, a.cn_name, a.user_type, a.descn, a.status, a.email, GROUP_CONCAT(a.role_id)
+        (select a.id, a.user_name, a.cn_name, a.user_type, a.descn, a.status, a.email, GROUP_CONCAT(a.role_id)
         role_id, GROUP_CONCAT(r.role_name) role_name
         from (select * from se_user u LEFT JOIN se_user_role ur ON u.id = ur.user_id
-        where u.username!='admin'
-        <if test="username != null and username.trim() != ''">
-            and username like CONCAT('%', #{username},'%')
+        where u.user_name!='admin'
+        <if test="userName != null and userName.trim() != ''">
+            and user_name like CONCAT('%', #{userName},'%')
         </if>
         <if test="status != null">
             and u.status = #{status}
@@ -49,7 +49,7 @@
     <!-- 查询用户列表，不包含广告主用户和联盟用户 -->
     <select id="selectUsersByPage" resultType="com.elichn.pub.core.model.bvo.SeUserRoleBvo"
             parameterType="map">
-        select b.id userId,b.username userName, b.cn_name cnName,b.user_type userType, b.descn
+        select b.id userId,b.user_name userName, b.cn_name cnName,b.user_type userType, b.descn
         userDescn, b.status, b.email, b.role_id
         roleId, b.role_name roleName
         from
@@ -88,7 +88,7 @@
     <select id="getUsersByCode" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
             resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
             parameterType="List">
-        select distinct u.id, u.username, u.cn_name from se_user_role ur
+        select distinct u.id, u.user_name, u.cn_name from se_user_role ur
         join se_user u on ur.user_id = u.id and u.status = 1
         join se_role r on ur.role_id = r.id and r.code in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
@@ -99,7 +99,7 @@
     <select id="getUserInfo" resultType="com.elichn.pub.core.model.bvo.SeUserBvo">
         select
             u.id,
-            u.username,
+            u.user_name,
             u.cn_name cnName,
             u.email,
             u.user_type userType,
@@ -108,13 +108,13 @@
         from se_user u
         left join se_user_role ur on u.id = ur.user_id
         left join se_role r on ur.role_id = r.id
-        where u.username = #{userName}
+        where u.user_name = #{userName}
     </select>
 
     <select id="getUserInfoById" resultType="com.elichn.pub.core.model.bvo.SeUserBvo">
         select
         u.id,
-        u.username,
+        u.user_name,
         u.cn_name cnName,
         u.email,
         u.user_type userType,

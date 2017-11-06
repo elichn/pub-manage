@@ -27,7 +27,7 @@
                     <input type="text" id="userName" class="form-control" name="userName" required="required"
                            placeholder="4-16个字符"
                            <#if user??>disabled="disabled" </#if>
-                           value="${(user.username)!''}">
+                           value="${(user.userName)!''}">
                 </div>
             </div>
 

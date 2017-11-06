@@ -49,18 +49,18 @@ public class CustomJdbcRealm extends JdbcRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
-        String username = upToken.getUsername();
-        if (username == null) {
+        String userName = upToken.getUsername();
+        if (userName == null) {
             throw new AccountException("Null usernames are not allowed by this realm.");
         }
         // 暂定都是标准用户,密码都保存在db中
-        String password = getDbPassword(username);
+        String password = getDbPassword(userName);
         // password = getPassWordByLdap(upToken);  // ldap验证口
         if (StringUtils.isBlank(password)) {
-            throw new UnknownAccountException("No account found for user [" + username + "]");
+            throw new UnknownAccountException("No account found for user [" + userName + "]");
         }
 
-        return new SimpleAuthenticationInfo(username, password.toCharArray(), getName());
+        return new SimpleAuthenticationInfo(userName, password.toCharArray(), getName());
     }
 
 
@@ -70,8 +70,8 @@ public class CustomJdbcRealm extends JdbcRealm {
         //    throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         // }
 
-        String username = (String) getAvailablePrincipal(principals);
-        SeUser user = seUserService.selectByName(username);
+        String userName = (String) getAvailablePrincipal(principals);
+        SeUser user = seUserService.selectByName(userName);
 
         Set<String> permissions = new HashSet<String>();
         Set<String> roleNames = new HashSet<String>();

@@ -21,10 +21,10 @@ public interface SeUserDao {
     /**
      * selectUserByUserName selectUserByUserName
      *
-     * @param username username
+     * @param userName userName
      * @return SeUser
      */
-    SeUser selectUserByUserName(String username);
+    SeUser selectUserByUserName(String userName);
 
     /**
      * selectUsersByPage selectUsersByPage

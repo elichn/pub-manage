@@ -69,7 +69,7 @@ public class SeRescController extends BaseController {
             }
             resc = seRoleRescService.insertResc(resc);
             // 记录日志
-            writeLog(request, CommonConstats.ADD_RESOURCE, CommonConstats.ADD_RESOURCE
+            super.writeLog(request, CommonConstats.ADD_RESOURCE, CommonConstats.ADD_RESOURCE
                     + "(资源名:" + resc.getName() + ",资源ID:" + resc.getId() + ")", getUserName());
         } catch (Exception e) {
             success = false;
@@ -101,7 +101,7 @@ public class SeRescController extends BaseController {
         try {
             seRoleRescService.updateResc(resc);
             // 记录日志
-            writeLog(request, CommonConstats.UPDATE_RESOURCE, CommonConstats.UPDATE_RESOURCE
+            super.writeLog(request, CommonConstats.UPDATE_RESOURCE, CommonConstats.UPDATE_RESOURCE
                     + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>" + "详细信息:<br>" + oldInfo + "<br>" + newInfo, getUserName());
         } catch (Exception e) {
             success = false;
@@ -123,7 +123,7 @@ public class SeRescController extends BaseController {
         boolean success = true;
         try {
             seRoleRescService.deleteResc(rescId);
-            writeLog(request, CommonConstats.DELETE_RESOURCE, CommonConstats.DELETE_RESOURCE + "(资源ID:" + rescId + ")", getUserName());
+            super.writeLog(request, CommonConstats.DELETE_RESOURCE, CommonConstats.DELETE_RESOURCE + "(资源ID:" + rescId + ")", getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("{}", e);

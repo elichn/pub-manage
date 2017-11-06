@@ -20,10 +20,10 @@ public interface SeUserService {
     /**
      * selectByName 通过用户名查询用户信息
      *
-     * @param username username
+     * @param userName userName
      * @return SeUser
      */
-    SeUser selectByName(String username);
+    SeUser selectByName(String userName);
 
     /**
      * selectUserById 通过用户id查询用户信息

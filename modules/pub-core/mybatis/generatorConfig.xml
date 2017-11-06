@@ -21,7 +21,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.elichn.pub.core.model.pub.pojo.security"
+        <javaModelGenerator targetPackage="com.elichn.pub.core.model.pojo.security"
                             targetProject="F:\workarea">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -33,13 +33,13 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="MIXEDMAPPER" targetPackage="com.elichn.pub.core.model.pub.mapper.security"
+        <javaClientGenerator type="MIXEDMAPPER" targetPackage="com.elichn.pub.core.model.mapper.security"
                              targetProject="F:\workarea">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
         <!-- 添加需要生成的表，以及生成方式 -->
-        <table tableName="se_user_role">
+        <table tableName="se_user">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

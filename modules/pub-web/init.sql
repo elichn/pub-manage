@@ -23,12 +23,12 @@ CREATE TABLE `se_home_page_notice` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` mediumtext COMMENT '公告内容',
   `url` varchar(100) DEFAULT NULL COMMENT '链接',
-  `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 1-发布 0-不发布',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 0-不发布, 1-发布',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `type` int(11) NOT NULL DEFAULT '1' COMMENT '1-url 2-content',
+  `type` int(11) NOT NULL DEFAULT '1' COMMENT '公告类型 1-url, 2-content',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='首页公告';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='首页公告表';
 
 -- ----------------------------
 -- Records of se_home_page_notice
@@ -77,7 +77,7 @@ CREATE TABLE `se_public_permission` (
   `system` varchar(50) DEFAULT NULL COMMENT '系统名称，为空表示所有系统都适用',
   `comment` varchar(50) DEFAULT NULL COMMENT '说明',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='公共权限';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='公共权限表';
 
 -- ----------------------------
 -- Records of se_public_permission
@@ -90,17 +90,17 @@ INSERT INTO `se_public_permission` VALUES ('1', '/category/public/**', 'user', n
 DROP TABLE IF EXISTS `se_resc`;
 CREATE TABLE `se_resc` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL,
-  `show_url` varchar(100) DEFAULT NULL,
-  `res_string` varchar(300) DEFAULT NULL,
-  `priority` int(11) DEFAULT '0',
-  `descn` varchar(200) DEFAULT NULL,
-  `father_id` int(20) NOT NULL DEFAULT '0',
-  `show_menu` int(4) DEFAULT '0',
-  `module_id` int(11) DEFAULT '0' COMMENT '资源所属模块',
+  `name` varchar(100) DEFAULT NULL COMMENT '资源名称',
+  `show_url` varchar(100) DEFAULT NULL COMMENT '资源路径',
+  `res_string` varchar(300) DEFAULT NULL COMMENT '资源权限',
+  `priority` int(11) DEFAULT '0' COMMENT '资源优先级',
+  `descn` varchar(200) DEFAULT NULL COMMENT '资源资源描述',
+  `father_id` int(20) NOT NULL DEFAULT '0' COMMENT '资源父ID',
+  `show_menu` int(4) DEFAULT '0' COMMENT '资源是否显示0-不显示, 1-显示',
+  `module_id` int(11) DEFAULT '0' COMMENT '资源所属模块ID',
   PRIMARY KEY (`id`),
   KEY `idx_father_id` (`father_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of se_resc
@@ -133,10 +133,10 @@ INSERT INTO `se_resc` VALUES ('22', '操作日志列表', '/log/logManager', '/l
 -- ----------------------------
 DROP TABLE IF EXISTS `se_resc_role`;
 CREATE TABLE `se_resc_role` (
-  `resc_id` int(20) NOT NULL DEFAULT '0',
-  `role_id` int(20) NOT NULL DEFAULT '0',
+  `resc_id` int(20) NOT NULL DEFAULT '0' COMMENT '资源ID',
+  `role_id` int(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
   PRIMARY KEY (`resc_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资源角色关联表';
 
 -- ----------------------------
 -- Records of se_resc_role
@@ -212,13 +212,13 @@ INSERT INTO `se_resc_role` VALUES ('22', '1');
 DROP TABLE IF EXISTS `se_role`;
 CREATE TABLE `se_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(200) NOT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `code` varchar(50) DEFAULT NULL,
+  `role_name` varchar(200) NOT NULL COMMENT '角色名称',
+  `parent_id` int(11) DEFAULT NULL COMMENT '角色父ID',
+  `code` varchar(50) DEFAULT NULL COMMENT '角色code唯一标识',
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_code` (`code`),
   KEY `idx_parent_id` (`parent_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of se_role
@@ -236,8 +236,8 @@ INSERT INTO `se_role` VALUES ('6', '开发', '1', null);
 DROP TABLE IF EXISTS `se_role_notice`;
 CREATE TABLE `se_role_notice` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) NOT NULL,
-  `notice_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `notice_id` int(11) NOT NULL COMMENT '首页通知ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_role_id_notice_id` (`role_id`,`notice_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色通知关联表';
@@ -253,22 +253,22 @@ INSERT INTO `se_role_notice` VALUES ('1', '1', '1');
 DROP TABLE IF EXISTS `se_user`;
 CREATE TABLE `se_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
+  `user_name` varchar(50) NOT NULL COMMENT '用户名',
   `cn_name` varchar(50) DEFAULT NULL COMMENT '中文名',
-  `password` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL COMMENT '密码',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态',
-  `user_type` int(11) NOT NULL DEFAULT '1' COMMENT '1-ldap, 2-standard',
+  `user_type` int(11) NOT NULL DEFAULT '1' COMMENT '用户类型 1-ldap, 2-standard',
   `descn` varchar(200) DEFAULT NULL COMMENT '描述',
   `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `udx_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `udx_user_name` (`user_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of se_user
 -- ----------------------------
-INSERT INTO `se_user` VALUES ('1', 'admin', '超级管理员', 'e10adc3949ba59abbe56e057f20f883e', '1', '2', '管理员', null, '2017-10-26 10:13:14');
+INSERT INTO `se_user` VALUES ('1', 'admin', '超级管理员', 'e10adc3949ba59abbe56e057f20f883e', '1', '2', '管理员', 'admin@163.com', '2017-10-26 10:13:14');
 INSERT INTO `se_user` VALUES ('2', 'test', '测试账号', 'e10adc3949ba59abbe56e057f20f883e', '1', '2', '测试账号', 'test@163.com', '2017-10-25 16:00:12');
 INSERT INTO `se_user` VALUES ('3', 'hehe', 'hehe', 'e10adc3949ba59abbe56e057f20f883e', '1', '2', 'hehe', 'hehe@163.com', '2017-10-30 18:01:07');
 
@@ -277,10 +277,10 @@ INSERT INTO `se_user` VALUES ('3', 'hehe', 'hehe', 'e10adc3949ba59abbe56e057f20f
 -- ----------------------------
 DROP TABLE IF EXISTS `se_user_role`;
 CREATE TABLE `se_user_role` (
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `role_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `role_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色ID',
   PRIMARY KEY (`user_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色关联表';
 
 -- ----------------------------
 -- Records of se_user_role

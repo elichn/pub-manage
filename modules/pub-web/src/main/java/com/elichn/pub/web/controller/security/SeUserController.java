@@ -107,7 +107,7 @@ public class SeUserController extends BaseController {
      *
      * @param page       page
      * @param pageSize   pageSize
-     * @param username   pageSize
+     * @param userName   userName
      * @param roleName   roleName
      * @param status     status
      * @param userType   userType
@@ -117,7 +117,7 @@ public class SeUserController extends BaseController {
     @RequestMapping(value = "/viewUsers")
     public void viewUsers(@RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
                           @RequestParam(value = "pageSize", defaultValue = "20", required = false) Integer pageSize,
-                          @RequestParam(value = "username", required = false) String username,
+                          @RequestParam(value = "userName", required = false) String userName,
                           @RequestParam(value = "roleName", required = false) String roleName,
                           @RequestParam(value = "status", required = false) Integer status,
                           @RequestParam(value = "userType", required = false) Integer userType,
@@ -125,7 +125,7 @@ public class SeUserController extends BaseController {
                           Model model) {
         List<SeRole> roles = getSubRoleOfCurrentUser();
         Map map = new HashMap(16);
-        map.put("username", username);
+        map.put("userName", userName);
         map.put("searchType", searchType);
         map.put("roleName", roleName);
         map.put("status", status);
@@ -192,7 +192,7 @@ public class SeUserController extends BaseController {
             return;
         }
         SeUser user = new SeUser();
-        user.setUsername(userName.trim());
+        user.setUserName(userName.trim());
         int passwordLength = 3;
         if (PasswordUtil.isComplexPassword(password) < passwordLength) {
             model.addAttribute("success", false);
@@ -229,7 +229,7 @@ public class SeUserController extends BaseController {
             }
         }
         model.addAttribute("success", true);
-        writeLog(request, "添加用户", "添加用户(" + userName + ")");
+        super.writeLog(request, "添加用户", "添加用户(" + userName + ")");
     }
 
     /**
@@ -270,7 +270,7 @@ public class SeUserController extends BaseController {
             }
         }
         model.addAttribute("success", true);
-        // writeLog(request, "编辑用户", "编辑用户(" + user.getUsername() + ")");
+        super.writeLog(request, "编辑用户", "编辑用户(" + user.getUserName() + ")");
     }
 
     /**
@@ -424,7 +424,7 @@ public class SeUserController extends BaseController {
                     success = FAIL;
                 }
             }
-            writeLog(request, "修改密码", "用户" + userName + msg);
+            super.writeLog(request, "修改密码", "用户" + userName + msg);
             model.addAttribute("msg", msg);
             model.addAttribute("success", success);
         }
