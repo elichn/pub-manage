@@ -6,7 +6,7 @@
     <title>资源管理</title>
     <!-- Le styles -->
     <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" href="/common/ztree/css/metroStyle/metroStyle.css" type="text/css">
     <link rel="stylesheet" href="/common/artDialog/skins/default.css" type="text/css">
     <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
     <link href="/css/security/resc/rescManager.css" type="text/css" rel="stylesheet">
@@ -142,6 +142,6 @@
 <script type="text/javascript" src="/common/artDialog/jquery.artDialog.min.js"></script>
 <script type="text/javascript" src="/common/artDialog/artDialog.plugins.min.js"></script>
 <script type="text/javascript" src="/common/jquery-plugin/validate/jquery.validate.1.11.1.min.js"></script>
-<script type="text/javascript" src="/js/page/resc/rescManager.js?version=sd"></script>
+<script type="text/javascript" src="/js/page/resc/rescManager.js"></script>
 </body>
 </html>

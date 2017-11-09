@@ -6,7 +6,6 @@
     <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/common/artDialog/skins/default.css" rel="stylesheet">
     <link href="/css/common.css" rel="stylesheet">
-    <link href="/css/security/user/userManager.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -15,14 +14,14 @@
             <legend>用户管理</legend>
 
             <div class="form-group">
-                <div class="col-md-3">
-                    <label class="col-md-4 control-label" for="userName">用户名</label>
-                    <div class="col-md-8">
+                <div class="col-md-2">
+                    <label class="col-md-5 control-label" for="userName">用户名</label>
+                    <div class="col-md-7">
                         <input id="userName" name="userName" type="text" class="form-control"/>
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="col-md-4 control-label" for="roleName">角色</label>
                     <div class="col-md-8">
                         <select id="roleName" name="roleName" class="form-control">
@@ -36,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="col-md-4 control-label" for="status">状态</label>
                     <div class="col-md-8">
                         <select id="status" name="status" class="form-control">
@@ -57,13 +56,13 @@
                         </select>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-12 text-right">
-                    <a style="width: 90px;" href="javascript:void(0)" onclick="addUser();" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户</a>&nbsp;
-                    <#--<a style="width: 80px;" href="javascript:void(0)" onclick="pullUser();" class="btn btn-warning">拉取用户</a>-->   <#--ldap拉取用户开启-->
-                    <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
+                <div class="col-md-3">
+                    <div class="col-md-12 text-right">
+                        <a style="width: 90px;" href="javascript:void(0)" onclick="addUser();" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户</a>&nbsp;
+                        <#--<a style="width: 80px;" href="javascript:void(0)" onclick="pullUser();" class="btn btn-warning">拉取用户</a>-->   <#--ldap拉取用户开启-->
+                        <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
+                    </div>
                 </div>
             </div>
         </fieldset>

@@ -6,14 +6,13 @@
     <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/common/artDialog/skins/default.css" rel="stylesheet">
     <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
-    <link rel="stylesheet" href="/common/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link rel="stylesheet" href="/common/ztree/css/metroStyle/metroStyle.css" type="text/css">
     <link rel="stylesheet" href="/common/umeditor/themes/default/css/umeditor.css" type="text/css">
-    <link rel="stylesheet" href="/css/security/notice/view.css" type="text/css">
     <link rel="stylesheet"href="/css/common.css" type="text/css">
 </head>
 <body>
 <div class="container">
-    <form id="formQuery" method="post" class="well form-horizontal" style="padding: 0 5px">
+    <form id="form" method="post" class="well form-horizontal">
         <fieldset>
             <legend>首页通知</legend>
             <div class="form-group">
@@ -38,16 +37,18 @@
                         </select>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-12">
-                    <div class="col-md-12 text-right">
-                        <button type="button" onclick="showEditWin()" style="width: 80px;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添 加</button>&nbsp;
-                        <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        <div class="col-md-12 text-right">
+                            <button type="button" onclick="showEditWin()" style="width: 80px;" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添 加</button>&nbsp;
+                            <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
+
         </fieldset>
     </form>
 

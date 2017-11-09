@@ -10,3 +10,7 @@ div.ztree {
     overflow-y: scroll;
     overflow-x: auto;
 }
+
+.ztree li span {
+    font-size: 13px;
+}

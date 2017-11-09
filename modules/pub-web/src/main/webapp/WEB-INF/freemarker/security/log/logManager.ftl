@@ -18,14 +18,14 @@
         <fieldset>
             <legend>日志管理</legend>
             <div class="form-group">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="col-md-4 control-label" for="userName">登录名</label>
                     <div class="col-md-8">
                         <input id="userName" name="userName" type="text" class="form-control"/>
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="col-md-4 control-label" for="logTime">日期</label>
                     <div class="col-md-8">
                         <input id="logTime" name="logTime" class="form-control Wdate"
@@ -33,18 +33,18 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="col-md-4 control-label" for="logType">操作行为</label>
                     <div class="col-md-8">
                         <input id="logType" name="logType" type="text" class="form-control"/>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-12 text-right">
-                    <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>&nbsp;
-                    <button type="button" style="width: 80px;" class="btn btn-success" onclick="downLoadTableData();"><span class="glyphicon glyphicon-download"></span>&nbsp;下 载</button>
+                <div class="col-md-3">
+                    <div class="col-md-12 text-right">
+                        <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>&nbsp;
+                        <button type="button" style="width: 80px;" class="btn btn-success" onclick="downLoadTableData();"><span class="glyphicon glyphicon-download"></span>&nbsp;下 载</button>
+                    </div>
                 </div>
             </div>
         </fieldset>

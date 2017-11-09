@@ -14,7 +14,7 @@ $(function () {
         pageNo: 1,
         pageSize: 20,
         pagingAlign: "right",
-        param: $("#formQuery").serialize(),
+        param: $("#form").serialize(),
         countRoot: "datas.total",
         dataRoot: "datas.list"
     });
@@ -32,13 +32,13 @@ var um = UM.getEditor('content', {
         'insertorderedlist insertunorderedlist | selectall cleardoc paragraph | fontfamily fontsize',
         '| justifyleft justifycenter justifyright justifyjustify |',
         'link unlink | emotion ',
-        '| horizontal preview fullscreen', 'drafts'
+        '| horizontal preview', 'drafts'
 //            , 'formula'
     ]
 });
 
 function search() {
-    var param = $("#formQuery").serialize();
+    var param = $("#form").serialize();
     bsTable.reload(param);
 }
 
