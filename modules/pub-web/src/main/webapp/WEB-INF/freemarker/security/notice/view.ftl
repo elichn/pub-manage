@@ -3,18 +3,19 @@
 <head>
     <title>首页通知</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/common/artDialog/skins/default.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
-    <link rel="stylesheet" href="/common/ztree/css/metroStyle/metroStyle.css" type="text/css">
-    <link rel="stylesheet" href="/common/umeditor/themes/default/css/umeditor.css" type="text/css">
-    <link rel="stylesheet"href="/css/common.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/ztree/css/metroStyle/metroStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/umeditor/themes/default/css/umeditor.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
 <body>
 <div class="container">
     <form id="form" method="post" class="well form-horizontal">
         <fieldset>
             <legend>首页通知</legend>
+
             <div class="form-group">
                 <div class="col-md-4">
                     <label class="col-md-4 control-label" for="status">发布状态:</label>

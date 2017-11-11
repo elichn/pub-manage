@@ -4,16 +4,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>修改密码</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
 <body>
 <div class="container">
-    <form id="passwordForm" method="post" class="form-horizontal" style="padding-top: 20px;">
+    <form id="form" method="post" class="well form-horizontal">
         <fieldset>
-            <legend>
-                修改密码
-            </legend>
+            <legend>修改密码</legend>
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="oldPassword">原始密码:</label>

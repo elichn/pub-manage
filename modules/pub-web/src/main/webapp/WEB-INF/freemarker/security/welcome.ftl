@@ -4,13 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>欢迎</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding: 10px;
-            margin: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
 <body>
 <div class="container">

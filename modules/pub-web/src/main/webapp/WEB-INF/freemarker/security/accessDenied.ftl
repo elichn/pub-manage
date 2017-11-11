@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/common.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/error.css"/>
     <title>权限验证失败</title>
 </head>
 <body class="container">

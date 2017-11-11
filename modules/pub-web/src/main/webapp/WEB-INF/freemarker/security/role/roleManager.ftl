@@ -5,13 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>角色管理</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/ztree/css/metroStyle/metroStyle.css" type="text/css">
-    <link rel="stylesheet" href="/common/artDialog/skins/default.css" type="text/css">
-    <link href="/common/artDialog/skins/default.css" rel="stylesheet">
-    <link href="/css/security/role/roleManager.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/ztree/css/metroStyle/metroStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/security/role/roleManager.css"/>
 </head>
-<body style="padding: 20px 0">
+<body>
 <div class="container">
     <div class="row">
         <div class="col-md-4">

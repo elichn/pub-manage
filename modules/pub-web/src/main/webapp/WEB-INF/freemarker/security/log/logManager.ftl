@@ -3,20 +3,16 @@
 <head>
     <title>日志管理</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/common/artDialog/skins/default.css" rel="stylesheet">
-    <link href="/css/common.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding: 10px 0;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
 <body>
 <div class="container">
     <form id="form" method="post" class="well form-horizontal">
         <fieldset>
             <legend>日志管理</legend>
+
             <div class="form-group">
                 <div class="col-md-3">
                     <label class="col-md-4 control-label" for="userName">登录名</label>

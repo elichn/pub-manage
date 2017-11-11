@@ -3,9 +3,9 @@
 <head>
     <title>用户管理</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/common/artDialog/skins/default.css" rel="stylesheet">
-    <link href="/css/common.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
 <body>
 <div class="container">
@@ -59,7 +59,7 @@
 
                 <div class="col-md-3">
                     <div class="col-md-12 text-right">
-                        <a style="width: 90px;" href="javascript:void(0)" onclick="addUser();" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户</a>&nbsp;
+                        <a style="width: 100px;" href="javascript:void(0)" onclick="addUser();" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>&nbsp;添加用户</a>&nbsp;
                         <#--<a style="width: 80px;" href="javascript:void(0)" onclick="pullUser();" class="btn btn-warning">拉取用户</a>-->   <#--ldap拉取用户开启-->
                         <button type="button" id="searchBtn" style="width: 80px;" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>&nbsp;查 询</button>
                     </div>

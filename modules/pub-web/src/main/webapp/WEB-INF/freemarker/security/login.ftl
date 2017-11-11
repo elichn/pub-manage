@@ -3,9 +3,9 @@
 <head>
     <title>${misName!''}-登录</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
-    <link href="/css/security/login.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/security/login.css"/>
 </head>
 <body>
 <div class="login-div">

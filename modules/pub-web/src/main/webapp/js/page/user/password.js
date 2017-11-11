@@ -1,7 +1,7 @@
 $(function () {
     $.validator.setDefaults({
         submitHandler: function (form) {
-            if (form.id == 'passwordForm') {
+            if (form.id == 'form') {
                 changePassword();
             }
         }
@@ -14,7 +14,7 @@ $(function () {
     }, "密码中必须包含数字，小写字母，大写字母，特殊字符中的三种以上");
 
 
-    $("#passwordForm").validate({
+    $("#form").validate({
         rules: {
             oldPassword: {
                 required: true,
@@ -66,18 +66,18 @@ function changePassword() {
             newPassword: newPassword
         },
         success: function (data) {
-            $("#passwordForm div.alert").remove();
+            $("#form div.alert").remove();
             if (data.success == 'SUCCESS') {
                 var div = $("<div></div>").addClass("alert alert-success fade in");
                 $('<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>').appendTo(div);
                 $('<p></p>').html(data.msg).appendTo(div);
-                $("#passwordForm .form-group:first").before(div);
-                $("#passwordForm")[0].reset();
+                $("#form .form-group:first").before(div);
+                $("#form")[0].reset();
             } else {
                 var div = $("<div></div>").addClass("alert alert-warning fade in");
                 $('<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>').appendTo(div);
                 $('<p></p>').html(data.msg).appendTo(div);
-                $("#passwordForm .form-group:first").before(div);
+                $("#form .form-group:first").before(div);
             }
         }
     });

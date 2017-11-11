@@ -3,8 +3,8 @@
 <head>
     <title>${misName!''}</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/security/submenu.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/security/submenu.css"/>
     <script type="text/javascript" src="/common/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="/common/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/page/index/index4horizontally.js"></script>

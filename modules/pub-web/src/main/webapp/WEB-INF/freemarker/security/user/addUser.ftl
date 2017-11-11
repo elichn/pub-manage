@@ -5,19 +5,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>新增用户</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/ztree/css/metroStyle/metroStyle.css" type="text/css">
-    <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
-    <link href="/common/artDialog/skins/default.css" rel="stylesheet">
-    <link href="/css/security/user/user.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/ztree/css/metroStyle/metroStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/security/user/user.css"/>
 </head>
 <body>
 <div class="container">
-    <form id="form" method="post" class="form-horizontal">
+    <form id="form" method="post" class="well form-horizontal">
         <fieldset>
-            <legend>
-                新增用户
-            </legend>
+            <legend>新增用户</legend>
 
             <div class="form-group">
                 <label class="col-md-2 control-label" for="userName">用户名:</label>

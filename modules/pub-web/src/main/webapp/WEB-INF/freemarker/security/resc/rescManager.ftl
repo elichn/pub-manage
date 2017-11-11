@@ -5,11 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>资源管理</title>
     <!-- Le styles -->
-    <link href="/common/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/common/ztree/css/metroStyle/metroStyle.css" type="text/css">
-    <link rel="stylesheet" href="/common/artDialog/skins/default.css" type="text/css">
-    <link rel="stylesheet" href="/common/jquery-plugin/validate/style.css" type="text/css">
-    <link href="/css/security/resc/rescManager.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/ztree/css/metroStyle/metroStyle.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/security/resc/rescManager.css"/>
 </head>
 <body>
 <div class="container">
