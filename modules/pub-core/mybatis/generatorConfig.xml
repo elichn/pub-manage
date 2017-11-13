@@ -6,7 +6,7 @@
 <generatorConfiguration>
     <classPathEntry location="D:/m2/repository/mysql/mysql-connector-java/5.1.32/mysql-connector-java-5.1.32.jar"/>
 
-    <context id="fenxiao" targetRuntime="MyBatis3"
+    <context id="pub-manage" targetRuntime="MyBatis3"
              introspectedColumnImpl="com.elichn.mybatis.generator.api.IntrospectedColumn">
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
