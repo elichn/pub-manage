@@ -6,7 +6,6 @@
     <!-- Le styles -->
     <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
 </head>
 <body>
 <div class="container">

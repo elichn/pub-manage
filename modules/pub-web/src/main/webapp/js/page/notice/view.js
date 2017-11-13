@@ -119,7 +119,7 @@ function updateLink(id) {
                 data: {id: id, url: $("#url").val(), type: 1},
                 success: function (data) {
                     if (data && data.msg == 'SUCCESS') {
-
+                        $.alert("操作成功").time(2000);
                     } else {
                         editWin.title("编辑-<span style='color: red'>保存失败！" + data.msg + "</span>");
                         editWin.shake();
@@ -155,6 +155,7 @@ function updateContent(id) {
                 data: {id: id, content: um.getContent(), type: 2},
                 success: function (data) {
                     if (data && data.msg == 'SUCCESS') {
+                        $.alert("操作成功").time(2000);
                         search();
                     } else {
                         editWin.title("编辑-<span style='color: red'>保存失败！" + data.msg + "</span>");
@@ -222,7 +223,7 @@ function updateRn(id) {
                 data: param,
                 success: function (data) {
                     if (data && data.msg == 'SUCCESS') {
-
+                        $.alert("操作成功").time(2000);
                     } else {
                         editWin.title("编辑-<span style='color: red'>保存失败！" + data.msg + "</span>");
                         editWin.shake();
