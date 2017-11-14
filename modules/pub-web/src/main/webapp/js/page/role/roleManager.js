@@ -27,7 +27,7 @@ $(function () {
                 },
                 callback: {
                     onClick: function (event, treeId, treeNode) {
-//                        $("#selectRoleName").val(treeNode.roleName);
+                        // $("#selectRoleName").val(treeNode.roleName);
                         buildRescTree(treeNode.id);
                     },
                     onCheck: function (event, treeId, treeNode) {
@@ -260,7 +260,7 @@ function onRightClick(event, treeId, treeNode) {
 
     if(treeNode.id != 2) {
         if (treeNode && !treeNode.getParentNode()) {
-//        treeObj.cancelSelectedNode();
+            // treeObj.cancelSelectedNode();
             treeObj.selectNode(treeNode);
             showRMenu("root", event.clientX, event.clientY);
         } else if (treeNode && !treeNode.noR) {
@@ -270,6 +270,7 @@ function onRightClick(event, treeId, treeNode) {
     }
 }
 
+// 菜单鼠标提示
 function addHoverDom(treeId, treeNode) {
     var sObj = $("#" + treeNode.tId + "_a");
     sObj.attr("title","右键进行操作");
@@ -334,7 +335,7 @@ function updateTreeNode() {
         return;
     }
     showEditWin(nodes[0], null);
-    //treeObj.editName(nodes[0]);
+    // treeObj.editName(nodes[0]);
 }
 
 // 增加角色

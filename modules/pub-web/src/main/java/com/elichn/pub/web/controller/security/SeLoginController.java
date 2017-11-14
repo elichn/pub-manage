@@ -291,7 +291,7 @@ public class SeLoginController extends BaseController {
      */
     @RequestMapping(value = "menuList")
     public void getMenuList(Model model) {
-        model.addAttribute("list", getRescOfUser());
+        model.addAttribute(LIST_KEY, getRescOfUser());
     }
 
     /**
@@ -557,7 +557,7 @@ public class SeLoginController extends BaseController {
      */
     private void incrCheckCodeTimes(HttpServletRequest request) {
         int times = this.getCheckCodeTimes(request);
-        WebUtils.setSessionAttribute(request, CHECK_TIMES, times + 1);
+        WebUtils.setSessionAttribute(request, CHECK_TIMES_KEY, times + 1);
     }
 
     /**
@@ -567,7 +567,7 @@ public class SeLoginController extends BaseController {
      * @return int
      */
     private int getCheckCodeTimes(HttpServletRequest request) {
-        Object times = WebUtils.getSessionAttribute(request, CHECK_TIMES);
+        Object times = WebUtils.getSessionAttribute(request, CHECK_TIMES_KEY);
         return times == null ? 0 : (Integer) times;
     }
 
@@ -577,6 +577,6 @@ public class SeLoginController extends BaseController {
      * @param request request
      */
     private void clearCheckCodeTimes(HttpServletRequest request) {
-        WebUtils.setSessionAttribute(request, CHECK_TIMES, null);
+        WebUtils.setSessionAttribute(request, CHECK_TIMES_KEY, null);
     }
 }

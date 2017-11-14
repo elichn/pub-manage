@@ -43,7 +43,7 @@ public class SeLogController extends BaseController {
                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, SeLog log) {
         QueryBvo<SeLog> queryBvo = new QueryBvo<SeLog>(log, pageNo, pageSize);
         ResultBvo<SeLog> resultBvo = seLogService.getLogsList(queryBvo);
-        model.addAttribute(DATAS, resultBvo);
+        model.addAttribute(DATAS_KEY, resultBvo);
     }
 
     /**

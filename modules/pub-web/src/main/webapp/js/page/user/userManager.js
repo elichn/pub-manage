@@ -11,7 +11,7 @@ $(function () {
     var param = $("#form").serialize();
     var s = $("#resultTable").bsTable({
         url: '/user/viewUsers.json',
-        ajaxType: "POST",  //ajax 提交方式 post 或者 get
+        ajaxType: "POST",  // ajax 提交方式 post 或者 get
         pageNo: 1,
         pageNoAlias: 'page',
         pageSize: 10,

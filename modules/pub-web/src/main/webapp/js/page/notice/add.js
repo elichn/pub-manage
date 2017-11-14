@@ -14,7 +14,7 @@ var um = UM.getEditor('content', {
         '| justifyleft justifycenter justifyright justifyjustify |',
         'link unlink | emotion ',
         '| horizontal preview fullscreen', 'drafts'
-//            , 'formula'
+        //  , 'formula'
     ]
 });
 

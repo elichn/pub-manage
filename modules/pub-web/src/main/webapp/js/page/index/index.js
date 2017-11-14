@@ -111,29 +111,6 @@ function colseTab(title) {
     $("#centerTab").tabs("close", title);
 }
 
-// function flushTab(title) {
-//     $("#centerTab").tabs("close", title);
-//
-//
-//     o.tabs('update', {
-//         tab: e,
-//         options: {
-//             id: tabId,
-//             title: title,
-//             closable: close,
-//             cache: false,
-//             content: content,
-//             tools: [{
-//                 iconCls: 'icon-mini-refresh',
-//                 handler: function () {
-//                     $("iframe[name='" + name + "']").attr("src", url);
-//                 }
-//             }]
-//         }
-//     });
-//
-// }
-
 function searchMenu(key) {
     var zTree = $.fn.zTree.getZTreeObj("menu");
     if (key != null && key.trim() != '') {

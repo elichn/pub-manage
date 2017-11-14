@@ -21,9 +21,3 @@ $(function () {
         }
     });
 });
-
-// function autoWH() {
-//     var frame = document.getElementById("noticeFrame");
-//     frame.height = frame.contentDocument.body.scrollHeight + 20;
-//     frame.width = $("div.container").width();
-// }

@@ -11,11 +11,11 @@ $.validator.setDefaults({
     }
 });
 
-jQuery.validator.addMethod("regex", //addMethod第1个参数:方法名称
-    function (value, element, params) {     //addMethod第2个参数:验证方法，参数（被验证元素的值，被验证元素，参数）
-        var exp = new RegExp(params);     //实例化正则对象，参数为传入的正则表达式
-        return exp.test(value);                  //测试是否匹配
-    }, "格式错误");    //addMethod第3个参数:默认错误信息
+jQuery.validator.addMethod("regex",      // addMethod第1个参数:方法名称
+    function (value, element, params) {  // addMethod第2个参数:验证方法，参数（被验证元素的值，被验证元素，参数）
+        var exp = new RegExp(params);    // 实例化正则对象，参数为传入的正则表达式
+        return exp.test(value);          // 测试是否匹配
+    }, "格式错误");                       // addMethod第3个参数:默认错误信息
 
 $(function () {
     $("#form").validate({
@@ -23,7 +23,7 @@ $(function () {
             userName: {
                 required: true,
                 rangelength: [4, 20],
-//                    regex: "^[_a-zA-Z0-9]*$",
+                // regex: "^[_a-zA-Z0-9]*$",
                 remote: {
                     url: "/user/isUser.json",
                     type: "get",
@@ -43,7 +43,7 @@ $(function () {
             userName: {
                 required: "请输入用户名",
                 rangelength: "长度必须介于{0} 和 {1} 之间的字符串",
-//                    regex: "用户名只能是数字、字母与下划线",
+                // regex: "用户名只能是数字、字母与下划线",
                 remote: "用户名已存在"
             },
             email: {
@@ -86,7 +86,7 @@ function saveModify() {
     var param = $("#form").serialize();
 
     var treeObj = $.fn.zTree.getZTreeObj("roleDiv");
-//    var nodes = treeObj.getChangeCheckedNodes();
+    // var nodes = treeObj.getChangeCheckedNodes();
     var nodes = treeObj.getNodesByFilter(function (node) {
         return node.checked != node.checkedOld;
     }, false);

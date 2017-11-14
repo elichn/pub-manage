@@ -94,7 +94,7 @@ public class SeRoleController extends BaseController {
         SeUser user = seUserService.selectByName(userName);
         if (user != null) {
             List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
-            model.addAttribute("list", list);
+            model.addAttribute(LIST_KEY, list);
         }
     }
 
@@ -113,7 +113,7 @@ public class SeRoleController extends BaseController {
         try {
             isDirect = this.isDirectRoleOfUser(id);
         } catch (Exception e) {
-            model.addAttribute(MSG, e.getMessage());
+            model.addAttribute(MSG_KEY, e.getMessage());
             LOG.error("getRescByRole error,", e);
             return;
         }
@@ -177,7 +177,7 @@ public class SeRoleController extends BaseController {
             }
         });
         model.addAttribute("isDirect", isDirect);
-        model.addAttribute("list", bvos);
+        model.addAttribute(LIST_KEY, bvos);
     }
 
     /**
@@ -247,11 +247,11 @@ public class SeRoleController extends BaseController {
             LOG.error("updateRoleResc error,", e);
         }
         if (isDirect) {
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
             return;
         }
         // 更新角色资源
-        model.addAttribute(MSG, SUCCESS);
+        model.addAttribute(MSG_KEY, SUCCESS);
         List<Map> value = JsonUtil.jsonTo(list, ArrayList.class);
         if (value == null) {
             return;
@@ -291,7 +291,7 @@ public class SeRoleController extends BaseController {
             LOG.error("updateRole error,", e);
         }
         if (isDirect) {
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
             return;
         }
         // 更新角色
@@ -302,10 +302,10 @@ public class SeRoleController extends BaseController {
                 role.setCode(code);
             }
             seRoleService.updateRole(role);
-            model.addAttribute(MSG, SUCCESS);
+            model.addAttribute(MSG_KEY, SUCCESS);
             model.addAttribute("currentRole", role);
         } else {
-            model.addAttribute(MSG, INVALID_PARAM);
+            model.addAttribute(MSG_KEY, INVALID_PARAM);
         }
     }
 
@@ -327,12 +327,12 @@ public class SeRoleController extends BaseController {
             LOG.error("deleteRole error,", e);
         }
         if (isDirect) {
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
             return;
         }
         // 删除角色资源
         this.deleteRoleRecursive(request, roleId);
-        model.addAttribute(MSG, SUCCESS);
+        model.addAttribute(MSG_KEY, SUCCESS);
     }
 
     /**

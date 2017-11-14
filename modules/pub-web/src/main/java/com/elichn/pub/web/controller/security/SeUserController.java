@@ -204,7 +204,7 @@ public class SeUserController extends BaseController {
             user.setUserName(userName.trim());
             int passwordLength = 3;
             if (PasswordUtil.isComplexPassword(password) < passwordLength) {
-                model.addAttribute(MSG, "密码强度不够");
+                model.addAttribute(MSG_KEY, "密码强度不够");
                 return;
             }
             user.setPassword(DigestUtils.md5Hex(password.trim()));
@@ -242,7 +242,7 @@ public class SeUserController extends BaseController {
                 }
             }
         } finally {
-            model.addAttribute("success", isSuccess);
+            model.addAttribute(SUCCESS_KEY, isSuccess);
             super.writeLog(request, "添加用户", "添加用户(" + userName + ")");
         }
     }
@@ -259,7 +259,7 @@ public class SeUserController extends BaseController {
             @RequestParam(value = "descn", required = false) String descn,
             @RequestParam(value = "roleList", defaultValue = "") String roleList) throws IOException {
         if (id == 1) {
-            model.addAttribute("success", false);
+            model.addAttribute(SUCCESS_KEY, false);
             return;
         }
         SeUser user = seUserService.selectUserById(id);
@@ -284,7 +284,7 @@ public class SeUserController extends BaseController {
                 }
             }
         }
-        model.addAttribute("success", true);
+        model.addAttribute(SUCCESS_KEY, true);
         super.writeLog(request, "编辑用户", "编辑用户(" + user.getUserName() + ")");
     }
 
@@ -330,7 +330,7 @@ public class SeUserController extends BaseController {
                 bvo.setNocheck(false);
                 bvos.add(bvo);
             }
-            model.addAttribute("list", bvos);
+            model.addAttribute(LIST_KEY, bvos);
         } else {
             // 初始化勾选的角色
             List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
@@ -339,7 +339,7 @@ public class SeUserController extends BaseController {
                 bvo.setNocheck(false);
                 bvos.add(bvo);
             }
-            model.addAttribute("list", bvos);
+            model.addAttribute(LIST_KEY, bvos);
         }
     }
 
@@ -367,11 +367,11 @@ public class SeUserController extends BaseController {
             String password = PasswordUtil.randomPassword();
             user.setPassword(DigestUtils.md5Hex(password));
             seUserService.updateUser(user);
-            model.addAttribute(MSG, password);
+            model.addAttribute(MSG_KEY, password);
         } else if (user != null && user.getUserType() == UserTypeEnum.LDAP.getTypeValue()) {
-            model.addAttribute(MSG, "LDAP");
+            model.addAttribute(MSG_KEY, "LDAP");
         } else {
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -400,15 +400,15 @@ public class SeUserController extends BaseController {
                                @RequestParam("newPassword") String newPassword) {
         String userName = getUserName();
         if (StringUtils.isBlank(userName)) {
-            model.addAttribute(MSG, SESSION_TIME_OUT);
-            model.addAttribute("success", FAIL);
+            model.addAttribute(MSG_KEY, SESSION_TIME_OUT);
+            model.addAttribute(SUCCESS_KEY, FAIL);
             return;
         }
         SeUser user = seUserService.selectByName(userName);
         // 用户不存在
         if (user == null) {
-            model.addAttribute(MSG, USER_NOT_EXIST);
-            model.addAttribute("success", FAIL);
+            model.addAttribute(MSG_KEY, USER_NOT_EXIST);
+            model.addAttribute(SUCCESS_KEY, FAIL);
             return;
         }
         // update password
@@ -429,8 +429,8 @@ public class SeUserController extends BaseController {
             }
         }
         super.writeLog(request, "修改密码", "用户" + userName + msg);
-        model.addAttribute(MSG, msg);
-        model.addAttribute("success", success);
+        model.addAttribute(MSG_KEY, msg);
+        model.addAttribute(SUCCESS_KEY, success);
     }
 
     /**
@@ -445,7 +445,7 @@ public class SeUserController extends BaseController {
         SeUser user = seUserService.selectUserById(userId);
         // 用户不存在
         if (user == null) {
-            model.addAttribute(MSG, USER_NOT_EXIST);
+            model.addAttribute(MSG_KEY, USER_NOT_EXIST);
             return;
         }
         // set status
@@ -456,9 +456,9 @@ public class SeUserController extends BaseController {
         }
         int re = seUserService.updateUser(user);
         if (re > 0) {
-            model.addAttribute(MSG, SUCCESS);
+            model.addAttribute(MSG_KEY, SUCCESS);
         } else {
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -487,7 +487,7 @@ public class SeUserController extends BaseController {
     public void pullUser(Model model, @RequestParam("userName") String userName) {
         SeUser user = seUserService.selectByName(userName);
         if (user != null) {
-            model.addAttribute(MSG, "EXIST");
+            model.addAttribute(MSG_KEY, "EXIST");
         } else {
             // ldap拉取用户实现
         }

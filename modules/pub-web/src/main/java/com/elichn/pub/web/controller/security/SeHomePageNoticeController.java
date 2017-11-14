@@ -76,7 +76,7 @@ public class SeHomePageNoticeController extends BaseController {
                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         QueryBvo<SeHomePageNotice> qb = new QueryBvo<SeHomePageNotice>(queryBvo, pageNo, pageSize);
         ResultBvo<SeHomePageNotice> resultBvo = seHomePageNoticeService.getHomePageNoticeList(qb);
-        model.addAttribute(DATAS, resultBvo);
+        model.addAttribute(DATAS_KEY, resultBvo);
     }
 
     /**
@@ -102,21 +102,21 @@ public class SeHomePageNoticeController extends BaseController {
         if (hn.getType() == 1) {
             String welcomePath = "/welcome";
             if (StringUtils.isBlank(hn.getUrl()) || welcomePath.equals(hn.getUrl())) {
-                model.addAttribute(MSG, INVALID_PARAM);
+                model.addAttribute(MSG_KEY, INVALID_PARAM);
                 return;
             }
         } else {
             if (StringUtils.isBlank(hn.getContent())) {
-                model.addAttribute(MSG, INVALID_PARAM);
+                model.addAttribute(MSG_KEY, INVALID_PARAM);
                 return;
             }
         }
         try {
             seHomePageNoticeService.insert(hn, roleIds);
-            model.addAttribute(MSG, SUCCESS);
+            model.addAttribute(MSG_KEY, SUCCESS);
         } catch (Exception e) {
             LOG.error("add error,", e);
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -135,10 +135,10 @@ public class SeHomePageNoticeController extends BaseController {
         }
         try {
             seHomePageNoticeService.updateByPrimaryKeyWithBLOBs(hn);
-            model.addAttribute(MSG, SUCCESS);
+            model.addAttribute(MSG_KEY, SUCCESS);
         } catch (Exception e) {
             LOG.error("edit error,", e);
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -154,10 +154,10 @@ public class SeHomePageNoticeController extends BaseController {
                                  @RequestParam("roleId") Integer[] roleId) {
         try {
             seHomePageNoticeService.updateRoleNotice(noticeId, Arrays.asList(roleId));
-            model.addAttribute(MSG, SUCCESS);
+            model.addAttribute(MSG_KEY, SUCCESS);
         } catch (Exception e) {
             LOG.error("updateRoleNotice error,", e);
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -172,13 +172,13 @@ public class SeHomePageNoticeController extends BaseController {
         try {
             int re = seHomePageNoticeService.updateAsNew(id);
             if (re > 0) {
-                model.addAttribute(MSG, SUCCESS);
+                model.addAttribute(MSG_KEY, SUCCESS);
             } else {
-                model.addAttribute(MSG, FAIL);
+                model.addAttribute(MSG_KEY, FAIL);
             }
         } catch (Exception e) {
             LOG.error("updateAsNew error,", e);
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -207,9 +207,9 @@ public class SeHomePageNoticeController extends BaseController {
     public void changeStatus(Model model, @RequestParam("id") Integer id, @RequestParam("status") Integer status) {
         int re = seHomePageNoticeService.updateStatus(id, status);
         if (re > 0) {
-            model.addAttribute(MSG, SUCCESS);
+            model.addAttribute(MSG_KEY, SUCCESS);
         } else {
-            model.addAttribute(MSG, FAIL);
+            model.addAttribute(MSG_KEY, FAIL);
         }
     }
 
@@ -238,7 +238,7 @@ public class SeHomePageNoticeController extends BaseController {
                 }
                 bvos.add(bvo);
             }
-            model.addAttribute("list", bvos);
+            model.addAttribute(LIST_KEY, bvos);
         }
     }
 }

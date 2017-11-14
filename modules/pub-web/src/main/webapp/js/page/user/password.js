@@ -7,7 +7,6 @@ $(function () {
         }
     });
 
-
     $.validator.addMethod("complexPwd", function (value, element) {
         return isComplexPassword(value) >= 3;
 

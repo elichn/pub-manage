@@ -33,7 +33,7 @@ var um = UM.getEditor('content', {
         '| justifyleft justifycenter justifyright justifyjustify |',
         'link unlink | emotion ',
         '| horizontal preview', 'drafts'
-//            , 'formula'
+        // , 'formula'
     ]
 });
 

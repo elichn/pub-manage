@@ -74,22 +74,29 @@ public class BaseController<T> {
      */
     public static final String LOCKED = "LOCKED";
     /**
-     * CHECK_TIMES
+     * CHECK_TIMES_KEY
      */
-    public static final String CHECK_TIMES = "CHECK_TIMES";
+    public static final String CHECK_TIMES_KEY = "CHECK_TIMES_KEY";
     /**
      * 错误
      */
     public static final String ERROR_KEY = "errorKey";
     /**
-     * MSG
+     * MSG_KEY
      */
-    public static final String MSG = "msg";
+    public static final String MSG_KEY = "msg";
     /**
-     * DATAS
+     * DATAS_KEY
      */
-    public static final String DATAS = "datas";
-
+    public static final String DATAS_KEY = "datas";
+    /**
+     * LIST_KEY
+     */
+    public static final String LIST_KEY = "list";
+    /**
+     * SUCCESS_KEY
+     */
+    public static final String SUCCESS_KEY = "success";
 
     @Autowired
     private SeLogService seLogService;

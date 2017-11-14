@@ -99,6 +99,7 @@ function onRightClick(event, treeId, treeNode) {
     }
 }
 
+// 菜单鼠标提示
 function addHoverDom(treeId, treeNode) {
     var sObj = $("#" + treeNode.tId + "_a");
     sObj.attr("title","右键进行操作");
@@ -118,10 +119,7 @@ function showRMenu(type, x, y) {
     }
 }
 
-/**
- * 资源信息
- * @param node
- */
+// 资源信息
 function viewResc(node) {
     $("#rescId").html(node.id);
     $("#rescName").html(node.name);
@@ -132,18 +130,13 @@ function viewResc(node) {
     $("#isShowMenu").html(node.showMenu == 1 ? "是" : "否");
 }
 
-/**
- * 新增当前节点
- * @param currentNode
- */
+// 新增当前节点
 function addNewNode(currentNode) {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
     treeObj.addNodes(treeObj.getSelectedNodes()[0], currentNode);
 }
-/**
- * 更新当前节点
- *
- */
+
+// 更新当前节点
 function updateCurrentNode(currentNode) {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
     var node = treeObj.getSelectedNodes()[0];
@@ -157,9 +150,7 @@ function updateCurrentNode(currentNode) {
     viewResc(currentNode);
 }
 
-/**
- * 增加资源
- */
+// 增加资源
 function addTreeNode() {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
     var fatherId;
@@ -172,10 +163,7 @@ function addTreeNode() {
     showEditWin(null, fatherId);
 }
 
-
-/**
- * 编辑资源
- */
+// 编辑资源
 function editTreeNode() {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
     var fatherId;
@@ -191,9 +179,7 @@ function editTreeNode() {
     }
 }
 
-/**
- * 删除资源
- */
+// 删除资源
 function removeTreeNode() {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
     hideRMenu();
@@ -223,7 +209,7 @@ function removeTreeNode() {
                     rescName: nodes[0].name
                 },
                 success: function (data) {
-                    if (data.success) {
+                    if (data.msg) {
                         $.alert("删除成功").time(2000);
                     } else {
                         $.alert("删除失败").time(3000);
@@ -302,7 +288,7 @@ function modifyResc() {
         url: $("#form").attr("action"),
         data: $("#form").serialize(),
         success: function (data) {
-            if (data.success) {
+            if (data.msg) {
                 $.alert("操作成功").time(2000);
                 if ($("#form").attr("action").indexOf("update") > 0) {
                     updateCurrentNode(data.currentResc);

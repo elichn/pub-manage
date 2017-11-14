@@ -78,7 +78,7 @@ public class SeRescController extends BaseController {
             success = false;
             LOG.error("addResc error,", e);
         }
-        model.addAttribute("success", success);
+        model.addAttribute(MSG_KEY, success);
         model.addAttribute("currentResc", resc);
     }
 
@@ -114,7 +114,7 @@ public class SeRescController extends BaseController {
             success = false;
             LOG.error("updateResc error,", e);
         }
-        model.addAttribute("success", success);
+        model.addAttribute(MSG_KEY, success);
         model.addAttribute("currentResc", resc);
     }
 
@@ -136,7 +136,7 @@ public class SeRescController extends BaseController {
             success = false;
             LOG.error("deleteResc error,", e);
         }
-        model.addAttribute("success", success);
+        model.addAttribute(MSG_KEY, success);
     }
 
     /**
@@ -147,7 +147,7 @@ public class SeRescController extends BaseController {
     @RequestMapping(value = "getResourceListByRole")
     public void getResourceListByRole(Model model) {
         List<SeResc> rescsList = this.getRescListByRole();
-        model.addAttribute("list", rescsList);
+        model.addAttribute(LIST_KEY, rescsList);
     }
 
     /**
