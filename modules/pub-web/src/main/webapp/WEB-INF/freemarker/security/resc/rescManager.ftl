@@ -131,7 +131,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-4">
-                <button style="width: 80px;" type="submit" class="btn btn-primary">提 交</button>
+                <button style="width: 80px;" type="submit" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i>&nbsp;提 交</button>
             </div>
         </div>
     </form>
@@ -139,6 +139,7 @@
 
 <script type="text/javascript" src="/common/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="/common/ztree/js/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="/common/ztree/js/jquery.ztree.exedit.min.js"></script>
 <script type="text/javascript" src="/common/artDialog/jquery.artDialog.min.js"></script>
 <script type="text/javascript" src="/common/artDialog/artDialog.plugins.min.js"></script>
 <script type="text/javascript" src="/common/jquery-plugin/validate/jquery.validate.1.11.1.min.js"></script>

@@ -10,7 +10,7 @@ import com.elichn.pub.service.security.SeRoleRescService;
 import com.elichn.pub.service.security.SeRoleService;
 import com.elichn.pub.service.security.SeUserService;
 import com.elichn.pub.web.controller.BaseController;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.elichn.pub.web.util.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import java.util.*;
  * @date 2017/10/28
  */
 @Controller
-@RequestMapping(value = "/role")
+@RequestMapping(value = "/role/")
 public class SeRoleController extends BaseController {
 
     private final static Logger LOG = LoggerFactory.getLogger(SeRoleController.class);
@@ -56,7 +56,7 @@ public class SeRoleController extends BaseController {
      * @param model
      * @return model
      */
-    @RequestMapping(value = "/roleManager", method = RequestMethod.GET)
+    @RequestMapping(value = "roleManager", method = RequestMethod.GET)
     public String roleManager(Model model) {
         return PREFIX + "/roleManager";
     }
@@ -65,18 +65,19 @@ public class SeRoleController extends BaseController {
      * isRole 判断权限是否存在
      *
      * @param roleName roleName
+     * @param id       id
+     * @param response response
      */
-    @RequestMapping(value = "/isRole", method = RequestMethod.GET)
+    @RequestMapping(value = "isRole", method = RequestMethod.GET)
     public void isRole(@RequestParam("roleName") String roleName,
-                       @RequestParam("id") Integer id,
-                       HttpServletResponse response) {
+                       @RequestParam("id") Integer id, HttpServletResponse response) {
         try {
             roleName = URLDecoder.decode(roleName, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            LOG.info("{}", e);
+            LOG.error("isRole decode error", e);
         }
         Boolean isRole = seRoleService.isRole(roleName, id);
-        returnMsg(response, !isRole);
+        super.returnMsg(response, !isRole);
     }
 
     /**
@@ -84,15 +85,16 @@ public class SeRoleController extends BaseController {
      *
      * @param model model
      */
-    @RequestMapping(value = "/getRoleTree")
+    @RequestMapping(value = "getRoleTree")
     public void getRoleTree(Model model) {
         String userName = getUserName();
-        if (userName != null) {
-            SeUser user = seUserService.selectByName(userName);
-            if (user != null) {
-                List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
-                model.addAttribute("list", list);
-            }
+        if (StringUtils.isBlank(userName)) {
+            return;
+        }
+        SeUser user = seUserService.selectByName(userName);
+        if (user != null) {
+            List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
+            model.addAttribute("list", list);
         }
     }
 
@@ -105,79 +107,77 @@ public class SeRoleController extends BaseController {
      * @param model model
      * @param id    id
      */
-    @RequestMapping(value = "/getRescByRole")
-    public void getRescByRole(Model model,
-                              @RequestParam(value = "id") Integer id) {
+    @RequestMapping(value = "getRescByRole")
+    public void getRescByRole(Model model, @RequestParam(value = "id") Integer id) {
         boolean isDirect;
         try {
             isDirect = this.isDirectRoleOfUser(id);
         } catch (Exception e) {
-            model.addAttribute("msg", e.getMessage());
-            LOG.info("{}", e);
+            model.addAttribute(MSG, e.getMessage());
+            LOG.error("getRescByRole error,", e);
             return;
         }
         // 获取当前role
         SeRole role = seRoleService.selectRoleById(id);
-        if (role != null) {
-            List<SeRescTreeBvo> bvos = new ArrayList<SeRescTreeBvo>();
-            // 超级管理员
-            if (role.getParentId() == 0) {
-                List<SeResc> list = seRoleRescService.selectRescs();
+        if (role == null) {
+            LOG.warn("获取当前role为空,id={}", id);
+            return;
+        }
+        // 查询数据权限
+        List<SeRescTreeBvo> bvos = new ArrayList<SeRescTreeBvo>();
+        // 超级管理员
+        if (role.getParentId() == 0) {
+            List<SeResc> list = seRoleRescService.selectRescs();
+            for (SeResc resc : list) {
+                SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
+                bvo.setChecked(true);
+                bvos.add(bvo);
+            }
+        } else {
+            if (isDirect) {
+                List<SeResc> list = seRoleRescService.getRescByRole(id);
+
                 for (SeResc resc : list) {
                     SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
-                    bvo.setChecked(true);
+                    bvo.setChecked(false);
                     bvos.add(bvo);
                 }
             } else {
-                if (isDirect) {
-                    List<SeResc> list = seRoleRescService.getRescByRole(id);
-
-                    for (SeResc resc : list) {
-                        SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
-                        bvo.setChecked(false);
-                        bvos.add(bvo);
-                    }
+                // 如果其父角色是超级管理员 那么他可选择所有的权限
+                SeRole parentRole = seRoleService.selectRoleById(role.getParentId());
+                List<SeResc> list;
+                if (parentRole != null && parentRole.getParentId() == 0) {
+                    list = seRoleRescService.selectRescs();
                 } else {
-                    // 如果其父角色是超级管理员 那么他可选择所有的权限
-                    SeRole parentRole = seRoleService.selectRoleById(role.getParentId());
-                    List<SeResc> list;
-                    if (parentRole != null && parentRole.getParentId() == 0) {
-                        list = seRoleRescService.selectRescs();
+                    list = seRoleRescService.getRescByRole(role.getParentId());
+                }
+                List<Integer> rescs = new ArrayList<Integer>();
+                // 获取当前角色的资源
+                if (id != null && id > 0) {
+                    List<SeRescRoleKey> keys = seRoleRescService.selectRescRoleKeyByRoleId(id);
+                    for (SeRescRoleKey key : keys) {
+                        rescs.add(key.getRescId());
+                    }
+                }
+                for (SeResc resc : list) {
+                    SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
+                    if (rescs.contains(resc.getId())) {
+                        bvo.setChecked(true);
                     } else {
-                        list = seRoleRescService.getRescByRole(role.getParentId());
+                        bvo.setChecked(false);
                     }
-                    List<Integer> rescs = new ArrayList<Integer>();
-
-                    // 获取当前角色的资源
-                    if (id != null && id > 0) {
-                        List<SeRescRoleKey> keys = seRoleRescService.selectRescRoleKeyByRoleId(id);
-                        for (SeRescRoleKey key : keys) {
-                            rescs.add(key.getRescId());
-                        }
-                    }
-
-                    for (SeResc resc : list) {
-                        SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
-                        if (rescs.contains(resc.getId())) {
-                            bvo.setChecked(true);
-                        } else {
-                            bvo.setChecked(false);
-                        }
-                        bvos.add(bvo);
-                    }
+                    bvos.add(bvo);
                 }
             }
-
-            Collections.sort(bvos, new Comparator<SeResc>() {
-                @Override
-                public int compare(SeResc o1, SeResc o2) {
-                    return o1.getPriority() - o2.getPriority();
-                }
-            });
-
-            model.addAttribute("isDirect", isDirect);
-            model.addAttribute("list", bvos);
         }
+        Collections.sort(bvos, new Comparator<SeResc>() {
+            @Override
+            public int compare(SeResc o1, SeResc o2) {
+                return o1.getPriority() - o2.getPriority();
+            }
+        });
+        model.addAttribute("isDirect", isDirect);
+        model.addAttribute("list", bvos);
     }
 
     /**
@@ -187,21 +187,21 @@ public class SeRoleController extends BaseController {
      * @param code     code
      * @param id       id
      */
-    @RequestMapping(value = "/isRoleExist", method = RequestMethod.GET)
+    @RequestMapping(value = "isRoleExist", method = RequestMethod.GET)
     public void isRoleExist(HttpServletResponse response,
                             @RequestParam(value = "code", required = false) String code,
                             @RequestParam(value = "id", required = false) Integer id) {
         try {
             code = URLDecoder.decode(code, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOG.error("code decode error,", e);
         }
         SeRole role = seRoleService.selectRoleByCode(code);
         Boolean isRoleExist = false;
         if (role != null && !role.getId().equals(id)) {
             isRoleExist = true;
         }
-        returnMsg(response, !isRoleExist);
+        super.returnMsg(response, !isRoleExist);
     }
 
     /**
@@ -213,9 +213,8 @@ public class SeRoleController extends BaseController {
      * @param pid      pid
      * @param code     code
      */
-    @RequestMapping(value = "/addRole", method = RequestMethod.POST)
-    public void addRole(Model model,
-                        HttpServletRequest request,
+    @RequestMapping(value = "addRole", method = RequestMethod.POST)
+    public void addRole(Model model, HttpServletRequest request,
                         @RequestParam("roleName") String roleName,
                         @RequestParam("pid") Integer pid,
                         @RequestParam("code") String code) {
@@ -225,33 +224,41 @@ public class SeRoleController extends BaseController {
         if (StringUtils.isNotBlank(code)) {
             role.setCode(code);
         }
-        SeRole cr = seRoleService.insertRole(role);
-        model.addAttribute("role", cr);
+        SeRole seRole = seRoleService.insertRole(role);
+        model.addAttribute("role", seRole);
         super.writeLog(request, "添加角色", "添加角色(" + roleName + ")");
     }
 
     /**
      * updateRoleResc 更新角色资源
+     *
+     * @param model  model
+     * @param roleId roleId
+     * @param list   list
      */
-    @RequestMapping(value = "/updateRoleResc", method = RequestMethod.POST)
-    public void updateRoleResc(
-            Model model,
-            HttpServletRequest request,
-            @RequestParam("roleId") Integer roleId,
-            @RequestParam("list") String list) throws Exception {
+    @RequestMapping(value = "updateRoleResc", method = RequestMethod.POST)
+    public void updateRoleResc(Model model, @RequestParam("roleId") Integer roleId, @RequestParam("list") String list) {
         // 不能修改直接拥有的权限
-        boolean isDirect = this.isDirectRoleOfUser(roleId);
+        boolean isDirect;
+        try {
+            isDirect = this.isDirectRoleOfUser(roleId);
+        } catch (Exception e) {
+            isDirect = true;
+            LOG.error("updateRoleResc error,", e);
+        }
         if (isDirect) {
-            model.addAttribute("msg", FAIL);
+            model.addAttribute(MSG, FAIL);
             return;
         }
-
-        ObjectMapper mapper = new ObjectMapper();
-        List<Map> value = mapper.readValue(list, ArrayList.class);
-        for (Map m : value) {
-            int rescId = (Integer) m.get("id");
-            boolean checked = (Boolean) m.get("checked");
-
+        // 更新角色资源
+        model.addAttribute(MSG, SUCCESS);
+        List<Map> value = JsonUtil.jsonTo(list, ArrayList.class);
+        if (value == null) {
+            return;
+        }
+        for (Map map : value) {
+            int rescId = (Integer) map.get("id");
+            boolean checked = (Boolean) map.get("checked");
             SeRescRoleKey key = new SeRescRoleKey();
             key.setRoleId(roleId);
             key.setRescId(rescId);
@@ -261,26 +268,33 @@ public class SeRoleController extends BaseController {
                 seRoleRescService.deleteByPrimaryKey(key);
             }
         }
-
-        model.addAttribute("msg", SUCCESS);
     }
 
     /**
      * updateRole 更新角色
+     *
+     * @param model  model
+     * @param roleId roleId
+     * @param name   name
+     * @param code   code
      */
-    @RequestMapping(value = "/updateRole", method = RequestMethod.POST)
-    public void updateRole(
-            Model model,
-            @RequestParam("id") Integer roleId,
-            @RequestParam("roleName") String name,
-            @RequestParam(value = "code", required = false) String code,
-            @RequestParam(value = "tags", required = false) int[] tags) throws Exception {
+    @RequestMapping(value = "updateRole", method = RequestMethod.POST)
+    public void updateRole(Model model, @RequestParam("id") Integer roleId,
+                           @RequestParam("roleName") String name,
+                           @RequestParam(value = "code", required = false) String code) {
         // 不能重命名直接拥有的权限
-        boolean isDirect = this.isDirectRoleOfUser(roleId);
+        boolean isDirect;
+        try {
+            isDirect = this.isDirectRoleOfUser(roleId);
+        } catch (Exception e) {
+            isDirect = true;
+            LOG.error("updateRole error,", e);
+        }
         if (isDirect) {
-            model.addAttribute("msg", FAIL);
+            model.addAttribute(MSG, FAIL);
             return;
         }
+        // 更新角色
         if (StringUtils.isNotBlank(name)) {
             SeRole role = seRoleService.selectRoleById(roleId);
             role.setRoleName(name.trim());
@@ -288,10 +302,10 @@ public class SeRoleController extends BaseController {
                 role.setCode(code);
             }
             seRoleService.updateRole(role);
-            model.addAttribute("msg", SUCCESS);
+            model.addAttribute(MSG, SUCCESS);
             model.addAttribute("currentRole", role);
         } else {
-            model.addAttribute("msg", INVALID_PARAM);
+            model.addAttribute(MSG, INVALID_PARAM);
         }
     }
 
@@ -302,18 +316,23 @@ public class SeRoleController extends BaseController {
      * @param request request
      * @param roleId  roleId
      */
-    @RequestMapping(value = "/deleteRole")
-    public void deleteRole(Model model,
-                           HttpServletRequest request,
-                           @RequestParam("roleId") Integer roleId) throws Exception {
+    @RequestMapping(value = "deleteRole")
+    public void deleteRole(Model model, HttpServletRequest request, @RequestParam("roleId") Integer roleId) {
         // 不能删除直接拥有的权限
-        boolean isDirect = this.isDirectRoleOfUser(roleId);
+        boolean isDirect;
+        try {
+            isDirect = this.isDirectRoleOfUser(roleId);
+        } catch (Exception e) {
+            isDirect = true;
+            LOG.error("deleteRole error,", e);
+        }
         if (isDirect) {
-            model.addAttribute("msg", FAIL);
+            model.addAttribute(MSG, FAIL);
             return;
         }
+        // 删除角色资源
         this.deleteRoleRecursive(request, roleId);
-        model.addAttribute("msg", SUCCESS);
+        model.addAttribute(MSG, SUCCESS);
     }
 
     /**

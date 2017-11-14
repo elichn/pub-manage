@@ -7,8 +7,8 @@ $(function () {
         pageSize: 10,
         pagingAlign: "right",
         param: param,
-        countRoot: "total",
-        dataRoot: "list"
+        countRoot: "datas.total",
+        dataRoot: "datas.list"
     });
 
     $("#searchBtn").on('click', function () {

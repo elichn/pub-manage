@@ -54,7 +54,7 @@ public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             chainResolver.setFilterChainManager(manager);
             filter.setFilterChainResolver(chainResolver);
         } catch (Exception e) {
-            LOG.info("{}", e);
+            LOG.info("refreshFilter error,", e);
         }
     }
 }

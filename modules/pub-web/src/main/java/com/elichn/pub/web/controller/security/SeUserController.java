@@ -10,6 +10,7 @@ import com.elichn.pub.core.model.pojo.security.SeUserRoleKey;
 import com.elichn.pub.service.security.SeRoleService;
 import com.elichn.pub.service.security.SeUserService;
 import com.elichn.pub.web.controller.BaseController;
+import com.elichn.pub.web.util.JsonUtil;
 import com.elichn.pub.web.util.PasswordUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -45,7 +46,7 @@ import java.util.Map;
  * @date 2017/10/28
  */
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/user/")
 public class SeUserController extends BaseController {
 
     private final static Logger LOG = LoggerFactory.getLogger(SeUserController.class);
@@ -60,51 +61,23 @@ public class SeUserController extends BaseController {
     private SecurityManager securityManager;
 
     /**
-     * editUser editUser
-     *
-     * @param userId userId
-     * @param model  model
-     * @return String
-     */
-    @RequestMapping(value = "/editUser")
-    public String editUser(@RequestParam(value = "id", defaultValue = "") Integer userId,
-                           Model model) {
-        if (userId != null) {
-            if (userId == 1) {
-                return "/security/accessDenied";
-            } else {
-                SeUser user = seUserService.selectUserById(userId);
-                if (user == null) {
-                    return PREFIX + "/editUser";
-                }
-                model.addAttribute("user", user);
-                // 没有角色的用户
-                List<SeRole> list = seRoleService.selectRoleListByUser(userId.toString());
-                if (list.size() == 0) {
-                    return PREFIX + "/editUser";
-                }
-            }
-        }
-        return PREFIX + "/editUser";
-    }
-
-    /**
      * userManager 用户管理入口页
      *
      * @param model   model
      * @param request request
      * @return String
      */
-    @RequestMapping(value = "/userManager")
+    @RequestMapping(value = "userManager")
     public String userManager(Model model, HttpServletRequest request) {
-        model.addAttribute("roleList", getSubRoleOfCurrentUser());
-        model.addAttribute("style", WebUtils.getSessionAttribute(request, CommonConstats.STYLE));
+        model.addAttribute("roleList", this.getSubRoleOfCurrentUser());
+        model.addAttribute(CommonConstats.STYLE, WebUtils.getSessionAttribute(request, CommonConstats.STYLE));
         return PREFIX + "/userManager";
     }
 
     /**
      * viewUsers  展示用户
      *
+     * @param model      model
      * @param page       page
      * @param pageSize   pageSize
      * @param userName   userName
@@ -112,18 +85,16 @@ public class SeUserController extends BaseController {
      * @param status     status
      * @param userType   userType
      * @param searchType searchType
-     * @param model      model
      */
-    @RequestMapping(value = "/viewUsers")
-    public void viewUsers(@RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+    @RequestMapping(value = "viewUsers")
+    public void viewUsers(Model model, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
                           @RequestParam(value = "pageSize", defaultValue = "20", required = false) Integer pageSize,
                           @RequestParam(value = "userName", required = false) String userName,
                           @RequestParam(value = "roleName", required = false) String roleName,
                           @RequestParam(value = "status", required = false) Integer status,
                           @RequestParam(value = "userType", required = false) Integer userType,
-                          @RequestParam(value = "searchType", required = false, defaultValue = "0") Integer searchType,
-                          Model model) {
-        List<SeRole> roles = getSubRoleOfCurrentUser();
+                          @RequestParam(value = "searchType", required = false, defaultValue = "0") Integer searchType) {
+        List<SeRole> roles = this.getSubRoleOfCurrentUser();
         Map map = new HashMap(16);
         map.put("userName", userName);
         map.put("searchType", searchType);
@@ -143,10 +114,39 @@ public class SeUserController extends BaseController {
     }
 
     /**
-     * addUserView 跳转添加用户页面
+     * editUser 编辑用户入口页
+     *
+     * @param model  model
+     * @param userId userId
+     * @return String
      */
-    @RequestMapping(value = "/addUserPage", method = RequestMethod.GET)
-    public String addUserView(Model model) {
+    @RequestMapping(value = "editUser")
+    public String editUser(Model model, @RequestParam(value = "id", defaultValue = "") Integer userId) {
+        if (userId == null) {
+            return PREFIX + "/editUser";
+        }
+        if (userId == 1) {
+            return "/security/accessDenied";
+        } else {
+            SeUser user = seUserService.selectUserById(userId);
+            if (user == null) {
+                return PREFIX + "/editUser";
+            }
+            model.addAttribute("user", user);
+            // 没有角色的用户
+            List<SeRole> list = seRoleService.selectRoleListByUser(userId.toString());
+            if (list.size() == 0) {
+                return PREFIX + "/editUser";
+            }
+        }
+        return PREFIX + "/editUser";
+    }
+
+    /**
+     * addUserPage 添加用户入口页
+     */
+    @RequestMapping(value = "addUserPage", method = RequestMethod.GET)
+    public String addUserPage(Model model) {
         List<SeRole> roleList = seRoleService.selectRoles();
         model.addAttribute("roleList", roleList);
         return PREFIX + "/addUser";
@@ -155,66 +155,80 @@ public class SeUserController extends BaseController {
     /**
      * isUser 判断用户是否存在
      *
+     * @param response response
      * @param userName userName
      */
-    @RequestMapping(value = "/isUser", method = RequestMethod.GET)
-    public void isUser(@RequestParam("userName") String userName,
-                       HttpServletResponse response) {
+    @RequestMapping(value = "isUser", method = RequestMethod.GET)
+    public void isUser(HttpServletResponse response, @RequestParam("userName") String userName) {
         try {
             userName = URLDecoder.decode(userName, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            LOG.info("{}", e);
+            LOG.info("isUser error,", e);
         }
         SeUser user = seUserService.selectByName(userName);
         Boolean isUser = false;
         if (user != null) {
             isUser = true;
         }
-
-        returnMsg(response, !isUser);
+        super.returnMsg(response, !isUser);
     }
 
     /**
      * addUser 添加用户
+     *
+     * @param model    model
+     * @param request  request
+     * @param userName userName
+     * @param cnName   cnName
+     * @param password password
+     * @param roleList roleList
+     * @param status   status
+     * @param email    email
+     * @param descn    descn
      */
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public void addUser(
-            Model model, HttpServletRequest request,
-            @RequestParam("userName") String userName,
-            @RequestParam(value = "cnName", required = false) String cnName,
-            @RequestParam("password") String password,
-            @RequestParam(value = "roleList", defaultValue = "") String roleList,
-            @RequestParam(value = "status", defaultValue = "1") Integer status,
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam("descn") String descn) throws IOException {
-        if (StringUtils.isBlank(userName) || seUserService.selectByName(userName) != null) {
-            model.addAttribute("success", false);
-            return;
-        }
-        SeUser user = new SeUser();
-        user.setUserName(userName.trim());
-        int passwordLength = 3;
-        if (PasswordUtil.isComplexPassword(password) < passwordLength) {
-            model.addAttribute("success", false);
-            model.addAttribute("msg", "密码强度不够");
-        }
-        user.setPassword(DigestUtils.md5Hex(password.trim()));
-        user.setStatus(status);
-        user.setUserType(UserTypeEnum.STANDARD.getTypeValue());
-        if (StringUtils.isNotBlank(email)) {
-            user.setEmail(email.trim());
-        }
-        if (StringUtils.isNotBlank(descn)) {
-            user.setDescn(descn);
-        }
-        if (StringUtils.isNotBlank(cnName)) {
-            user.setCnName(cnName);
-        }
-        seUserService.insertUser(user);
-        if (StringUtils.isNotBlank(roleList)) {
+    @RequestMapping(value = "addUser", method = RequestMethod.POST)
+    public void addUser(Model model, HttpServletRequest request,
+                        @RequestParam("userName") String userName,
+                        @RequestParam(value = "cnName", required = false) String cnName,
+                        @RequestParam("password") String password,
+                        @RequestParam(value = "roleList", defaultValue = "") String roleList,
+                        @RequestParam(value = "status", defaultValue = "1") Integer status,
+                        @RequestParam(value = "email", required = false) String email,
+                        @RequestParam("descn") String descn) {
+        boolean isSuccess = false;
+        try {
+            if (StringUtils.isBlank(userName) || seUserService.selectByName(userName) != null) {
+                return;
+            }
+            SeUser user = new SeUser();
+            user.setUserName(userName.trim());
+            int passwordLength = 3;
+            if (PasswordUtil.isComplexPassword(password) < passwordLength) {
+                model.addAttribute(MSG, "密码强度不够");
+                return;
+            }
+            user.setPassword(DigestUtils.md5Hex(password.trim()));
+            user.setStatus(status);
+            user.setUserType(UserTypeEnum.STANDARD.getTypeValue());
+            if (StringUtils.isNotBlank(email)) {
+                user.setEmail(email.trim());
+            }
+            if (StringUtils.isNotBlank(descn)) {
+                user.setDescn(descn);
+            }
+            if (StringUtils.isNotBlank(cnName)) {
+                user.setCnName(cnName);
+            }
+            seUserService.insertUser(user);
+            isSuccess = true;
+            if (StringUtils.isBlank(roleList)) {
+                return;
+            }
             SeUser currentUser = seUserService.selectByName(userName);
-            ObjectMapper mapper = new ObjectMapper();
-            List<Map> value = mapper.readValue(roleList, ArrayList.class);
+            List<Map> value = JsonUtil.jsonTo(roleList, ArrayList.class);
+            if (value == null) {
+                return;
+            }
             for (Map m : value) {
                 int roleId = (Integer) m.get("id");
                 boolean checked = (Boolean) m.get("checked");
@@ -227,15 +241,16 @@ public class SeUserController extends BaseController {
                     seRoleService.deleteByPrimaryKey(userRoleKey);
                 }
             }
+        } finally {
+            model.addAttribute("success", isSuccess);
+            super.writeLog(request, "添加用户", "添加用户(" + userName + ")");
         }
-        model.addAttribute("success", true);
-        super.writeLog(request, "添加用户", "添加用户(" + userName + ")");
     }
 
     /**
      * updateUser 编辑用户
      */
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "updateUser", method = RequestMethod.POST)
     public void updateUser(
             Model model, HttpServletRequest request,
             @RequestParam("id") Integer id,
@@ -251,8 +266,8 @@ public class SeUserController extends BaseController {
         user.setCnName(cnName);
         user.setEmail(email);
         user.setDescn(descn);
-
         seUserService.updateByPrimaryKey(user);
+        // user role
         if (StringUtils.isNotBlank(roleList)) {
             ObjectMapper mapper = new ObjectMapper();
             List<Map> value = mapper.readValue(roleList, ArrayList.class);
@@ -276,55 +291,55 @@ public class SeUserController extends BaseController {
     /**
      * getRoleTree 查询数据权限
      *
-     * @param model model
+     * @param model  model
+     * @param userId userId
      */
-    @RequestMapping(value = "/getRoleTree")
-    public void getRoleTree(Model model,
-                            @RequestParam(value = "id", defaultValue = "") Integer userId) {
+    @RequestMapping(value = "getRoleTree")
+    public void getRoleTree(Model model, @RequestParam(value = "id", defaultValue = "") Integer userId) {
         List<SeRole> roles = null;
         if (userId != null) {
             // 获取被管理用户的直接角色
             roles = seRoleService.selectRoleListByUser(userId.toString());
         }
         String userName = getUserName();
-        if (userName != null) {
-            SeUser user = seUserService.selectByName(userName);
-            if (user != null) {
-                // 获取当前用户的所有角色
-                List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
-                if (roles != null) {
-                    List<Integer> roleIdList = new ArrayList<Integer>();
-                    for (SeRole role : roles) {
-                        roleIdList.add(role.getId());
-                    }
-
-                    // 初始化勾选的角色
-                    List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
-                    for (SeRole role : list) {
-                        SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(role);
-                        if (roleIdList.contains(role.getId())) {
-                            bvo.setChecked(true);
-                        } else {
-                            bvo.setChecked(false);
-                        }
-
-                        bvo.setNocheck(false);
-                        bvos.add(bvo);
-                    }
-                    model.addAttribute("list", bvos);
-                    return;
-                } else {
-                    // 初始化勾选的角色
-                    List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
-                    for (SeRole role : list) {
-                        SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(role);
-                        bvo.setNocheck(false);
-                        bvos.add(bvo);
-                    }
-                    model.addAttribute("list", bvos);
-                    return;
-                }
+        // userName is null
+        if (StringUtils.isBlank(userName)) {
+            return;
+        }
+        SeUser user = seUserService.selectByName(userName);
+        // user is null
+        if (user == null) {
+            return;
+        }
+        // 获取当前用户的所有角色
+        List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
+        if (roles != null) {
+            List<Integer> roleIdList = new ArrayList<Integer>();
+            for (SeRole role : roles) {
+                roleIdList.add(role.getId());
             }
+            // 初始化勾选的角色
+            List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
+            for (SeRole role : list) {
+                SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(role);
+                if (roleIdList.contains(role.getId())) {
+                    bvo.setChecked(true);
+                } else {
+                    bvo.setChecked(false);
+                }
+                bvo.setNocheck(false);
+                bvos.add(bvo);
+            }
+            model.addAttribute("list", bvos);
+        } else {
+            // 初始化勾选的角色
+            List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
+            for (SeRole role : list) {
+                SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(role);
+                bvo.setNocheck(false);
+                bvos.add(bvo);
+            }
+            model.addAttribute("list", bvos);
         }
     }
 
@@ -333,9 +348,149 @@ public class SeUserController extends BaseController {
      *
      * @param model model
      */
-    @RequestMapping(value = "/selectRoles")
+    @RequestMapping(value = "selectRoles")
     public void selectRoles(Model model) {
         model.addAttribute("roleList", this.getSubRoleOfCurrentUser());
+    }
+
+    /**
+     * resetPassword resetPassword
+     *
+     * @param model  model
+     * @param userId userId
+     */
+    @RequestMapping(value = "resetPassword")
+    public void resetPassword(Model model,
+                              @RequestParam(value = "id") Integer userId) {
+        SeUser user = seUserService.selectUserById(userId);
+        if (user != null && user.getUserType() == UserTypeEnum.STANDARD.getTypeValue()) {
+            String password = PasswordUtil.randomPassword();
+            user.setPassword(DigestUtils.md5Hex(password));
+            seUserService.updateUser(user);
+            model.addAttribute(MSG, password);
+        } else if (user != null && user.getUserType() == UserTypeEnum.LDAP.getTypeValue()) {
+            model.addAttribute(MSG, "LDAP");
+        } else {
+            model.addAttribute(MSG, FAIL);
+        }
+    }
+
+    /**
+     * password password
+     *
+     * @param model model
+     * @return String
+     */
+    @RequestMapping(value = "password")
+    public String password(Model model) {
+        return PREFIX + "/password";
+    }
+
+    /**
+     * updatePassword 修改密码
+     *
+     * @param model       model
+     * @param request     request
+     * @param oldPassword oldPassword(经过md5加密)
+     * @param newPassword newPassword(经过md5加密)
+     */
+    @RequestMapping(value = "updatePassword")
+    public void updatePassword(Model model, HttpServletRequest request,
+                               @RequestParam("oldPassword") String oldPassword,
+                               @RequestParam("newPassword") String newPassword) {
+        String userName = getUserName();
+        if (StringUtils.isBlank(userName)) {
+            model.addAttribute(MSG, SESSION_TIME_OUT);
+            model.addAttribute("success", FAIL);
+            return;
+        }
+        SeUser user = seUserService.selectByName(userName);
+        // 用户不存在
+        if (user == null) {
+            model.addAttribute(MSG, USER_NOT_EXIST);
+            model.addAttribute("success", FAIL);
+            return;
+        }
+        // update password
+        String msg;
+        String success;
+        if (!oldPassword.toLowerCase().equals(user.getPassword())) {
+            msg = "原始密码错误";
+            success = FAIL;
+        } else {
+            try {
+                user.setPassword(newPassword);
+                seUserService.updateUser(user);
+                msg = "更新密码成功！";
+                success = SUCCESS;
+            } catch (Exception e) {
+                msg = "更新密码失败！";
+                success = FAIL;
+            }
+        }
+        super.writeLog(request, "修改密码", "用户" + userName + msg);
+        model.addAttribute(MSG, msg);
+        model.addAttribute("success", success);
+    }
+
+    /**
+     * setStatus setStatus
+     *
+     * @param model   model
+     * @param request request
+     * @param userId  request
+     */
+    @RequestMapping(value = "setStatus")
+    public void setStatus(Model model, HttpServletRequest request, @RequestParam(value = "id") Integer userId) {
+        SeUser user = seUserService.selectUserById(userId);
+        // 用户不存在
+        if (user == null) {
+            model.addAttribute(MSG, USER_NOT_EXIST);
+            return;
+        }
+        // set status
+        if (user.getStatus() == 1) {
+            user.setStatus(0);
+        } else {
+            user.setStatus(1);
+        }
+        int re = seUserService.updateUser(user);
+        if (re > 0) {
+            model.addAttribute(MSG, SUCCESS);
+        } else {
+            model.addAttribute(MSG, FAIL);
+        }
+    }
+
+    /**
+     * hasPermissions hasPermissions
+     *
+     * @param model     model
+     * @param sessionId sessionId
+     */
+    @RequestMapping(value = "hasPermissions")
+    public void hasPermissions(Model model, @RequestParam(value = "sessionId") String sessionId) {
+        Subject.Builder builder = new Subject.Builder(securityManager);
+        builder.sessionId(sessionId);
+        Subject subject = builder.buildSubject();
+        model.addAttribute("r1", subject.isPermitted("/user:hasPermissions"));
+        model.addAttribute("r2", subject.isAuthenticated());
+    }
+
+    /**
+     * pullUser 拉取用户
+     *
+     * @param model    model
+     * @param userName userName
+     */
+    @RequestMapping(value = "pullUser")
+    public void pullUser(Model model, @RequestParam("userName") String userName) {
+        SeUser user = seUserService.selectByName(userName);
+        if (user != null) {
+            model.addAttribute(MSG, "EXIST");
+        } else {
+            // ldap拉取用户实现
+        }
     }
 
     /**
@@ -349,145 +504,6 @@ public class SeUserController extends BaseController {
             return null;
         } else {
             return seRoleService.selectRolesByUser(user.getId());
-        }
-    }
-
-    /**
-     * resetPassword resetPassword
-     *
-     * @param model  model
-     * @param userId userId
-     */
-    @RequestMapping(value = "/resetPassword")
-    public void resetPassword(Model model,
-                              @RequestParam(value = "id") Integer userId) {
-        SeUser user = seUserService.selectUserById(userId);
-        if (user != null && user.getUserType() == UserTypeEnum.STANDARD.getTypeValue()) {
-            String password = PasswordUtil.randomPassword();
-            user.setPassword(DigestUtils.md5Hex(password));
-            seUserService.updateUser(user);
-            model.addAttribute("msg", password);
-        } else if (user != null && user.getUserType() == UserTypeEnum.LDAP.getTypeValue()) {
-            model.addAttribute("msg", "LDAP");
-        } else {
-            model.addAttribute("msg", FAIL);
-        }
-    }
-
-    /**
-     * password password
-     *
-     * @param model model
-     * @return String
-     */
-    @RequestMapping(value = "/password")
-    public String password(Model model) {
-        return PREFIX + "/password";
-    }
-
-    /**
-     * updatePassword 修改密码
-     *
-     * @param model       model
-     * @param request     request
-     * @param oldPassword oldPassword(经过md5加密)
-     * @param newPassword newPassword(经过md5加密)
-     */
-    @RequestMapping(value = "/updatePassword")
-    public void updatePassword(Model model, HttpServletRequest request,
-                               @RequestParam("oldPassword") String oldPassword,
-                               @RequestParam("newPassword") String newPassword) {
-        String userName = getUserName();
-        if (StringUtils.isBlank(userName)) {
-            model.addAttribute("msg", SESSION_TIME_OUT);
-            model.addAttribute("success", FAIL);
-            return;
-        }
-        SeUser user = seUserService.selectByName(userName);
-        if (user == null) {
-            model.addAttribute("msg", USER_NOT_EXIST);
-            model.addAttribute("success", FAIL);
-        } else {
-            String msg;
-            String success;
-            if (!oldPassword.toLowerCase().equals(user.getPassword())) {
-                msg = "原始密码错误";
-                success = FAIL;
-            } else {
-                try {
-                    user.setPassword(newPassword);
-                    seUserService.updateUser(user);
-                    msg = "更新密码成功！";
-                    success = SUCCESS;
-                } catch (Exception e) {
-                    msg = "更新密码失败！";
-                    success = FAIL;
-                }
-            }
-            super.writeLog(request, "修改密码", "用户" + userName + msg);
-            model.addAttribute("msg", msg);
-            model.addAttribute("success", success);
-        }
-    }
-
-    /**
-     * setStatus setStatus
-     *
-     * @param model   model
-     * @param request request
-     * @param userId  request
-     */
-    @RequestMapping(value = "/setStatus")
-    public void setStatus(Model model, HttpServletRequest request,
-                          @RequestParam(value = "id") Integer userId) {
-        SeUser user = seUserService.selectUserById(userId);
-        if (user != null) {
-            if (user.getStatus() == 1) {
-                user.setStatus(0);
-            } else {
-                user.setStatus(1);
-            }
-
-            int re = seUserService.updateUser(user);
-            if (re > 0) {
-                model.addAttribute("msg", SUCCESS);
-            } else {
-                model.addAttribute("msg", FAIL);
-            }
-        } else {
-            model.addAttribute("msg", USER_NOT_EXIST);
-        }
-    }
-
-    /**
-     * hasPermissions hasPermissions
-     *
-     * @param model     model
-     * @param sessionId sessionId
-     */
-    @RequestMapping(value = "/hasPermissions")
-    public void hasPermissions(Model model,
-                               @RequestParam(value = "sessionId") String sessionId) {
-        Subject.Builder builder = new Subject.Builder(securityManager);
-        builder.sessionId(sessionId);
-        Subject subject = builder.buildSubject();
-        model.addAttribute("r1", subject.isPermitted("/user:hasPermissions"));
-        model.addAttribute("r2", subject.isAuthenticated());
-    }
-
-    /**
-     * pullUser 拉取用户
-     *
-     * @param model
-     */
-    @RequestMapping(value = "/pullUser")
-    public void pullUser(Model model,
-                         @RequestParam("userName") String userName) {
-        SeUser user = seUserService.selectByName(userName);
-        if (user != null) {
-            model.addAttribute("msg", "EXIST");
-        } else {
-            // ldap拉取用户实现
         }
     }
 }

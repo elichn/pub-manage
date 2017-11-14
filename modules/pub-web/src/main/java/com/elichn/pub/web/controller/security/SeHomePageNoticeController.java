@@ -51,7 +51,7 @@ public class SeHomePageNoticeController extends BaseController {
     private SeRoleService seRoleService;
 
     /**
-     * view view
+     * view 首页通知入口页
      *
      * @param model model
      * @return String
@@ -63,7 +63,7 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * list list
+     * list 首页通知列表
      *
      * @param model    model
      * @param queryBvo queryBvo
@@ -73,14 +73,14 @@ public class SeHomePageNoticeController extends BaseController {
     @RequestMapping(value = "/list")
     public void list(Model model, SeHomePageNotice queryBvo,
                      @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                     @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+                     @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         QueryBvo<SeHomePageNotice> qb = new QueryBvo<SeHomePageNotice>(queryBvo, pageNo, pageSize);
         ResultBvo<SeHomePageNotice> resultBvo = seHomePageNoticeService.getHomePageNoticeList(qb);
-        model.addAttribute("datas", resultBvo);
+        model.addAttribute(DATAS, resultBvo);
     }
 
     /**
-     * add add
+     * add 首页通知添加入口页
      *
      * @param model model
      * @return String
@@ -91,7 +91,7 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * add add
+     * add 首页通知添加
      *
      * @param model   model
      * @param hn      hn
@@ -102,26 +102,26 @@ public class SeHomePageNoticeController extends BaseController {
         if (hn.getType() == 1) {
             String welcomePath = "/welcome";
             if (StringUtils.isBlank(hn.getUrl()) || welcomePath.equals(hn.getUrl())) {
-                model.addAttribute("msg", INVALID_PARAM);
+                model.addAttribute(MSG, INVALID_PARAM);
                 return;
             }
         } else {
             if (StringUtils.isBlank(hn.getContent())) {
-                model.addAttribute("msg", INVALID_PARAM);
+                model.addAttribute(MSG, INVALID_PARAM);
                 return;
             }
         }
         try {
             seHomePageNoticeService.insert(hn, roleIds);
-            model.addAttribute("msg", SUCCESS);
+            model.addAttribute(MSG, SUCCESS);
         } catch (Exception e) {
-            LOG.error("{}", e);
-            model.addAttribute("msg", FAIL);
+            LOG.error("add error,", e);
+            model.addAttribute(MSG, FAIL);
         }
     }
 
     /**
-     * edit edit
+     * edit 首页通知编辑
      *
      * @param model model
      * @param hn    hn
@@ -135,10 +135,10 @@ public class SeHomePageNoticeController extends BaseController {
         }
         try {
             seHomePageNoticeService.updateByPrimaryKeyWithBLOBs(hn);
-            model.addAttribute("msg", SUCCESS);
+            model.addAttribute(MSG, SUCCESS);
         } catch (Exception e) {
-            LOG.error("{}", e);
-            model.addAttribute("msg", FAIL);
+            LOG.error("edit error,", e);
+            model.addAttribute(MSG, FAIL);
         }
     }
 
@@ -150,15 +150,14 @@ public class SeHomePageNoticeController extends BaseController {
      * @param roleId   roleId
      */
     @RequestMapping(value = "/updateRoleNotice")
-    public void updateRoleNotice(Model model,
-                                 @RequestParam("noticeId") int noticeId,
+    public void updateRoleNotice(Model model, @RequestParam("noticeId") int noticeId,
                                  @RequestParam("roleId") Integer[] roleId) {
         try {
             seHomePageNoticeService.updateRoleNotice(noticeId, Arrays.asList(roleId));
-            model.addAttribute("msg", SUCCESS);
+            model.addAttribute(MSG, SUCCESS);
         } catch (Exception e) {
-            LOG.error("{}", e);
-            model.addAttribute("msg", FAIL);
+            LOG.error("updateRoleNotice error,", e);
+            model.addAttribute(MSG, FAIL);
         }
     }
 
@@ -169,18 +168,17 @@ public class SeHomePageNoticeController extends BaseController {
      * @param id    id
      */
     @RequestMapping(value = "/updateAsNew")
-    public void updateAsNew(Model model,
-                            @RequestParam("id") int id) {
+    public void updateAsNew(Model model, @RequestParam("id") int id) {
         try {
             int re = seHomePageNoticeService.updateAsNew(id);
             if (re > 0) {
-                model.addAttribute("msg", SUCCESS);
+                model.addAttribute(MSG, SUCCESS);
             } else {
-                model.addAttribute("msg", FAIL);
+                model.addAttribute(MSG, FAIL);
             }
         } catch (Exception e) {
-            LOG.error("{}", e);
-            model.addAttribute("msg", FAIL);
+            LOG.error("updateAsNew error,", e);
+            model.addAttribute(MSG, FAIL);
         }
     }
 
@@ -206,14 +204,12 @@ public class SeHomePageNoticeController extends BaseController {
      * @param status id
      */
     @RequestMapping(value = "/changeStatus")
-    public void changeStatus(Model model,
-                             @RequestParam("id") Integer id,
-                             @RequestParam("status") Integer status) {
+    public void changeStatus(Model model, @RequestParam("id") Integer id, @RequestParam("status") Integer status) {
         int re = seHomePageNoticeService.updateStatus(id, status);
         if (re > 0) {
-            model.addAttribute("msg", SUCCESS);
+            model.addAttribute(MSG, SUCCESS);
         } else {
-            model.addAttribute("msg", FAIL);
+            model.addAttribute(MSG, FAIL);
         }
     }
 
@@ -224,25 +220,25 @@ public class SeHomePageNoticeController extends BaseController {
      * @param hnId  hnId
      */
     @RequestMapping(value = "/getRelationRole")
-    public void getRelationRole(Model model,
-                                @RequestParam("hnId") Integer hnId) {
+    public void getRelationRole(Model model, @RequestParam("hnId") Integer hnId) {
         String userName = getUserName();
-        if (userName != null) {
-            SeUser user = seUserService.selectByName(userName);
-            if (user != null) {
-                List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
-                List<Integer> roles = seHomePageNoticeService.getRelationRole(hnId);
+        if (StringUtils.isBlank(userName)) {
+            return;
+        }
+        SeUser user = seUserService.selectByName(userName);
+        if (user != null) {
+            List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
+            List<Integer> roles = seHomePageNoticeService.getRelationRole(hnId);
 
-                List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
-                for (SeRole r : list) {
-                    SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(r);
-                    if (roles.contains(r.getId())) {
-                        bvo.setChecked(true);
-                    }
-                    bvos.add(bvo);
+            List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
+            for (SeRole r : list) {
+                SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(r);
+                if (roles.contains(r.getId())) {
+                    bvo.setChecked(true);
                 }
-                model.addAttribute("list", bvos);
+                bvos.add(bvo);
             }
+            model.addAttribute("list", bvos);
         }
     }
 }

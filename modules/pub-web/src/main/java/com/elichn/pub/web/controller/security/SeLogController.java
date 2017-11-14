@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2017/10/28
  */
 @Controller
-@RequestMapping(value = "/log")
+@RequestMapping(value = "/log/")
 public class SeLogController extends BaseController {
 
     private final static String PREFIX = "/security/log/";
@@ -38,15 +38,12 @@ public class SeLogController extends BaseController {
      * @param pageSize pageSize
      * @param log      log
      */
-    @RequestMapping(value = "/loglist")
-    public void loglist(Model model,
-                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                        @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
-                        SeLog log) {
+    @RequestMapping(value = "loglist")
+    public void loglist(Model model, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, SeLog log) {
         QueryBvo<SeLog> queryBvo = new QueryBvo<SeLog>(log, pageNo, pageSize);
         ResultBvo<SeLog> resultBvo = seLogService.getLogsList(queryBvo);
-        model.addAttribute("list", resultBvo.getList());
-        model.addAttribute("total", resultBvo.getTotal());
+        model.addAttribute(DATAS, resultBvo);
     }
 
     /**
@@ -54,7 +51,7 @@ public class SeLogController extends BaseController {
      *
      * @return String
      */
-    @RequestMapping(value = "/logManager")
+    @RequestMapping(value = "logManager")
     public String logManger() {
         return PREFIX + "logManager";
     }

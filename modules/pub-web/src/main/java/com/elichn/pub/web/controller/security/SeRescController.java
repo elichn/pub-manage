@@ -31,7 +31,7 @@ import java.util.*;
  * @date 2017/10/28
  */
 @Controller
-@RequestMapping(value = "/resc")
+@RequestMapping(value = "/resc/")
 public class SeRescController extends BaseController {
 
     private final static Logger LOG = LoggerFactory.getLogger(SeRescController.class);
@@ -48,17 +48,20 @@ public class SeRescController extends BaseController {
     /**
      * rescManager 资源管理入口页
      */
-    @RequestMapping(value = "/rescManager", method = RequestMethod.GET)
-    public String rescManager() throws Exception {
+    @RequestMapping(value = "rescManager", method = RequestMethod.GET)
+    public String rescManager() {
         return PREFIX + "/rescManager";
     }
 
     /**
      * addResc 添加资源
+     *
+     * @param model   model
+     * @param request request
+     * @param resc    resc
      */
-    @RequestMapping(value = "/addResc", method = RequestMethod.POST)
-    public void addResc(SeResc resc,
-                        Model model, HttpServletRequest request) {
+    @RequestMapping(value = "addResc", method = RequestMethod.POST)
+    public void addResc(Model model, HttpServletRequest request, SeResc resc) {
         boolean success = true;
         try {
             if (StringUtils.isBlank(resc.getResString())) {
@@ -73,7 +76,7 @@ public class SeRescController extends BaseController {
                     + "(资源名:" + resc.getName() + ",资源ID:" + resc.getId() + ")", getUserName());
         } catch (Exception e) {
             success = false;
-            LOG.error("{}", e);
+            LOG.error("addResc error,", e);
         }
         model.addAttribute("success", success);
         model.addAttribute("currentResc", resc);
@@ -81,11 +84,14 @@ public class SeRescController extends BaseController {
 
     /**
      * updateResc 修改资源
+     *
+     * @param model   model
+     * @param request request
+     * @param resc    resc
      */
     // @CrudMethodAfter(methodDesc = "修改资源哦", log = "oldSeResc:$resc;newSeResc:${model.asMap().get('currentResc')};结果:${model.asMap().get('success')}")
-    @RequestMapping(value = "/updateResc", method = RequestMethod.POST)
-    public void updateResc(SeResc resc,
-                           Model model, HttpServletRequest request) {
+    @RequestMapping(value = "updateResc", method = RequestMethod.POST)
+    public void updateResc(Model model, HttpServletRequest request, SeResc resc) {
         boolean success = true;
         if (StringUtils.isBlank(resc.getResString())) {
             resc.setResString(null);
@@ -102,10 +108,11 @@ public class SeRescController extends BaseController {
             seRoleRescService.updateResc(resc);
             // 记录日志
             super.writeLog(request, CommonConstats.UPDATE_RESOURCE, CommonConstats.UPDATE_RESOURCE
-                    + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>" + "详细信息:<br>" + oldInfo + "<br>" + newInfo, getUserName());
+                    + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>"
+                    + "详细信息:<br>" + oldInfo + "<br>" + newInfo, getUserName());
         } catch (Exception e) {
             success = false;
-            LOG.error("{}", e);
+            LOG.error("updateResc error,", e);
         }
         model.addAttribute("success", success);
         model.addAttribute("currentResc", resc);
@@ -114,19 +121,20 @@ public class SeRescController extends BaseController {
     /**
      * deleteResc 删除资源
      *
-     * @param rescId rescId
-     * @param model  model
+     * @param model   model
+     * @param request request
+     * @param rescId  rescId
      */
-    @RequestMapping(value = "/deleteResc", method = RequestMethod.GET)
-    public void deleteResc(@RequestParam("rescId") Integer rescId,
-                           Model model, HttpServletRequest request) {
+    @RequestMapping(value = "deleteResc", method = RequestMethod.GET)
+    public void deleteResc(Model model, HttpServletRequest request, @RequestParam("rescId") Integer rescId) {
         boolean success = true;
         try {
             seRoleRescService.deleteResc(rescId);
-            super.writeLog(request, CommonConstats.DELETE_RESOURCE, CommonConstats.DELETE_RESOURCE + "(资源ID:" + rescId + ")", getUserName());
+            super.writeLog(request, CommonConstats.DELETE_RESOURCE,
+                    CommonConstats.DELETE_RESOURCE + "(资源ID:" + rescId + ")", getUserName());
         } catch (Exception e) {
             success = false;
-            LOG.error("{}", e);
+            LOG.error("deleteResc error,", e);
         }
         model.addAttribute("success", success);
     }
@@ -136,23 +144,22 @@ public class SeRescController extends BaseController {
      *
      * @param model
      */
-    @RequestMapping(value = "/getResourceListByRole")
+    @RequestMapping(value = "getResourceListByRole")
     public void getResourceListByRole(Model model) {
-        List<SeResc> rescsList = getRescListByRole();
+        List<SeResc> rescsList = this.getRescListByRole();
         model.addAttribute("list", rescsList);
     }
 
     /**
      * getRescListByRole 根据用户角色查找所有资源
      *
-     * @return
+     * @return List<SeResc>
      */
     private List<SeResc> getRescListByRole() {
         // 获得当前用户
         SeUser currentUser = seUserService.selectByName(getUserName());
         // 根据当前用户活动当前用户的所有角色
         List<SeRole> currentRoles = seRoleService.selectRoleListByUser(currentUser.getId().toString());
-
         Set<Integer> rescSet = new HashSet<Integer>();
         // 获取当前角色的资源 id
         for (SeRole role : currentRoles) {

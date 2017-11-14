@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/common/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/common/ztree/css/metroStyle/metroStyle.css"/>
     <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
-    <link rel="stylesheet" type="text/css" href="/common/artDialog/skins/default.css"/>
+    <link rel="stylesheet" type="text/css" href="/common/jquery-plugin/validate/style.css"/>
     <link rel="stylesheet" type="text/css" href="/css/security/role/roleManager.css"/>
 </head>
 <body>
@@ -113,7 +113,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-4">
-                <button style="width: 80px;" type="submit" class="btn btn-primary">提 交</button>
+                <button style="width: 80px;" type="submit" class="btn btn-info"><i class="glyphicon glyphicon-ok"></i>&nbsp;提 交</button>
             </div>
         </div>
     </form>

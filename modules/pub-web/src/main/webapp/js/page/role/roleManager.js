@@ -12,7 +12,8 @@ $(function () {
         success: function (data) {
             var setting = {
                 view: {
-                    selectedMulti: false
+                    selectedMulti: false,
+                    addHoverDom: addHoverDom
                 },
                 data: {
                     simpleData: {
@@ -230,6 +231,7 @@ function beforeRename(treeId, treeNode, newName) {
             },
             success: function (data) {
                 if (data.msg == "SUCCESS") {
+                    $.alert("修改角色名成功").time(2000);
                     return true;
                 } else {
                     $.alert("修改角色名失败").time(3000);
@@ -266,6 +268,11 @@ function onRightClick(event, treeId, treeNode) {
             showRMenu("node", event.clientX, event.clientY);
         }
     }
+}
+
+function addHoverDom(treeId, treeNode) {
+    var sObj = $("#" + treeNode.tId + "_a");
+    sObj.attr("title","右键进行操作");
 }
 
 // 显示菜单
@@ -341,6 +348,7 @@ function addRole(roleName, pNode) {
         },
         success: function (data) {
             if (data.role) {
+                $.alert("创建角色成功").time(2000);
                 var treeObj = $.fn.zTree.getZTreeObj("roleTree");
                 treeObj.addNodes(pNode, data.role);
             } else {
@@ -380,6 +388,7 @@ function deleteNode(node) {
         },
         success: function (data) {
             if (data && data.msg == "SUCCESS") {
+                $.alert("删除角色成功").time(2000);
                 var treeObj = $.fn.zTree.getZTreeObj("roleTree");
                 treeObj.removeNode(node);
             } else {
@@ -440,12 +449,14 @@ function modifyRole() {
             var node = treeObj.getSelectedNodes()[0];
             if (data.role) {
                 treeObj.addNodes(node, data.role);
+                $.alert("操作成功").time(2000);
             } else if (data.msg == "SUCCESS") {
                 node.id = data.currentRole.id;
                 node.parentId = data.currentRole.parentId;
                 node.roleName = data.currentRole.roleName;
                 node.code = data.currentRole.code;
                 treeObj.updateNode(node);
+                $.alert("操作成功").time(2000);
             } else if (data.msg == "INVALID_PARAM" || data.msg == "FAIL") {
                 $.alert("更新失败！").time(3000);
             } else {

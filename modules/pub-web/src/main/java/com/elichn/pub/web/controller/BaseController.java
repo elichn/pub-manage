@@ -74,9 +74,22 @@ public class BaseController<T> {
      */
     public static final String LOCKED = "LOCKED";
     /**
+     * CHECK_TIMES
+     */
+    public static final String CHECK_TIMES = "CHECK_TIMES";
+    /**
      * 错误
      */
     public static final String ERROR_KEY = "errorKey";
+    /**
+     * MSG
+     */
+    public static final String MSG = "msg";
+    /**
+     * DATAS
+     */
+    public static final String DATAS = "datas";
+
 
     @Autowired
     private SeLogService seLogService;
@@ -88,6 +101,12 @@ public class BaseController<T> {
         binder.registerCustomEditor(DateTime.class, new DateTimeEditor(true));
     }
 
+    /**
+     * getRequestContext getRequestContext
+     *
+     * @param request request
+     * @return
+     */
     protected RequestContext getRequestContext(HttpServletRequest request) {
         return new RequestContext(request);
     }
@@ -141,7 +160,7 @@ public class BaseController<T> {
      */
     protected String getRemoteAddr(HttpServletRequest request) {
         String remoteAddr = request.getHeader("X-Forwarded-For");
-        if (remoteAddr == null || "".equals(remoteAddr)) {
+        if (StringUtils.isBlank(remoteAddr)) {
             remoteAddr = request.getRemoteAddr();
         } else {
             String comma = ",";

@@ -71,6 +71,8 @@ public class SeLoginController extends BaseController {
     private int maxCheckTimes = 3;
 
     /**
+     * login login
+     *
      * @param model    model
      * @param request  request
      * @param response response
@@ -78,9 +80,7 @@ public class SeLoginController extends BaseController {
      * @return String
      */
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String login(Model model,
-                        HttpServletRequest request,
-                        HttpServletResponse response,
+    public String login(Model model, HttpServletRequest request, HttpServletResponse response,
                         @RequestParam(value = "redirectUrl", required = false) String url) {
         model.addAttribute("misName", CommonConstats.MIS_NAME);
         model.addAttribute("redirectUrl", url);
@@ -97,26 +97,14 @@ public class SeLoginController extends BaseController {
      *
      * @param request  request
      * @param response response
-     * @throws IOException exception
      */
     @RequestMapping(value = "getSessionId", method = RequestMethod.GET)
-    public void getSessionId(HttpServletRequest request,
-                             HttpServletResponse response) throws IOException {
+    public void getSessionId(HttpServletRequest request, HttpServletResponse response) {
         String callback = request.getParameter("callback");
-        response.getWriter().write(callback + "('" + request.getSession().getId() + "')");
-    }
-
-    /**
-     * byteArr2Int 由于都是10以内  所以不作过多处理
-     *
-     * @param arr arr
-     * @return int
-     */
-    private int byteArr2Int(byte[] arr) {
-        if (arr == null || arr.length == 0) {
-            return 0;
-        } else {
-            return Integer.valueOf(new String(arr));
+        try {
+            response.getWriter().write(callback + "('" + request.getSession().getId() + "')");
+        } catch (IOException e) {
+            LOG.error("getSessionId write error", e);
         }
     }
 
@@ -130,9 +118,7 @@ public class SeLoginController extends BaseController {
      * @return String
      */
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index(Model model,
-                        HttpServletRequest request,
-                        HttpServletResponse response,
+    public String index(Model model, HttpServletRequest request, HttpServletResponse response,
                         @RequestParam(value = "refer", required = false) String refer) {
         String userName = getUserName();
         if (StringUtils.isNotBlank(refer)) {
@@ -160,9 +146,7 @@ public class SeLoginController extends BaseController {
      * @return String
      */
     @RequestMapping(value = "index4horizontally", method = RequestMethod.GET)
-    public String index4horizontally(Model model,
-                                     HttpServletRequest request,
-                                     HttpServletResponse response,
+    public String index4horizontally(Model model, HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "refer", required = false) String refer) {
         String userName = getUserName();
         if (StringUtils.isNotBlank(refer)) {
@@ -208,22 +192,20 @@ public class SeLoginController extends BaseController {
     /**
      * checkCodeVerify checkCodeVerify
      *
-     * @param checkCode checkCode
      * @param request   request
      * @param response  response
+     * @param checkCode checkCode
      */
     @RequestMapping(value = "checkCodeVerify")
-    public void checkCodeVerify(
-            @RequestParam("checkCode") String checkCode,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+    public void checkCodeVerify(HttpServletRequest request, HttpServletResponse response,
+                                @RequestParam("checkCode") String checkCode) {
         String checkCodeReq = (String) WebUtils.getSessionAttribute(request, CommonConstats.SESSION_CHECK_CODE);
         if (checkCodeReq == null) {
-            returnMsg(response, false);
+            super.returnMsg(response, false);
         } else {
             int n = this.getCheckCodeTimes(request);
             boolean result = n <= maxCheckTimes && checkCodeReq.equalsIgnoreCase(checkCode.toLowerCase());
-            returnMsg(response, result);
+            super.returnMsg(response, result);
         }
         this.incrCheckCodeTimes(request);
     }
@@ -231,31 +213,35 @@ public class SeLoginController extends BaseController {
     /**
      * login 用户登录认证
      *
-     * @param model   model
-     * @param request request
+     * @param model         model
+     * @param request       request
+     * @param response      response
+     * @param userName      userName
+     * @param password      password
+     * @param userCheckCode userCheckCode
+     * @param url           url
      * @return String
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String login(
-            @RequestParam("userName") String userName,
-            @RequestParam("password") String password,
-            @RequestParam(value = "checkCode", required = false) String userCheckCode,
-            @RequestParam(value = "redirectUrl", required = false) String url,
-            Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String login(Model model, HttpServletRequest request, HttpServletResponse response,
+                        @RequestParam("userName") String userName,
+                        @RequestParam("password") String password,
+                        @RequestParam(value = "checkCode", required = false) String userCheckCode,
+                        @RequestParam(value = "redirectUrl", required = false) String url) throws Exception {
         Object o = WebUtils.getSessionAttribute(request, CommonConstats.SESSION_CHECK_CODE);
         String checkCode = o == null ? null : (String) o;
         int t = this.getCheckCodeTimes(request);
         if (t > maxCheckTimes) {
             model.addAttribute(ERROR_KEY, "验证码过期，请刷新验证码");
-            return login(model, request, response, url);
+            return this.login(model, request, response, url);
         }
         if (StringUtils.isBlank(userName)) {
             model.addAttribute(ERROR_KEY, "用户名不能为空");
-            return login(model, request, response, url);
+            return this.login(model, request, response, url);
         }
         if (StringUtils.isBlank(password)) {
             model.addAttribute(ERROR_KEY, "密码不能为空");
-            return login(model, request, response, url);
+            return this.login(model, request, response, url);
         }
         boolean isNeedCheckCode = this.getCheckCodeWrongTimes(request) >= maxTimes;
         if (isNeedCheckCode) {
@@ -264,15 +250,15 @@ public class SeLoginController extends BaseController {
                 int inputCheckCodeLength = 4;
                 if (inputCheckCode.length() != inputCheckCodeLength || !inputCheckCode.equals(checkCode)) {
                     model.addAttribute(ERROR_KEY, "验证码错误");
-                    return login(model, request, response, url);
+                    return this.login(model, request, response, url);
                 }
             } else {
                 model.addAttribute(ERROR_KEY, "验证码错误");
-                return login(model, request, response, url);
+                return this.login(model, request, response, url);
             }
         }
         Subject currentUser = SecurityUtils.getSubject();
-
+        // 登录验证
         String remoteAddr = getRemoteAddr(request);
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password, remoteAddr);
         /** token.setRememberMe(true);*/
@@ -294,7 +280,7 @@ public class SeLoginController extends BaseController {
             LOG.error("登录失败，用户名或密码错误", ae);
             this.incrCheckCodeWrongTimes(request);
             this.incrCheckCodeTimes(request);
-            return login(model, request, response, url);
+            return this.login(model, request, response, url);
         }
     }
 
@@ -390,6 +376,20 @@ public class SeLoginController extends BaseController {
     }
 
     /**
+     * byteArr2Int 由于都是10以内  所以不作过多处理
+     *
+     * @param arr arr
+     * @return int
+     */
+    private int byteArr2Int(byte[] arr) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        } else {
+            return Integer.valueOf(new String(arr));
+        }
+    }
+
+    /**
      * getRescOfUser 获取用户具有的资源
      *
      * @return List<SeResc>
@@ -405,7 +405,6 @@ public class SeLoginController extends BaseController {
             List<SeResc> rescList = seRoleRescService.getRescByRole(r.getId());
             rescs.addAll(rescList);
         }
-
         Map<Integer, Boolean> map = new HashMap<Integer, Boolean>(16);
         List<SeResc> list = new ArrayList<SeResc>();
         for (SeResc resc : rescs) {
@@ -414,17 +413,14 @@ public class SeLoginController extends BaseController {
                 map.put(resc.getId(), true);
             }
         }
-
         Collections.sort(list, new Comparator<SeResc>() {
             @Override
             public int compare(SeResc o1, SeResc o2) {
                 return o1.getPriority() - o2.getPriority();
             }
         });
-
         return list;
     }
-
 
     /**
      * getMenu 获取横版菜单
@@ -473,7 +469,6 @@ public class SeLoginController extends BaseController {
             for (Menu sub : subMenu) {
                 this.setSubMenu(menuMap, sub);
             }
-
         }
         // 三级菜单设置子菜单
         for (Menu m : menus) {
@@ -490,7 +485,6 @@ public class SeLoginController extends BaseController {
                     this.setSubMenu(menuMap, sub);
                 }
             }
-
         }
         Collections.sort(menus, new Comparator<Menu>() {
             @Override
@@ -498,7 +492,6 @@ public class SeLoginController extends BaseController {
                 return o1.getPriority() - o2.getPriority();
             }
         });
-
         return menus;
     }
 
@@ -532,7 +525,6 @@ public class SeLoginController extends BaseController {
         v.increment(1);
         v.expireAt(DateTime.now().plusDays(1).withHourOfDay(0).withMinuteOfHour(0)
                 .withSecondOfMinute(0).withMillisOfSecond(0).toDate());
-        // System.out.println(byteArr2Int(v.get()));
     }
 
     /**
@@ -555,7 +547,7 @@ public class SeLoginController extends BaseController {
     private int getCheckCodeWrongTimes(HttpServletRequest request) {
         String today = DateTime.now().toString(DateTimeUtil.YMD);
         BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + getRemoteAddr(request));
-        return byteArr2Int(v.get());
+        return this.byteArr2Int(v.get());
     }
 
     /**
@@ -565,7 +557,7 @@ public class SeLoginController extends BaseController {
      */
     private void incrCheckCodeTimes(HttpServletRequest request) {
         int times = this.getCheckCodeTimes(request);
-        WebUtils.setSessionAttribute(request, "CHECK_TIMES", times + 1);
+        WebUtils.setSessionAttribute(request, CHECK_TIMES, times + 1);
     }
 
     /**
@@ -575,7 +567,7 @@ public class SeLoginController extends BaseController {
      * @return int
      */
     private int getCheckCodeTimes(HttpServletRequest request) {
-        Object times = WebUtils.getSessionAttribute(request, "CHECK_TIMES");
+        Object times = WebUtils.getSessionAttribute(request, CHECK_TIMES);
         return times == null ? 0 : (Integer) times;
     }
 
@@ -585,6 +577,6 @@ public class SeLoginController extends BaseController {
      * @param request request
      */
     private void clearCheckCodeTimes(HttpServletRequest request) {
-        WebUtils.setSessionAttribute(request, "CHECK_TIMES", null);
+        WebUtils.setSessionAttribute(request, CHECK_TIMES, null);
     }
 }

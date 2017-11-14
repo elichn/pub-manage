@@ -13,6 +13,9 @@ $(function () {
         url: "/resc/getResourceListByRole.json",
         success: function (data) {
             var setting = {
+                view: {
+                    addHoverDom: addHoverDom
+                },
                 data: {
                     simpleData: {
                         enable: true,
@@ -96,6 +99,11 @@ function onRightClick(event, treeId, treeNode) {
     }
 }
 
+function addHoverDom(treeId, treeNode) {
+    var sObj = $("#" + treeNode.tId + "_a");
+    sObj.attr("title","右键进行操作");
+}
+
 function showRMenu(type, x, y) {
     if (type == "root") {
         $("#m_del").hide();
@@ -166,7 +174,7 @@ function addTreeNode() {
 
 
 /**
- * 更新节点
+ * 编辑资源
  */
 function editTreeNode() {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
@@ -184,7 +192,7 @@ function editTreeNode() {
 }
 
 /**
- * 删除 资源
+ * 删除资源
  */
 function removeTreeNode() {
     var treeObj = $.fn.zTree.getZTreeObj("rescTree");
@@ -213,6 +221,15 @@ function removeTreeNode() {
                 data: {
                     rescId: nodes[0].id,
                     rescName: nodes[0].name
+                },
+                success: function (data) {
+                    if (data.success) {
+                        $.alert("删除成功").time(2000);
+                    } else {
+                        $.alert("删除失败").time(3000);
+                    }
+                }, error: function () {
+                    $.alert("提交失败").time(3000);
                 }
             });
         }
@@ -286,6 +303,7 @@ function modifyResc() {
         data: $("#form").serialize(),
         success: function (data) {
             if (data.success) {
+                $.alert("操作成功").time(2000);
                 if ($("#form").attr("action").indexOf("update") > 0) {
                     updateCurrentNode(data.currentResc);
                 } else {
