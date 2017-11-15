@@ -8,7 +8,7 @@ import com.elichn.pub.service.security.SeRoleRescService;
 import com.elichn.pub.service.security.SeRoleService;
 import com.elichn.pub.service.security.SeUserService;
 import com.elichn.pub.web.shiro.cache.RedisCacheManager;
-import com.elichn.pub.web.shiro.util.SerializeUtils;
+import com.elichn.pub.web.shiro.util.SerializeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -76,7 +76,7 @@ public class CustomJdbcRealm extends JdbcRealm {
         Set<String> permissions = new HashSet<String>();
         Set<String> roleNames = new HashSet<String>();
         if (user != null) {
-            List<SeRole> roleList = seRoleService.selectRoleListByUser(user.getId().toString());
+            List<SeRole> roleList = seRoleService.selectRoleListByUserId(user.getId());
 
             List<Integer> roleIds = new ArrayList<Integer>();
             for (SeRole r : roleList) {
@@ -85,7 +85,7 @@ public class CustomJdbcRealm extends JdbcRealm {
             }
 
             if (permissionsLookupEnabled && roleIds.size() > 0) {
-                List<SeResc> rescList = seRoleRescService.getRescList(roleIds);
+                List<SeResc> rescList = seRoleRescService.selectRescListByRoleIds(roleIds);
                 for (SeResc resc : rescList) {
                     if (StringUtils.isNotBlank(resc.getResString())) {
                         String[] rescArr = resc.getResString().split(";");
@@ -119,7 +119,7 @@ public class CustomJdbcRealm extends JdbcRealm {
                 LOG.trace("Attempting to retrieve the AuthorizationInfo from cache.");
             }
             // Object key = getAuthorizationCacheKey(principals);
-            info = (AuthorizationInfo) SerializeUtils.deserialize(cache.get(principals.getPrimaryPrincipal()));
+            info = (AuthorizationInfo) SerializeUtil.deserialize(cache.get(principals.getPrimaryPrincipal()));
             if (LOG.isTraceEnabled()) {
                 if (info == null) {
                     LOG.trace("No AuthorizationInfo found in cache for principals [" + principals + "]");
@@ -138,7 +138,7 @@ public class CustomJdbcRealm extends JdbcRealm {
                     LOG.trace("Caching authorization info for principals: [" + principals + "].");
                 }
                 // Object key = getAuthorizationCacheKey(principals);
-                cache.put(principals.getPrimaryPrincipal(), SerializeUtils.serialize(info));
+                cache.put(principals.getPrimaryPrincipal(), SerializeUtil.serialize(info));
             }
         }
 

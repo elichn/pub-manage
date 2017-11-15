@@ -1,10 +1,82 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elichn.pub.core.dao.security.SeUserDao">
-    <select id="selectUserByUserName" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
-            parameterType="java.lang.String">
-        select * from se_user where user_name=#{userName};
+    <!--根据用户名查询用户-->
+    <select id="selectUserByUserName" resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap">
+        select * from se_user where user_name = #{userName};
+    </select>
+
+    <!-- 根据查询条件查询用户列表 -->
+    <select id="selectUsersList4Page" parameterType="map" resultType="com.elichn.pub.core.model.bvo.SeUserRoleBvo">
+        select
+            b.id userId,
+            b.user_name userName,
+            b.cn_name cnName,
+            b.user_type userType,
+            b.descn userDescn,
+            b.status,
+            b.email,
+            b.role_id roleId,
+            b.role_name roleName
+        from
+        <include refid="selectUsersByPageSql"/>
+        order by b.id desc limit #{start},#{pageSize}
+    </select>
+
+    <!-- 根据查询条件查询用户条数 -->
+    <select id="selectUsersListCount" parameterType="map" resultType="java.lang.Integer">
+        select count(1) from
+        <include refid="selectUsersByPageSql"/>
+    </select>
+
+    <!--根据邮箱email判断该邮箱是否已经被使用-->
+    <select id="selectUserListByEmail" parameterType="java.lang.String"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap">
+        select * from se_user where email = #{email}
+    </select>
+
+    <!--根据角色id列表查询用户列表-->
+    <select id="selectUserListByRoleIds" parameterType="List"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap">
+        select
+          distinct u.*
+        from
+          se_user_role ur
+        join se_user u
+        on ur.user_id = u.id and u.status = 1
+        and ur.role_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--根据角色id查询用户列表-->
+    <select id="selectUserListByRoleId" parameterType="int"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap">
+        select
+          distinct u.*
+        from
+          se_user_role ur
+        join se_user u
+        on ur.user_id = u.id and ur.role_id = #{roleId}
+    </select>
+
+    <!--根据角色code列表查询用户列表-->
+    <select id="selectUserListByCodes"  parameterType="List"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap">
+        select
+          distinct u.id,
+          u.user_name,
+          u.cn_name
+        from se_user_role ur
+        join se_user u
+        on ur.user_id = u.id and u.status = 1
+        join se_role r
+        on ur.role_id = r.id
+        and r.code in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 
     <sql id="selectUsersByPageSql">
@@ -45,84 +117,4 @@
             where find_in_set(#{roleName},b.role_name)
         </if>
     </sql>
-
-    <!-- 查询用户列表，不包含广告主用户和联盟用户 -->
-    <select id="selectUsersByPage" resultType="com.elichn.pub.core.model.bvo.SeUserRoleBvo"
-            parameterType="map">
-        select b.id userId,b.user_name userName, b.cn_name cnName,b.user_type userType, b.descn
-        userDescn, b.status, b.email, b.role_id
-        roleId, b.role_name roleName
-        from
-        <include refid="selectUsersByPageSql"/>
-        order by b.id desc limit #{startCount},#{pageSize}
-    </select>
-
-    <select id="selectUsersByNameRows" resultType="java.lang.Integer"
-            parameterType="map">
-        select count(*) from
-        <include refid="selectUsersByPageSql"/>
-    </select>
-
-    <select id="selectUserByEmail" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
-            parameterType="java.lang.String">
-        select * from se_user where email=#{email};
-    </select>
-
-    <select id="getUserByRole" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
-            parameterType="List">
-        select distinct u.* from se_user_role ur join se_user u on ur.user_id = u.id and u.status = 1 and ur.role_id in
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getUserByRoleId" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
-            parameterType="int">
-        select distinct u.* from se_user_role ur join se_user u
-        on ur.user_id = u.id and ur.role_id = #{_parameter}
-    </select>
-
-    <select id="getUsersByCode" resultType="com.elichn.pub.core.model.pojo.security.SeUser"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeUserMapper.BaseResultMap"
-            parameterType="List">
-        select distinct u.id, u.user_name, u.cn_name from se_user_role ur
-        join se_user u on ur.user_id = u.id and u.status = 1
-        join se_role r on ur.role_id = r.id and r.code in
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getUserInfo" resultType="com.elichn.pub.core.model.bvo.SeUserBvo">
-        select
-            u.id,
-            u.user_name,
-            u.cn_name cnName,
-            u.email,
-            u.user_type userType,
-            u.descn,
-            if(find_in_set("OUT_PACK_CUSTOMER", group_concat(r.code)) > 0, 1, 0) userRole
-        from se_user u
-        left join se_user_role ur on u.id = ur.user_id
-        left join se_role r on ur.role_id = r.id
-        where u.user_name = #{userName}
-    </select>
-
-    <select id="getUserInfoById" resultType="com.elichn.pub.core.model.bvo.SeUserBvo">
-        select
-        u.id,
-        u.user_name,
-        u.cn_name cnName,
-        u.email,
-        u.user_type userType,
-        u.descn 'desc',
-        if(find_in_set("OUT_PACK_CUSTOMER", group_concat(r.code)) > 0, 1, 0) userRole
-        from se_user u
-        left join se_user_role ur on u.id = ur.user_id
-        left join se_role r on ur.role_id = r.id
-        where u.id = #{userId}
-    </select>
 </mapper>

@@ -1,9 +1,8 @@
 package com.elichn.pub.service.security.impl;
 
 
-import com.elichn.pub.core.model.bvo.SeUserBvo;
-import com.elichn.pub.core.model.bvo.SeUserRoleBvo;
 import com.elichn.pub.core.dao.security.SeUserDao;
+import com.elichn.pub.core.model.bvo.SeUserRoleBvo;
 import com.elichn.pub.core.model.mapper.security.SeUserMapper;
 import com.elichn.pub.core.model.mapper.security.SeUserRoleMapper;
 import com.elichn.pub.core.model.pojo.security.SeUser;
@@ -56,22 +55,22 @@ public class SeUserServiceImpl implements SeUserService {
     }
 
     @Override
-    public List<SeUserRoleBvo> selectUsersByPage(int pageNo, int pageSize, Map map) {
+    public List<SeUserRoleBvo> selectUsersList4Page(int pageNo, int pageSize, Map map) {
         if (pageNo < 1) {
             pageNo = 1;
         }
         if (pageSize < 1) {
-            pageSize = 20;
+            pageSize = 10;
         }
-        int startCount = (pageNo - 1) * pageSize;
-        map.put("startCount", startCount);
+        int start = (pageNo - 1) * pageSize;
+        map.put("start", start);
         map.put("pageSize", pageSize);
-        return seUserDao.selectUsersByPage(map);
+        return seUserDao.selectUsersList4Page(map);
     }
 
     @Override
-    public Integer getRowsByName(Map map) {
-        return seUserDao.selectUsersByNameRows(map);
+    public Integer selectUsersListCount(Map map) {
+        return seUserDao.selectUsersListCount(map);
     }
 
     @Override
@@ -82,9 +81,14 @@ public class SeUserServiceImpl implements SeUserService {
     }
 
     @Override
+    public int updateByPrimaryKey(SeUser record) {
+        return seUserMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
     public boolean verifyEmail(String email) {
         boolean flag = false;
-        List<SeUser> userList = seUserDao.selectUserByEmail(email);
+        List<SeUser> userList = seUserDao.selectUserListByEmail(email);
         if (userList != null && userList.size() > 0) {
             flag = true;
         }
@@ -92,32 +96,17 @@ public class SeUserServiceImpl implements SeUserService {
     }
 
     @Override
-    public int updateByPrimaryKey(SeUser record) {
-        return seUserMapper.updateByPrimaryKey(record);
+    public List<SeUser> selectUserListByRoleIds(List<Integer> roleIds) {
+        return seUserDao.selectUserListByRoleIds(roleIds);
     }
 
     @Override
-    public List<SeUser> getUserByRole(List<Integer> ids) {
-        return seUserDao.getUserByRole(ids);
+    public List<SeUser> selectUserListByRoleId(Integer roleId) {
+        return seUserDao.selectUserListByRoleId(roleId);
     }
 
     @Override
-    public List<SeUser> getUserByRoleId(Integer roleId) {
-        return seUserDao.getUserByRoleId(roleId);
-    }
-
-    @Override
-    public List<SeUser> getUsersByCode(List<String> code) {
-        return seUserDao.getUsersByCode(code);
-    }
-
-    @Override
-    public SeUserBvo getUserInfo(String userName) {
-        return seUserDao.getUserInfo(userName);
-    }
-
-    @Override
-    public SeUserBvo getUserInfoById(Integer userId) {
-        return seUserDao.getUserInfoById(userId);
+    public List<SeUser> selectUserListByCodes(List<String> code) {
+        return seUserDao.selectUserListByCodes(code);
     }
 }

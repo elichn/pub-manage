@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elichn.pub.core.dao.security.SeLogDao">
-    <select id="getList"
-            parameterType="com.elichn.pub.core.model.bvo.QueryBvo"
+    <!--根据查询条件分页查询操作日志列表-->
+    <select id="selectLogList4Page" parameterType="com.elichn.pub.core.model.bvo.QueryBvo"
             resultMap="com.elichn.pub.core.model.mapper.security.SeLogMapper.BaseResultMap">
         select * from se_log
         <include refid="logListSql"/>
@@ -10,13 +10,14 @@
         limit #{offset},#{rows}
     </select>
 
-    <select id="getListCount"
-            parameterType="com.elichn.pub.core.model.bvo.QueryBvo" resultType="int">
+    <!--根据查询条件查询操作日志条数-->
+    <select id="selectLogListCount" parameterType="com.elichn.pub.core.model.bvo.QueryBvo" resultType="int">
         select count(1) from se_log
         <include refid="logListSql"/>
     </select>
 
-    <select id="getLogsList" resultType="map">
+    <!--导出-根据查询条件查询操作日志列表-->
+    <select id="selectLogsList" resultType="map">
         select
           id,
           ip,

@@ -139,9 +139,9 @@
                     item.focus();
 
                     var itemY = item.offset().top;
-//                    var divH = o.selectDiv.height();
+                    // var divH = o.selectDiv.height();
                     var divY = o.selectDiv.offset().top;
-//                    var itemH = item.height();
+                    // var itemH = item.height();
                     if (itemY < divY) {
                         var y = o.selectDiv.scrollTop();
                         o.selectDiv.scrollTop(y - item.height());

@@ -31,22 +31,6 @@ public class SeLogController extends BaseController {
     private SeLogService seLogService;
 
     /**
-     * loglist 日历列表
-     *
-     * @param model    model
-     * @param pageNo   pageNo
-     * @param pageSize pageSize
-     * @param log      log
-     */
-    @RequestMapping(value = "loglist")
-    public void loglist(Model model, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, SeLog log) {
-        QueryBvo<SeLog> queryBvo = new QueryBvo<SeLog>(log, pageNo, pageSize);
-        ResultBvo<SeLog> resultBvo = seLogService.getLogsList(queryBvo);
-        model.addAttribute(DATAS_KEY, resultBvo);
-    }
-
-    /**
      * logManager 日志管理入口页
      *
      * @return String
@@ -56,9 +40,24 @@ public class SeLogController extends BaseController {
         return PREFIX + "logManager";
     }
 
+    /**
+     * logList 操作日志列表
+     *
+     * @param model    model
+     * @param pageNo   pageNo
+     * @param pageSize pageSize
+     * @param log      log
+     */
+    @RequestMapping(value = "logList")
+    public void logList(Model model, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, SeLog log) {
+        QueryBvo<SeLog> queryBvo = new QueryBvo<SeLog>(log, pageNo, pageSize);
+        ResultBvo<SeLog> resultBvo = seLogService.selectLogList4Page(queryBvo);
+        model.addAttribute(DATAS_KEY, resultBvo);
+    }
 
     /**
-     * exportExcel 导出统计数据
+     * exportExcel 导出操作日志
      *
      * @param response     response
      * @param fileName     fileName
@@ -68,6 +67,6 @@ public class SeLogController extends BaseController {
     public void exportExcel(HttpServletResponse response,
                             @RequestParam(value = "templateName", required = false) String templateName,
                             @RequestParam(value = "fileName", required = false) String fileName) {
-        super.exportExcel(response, fileName, templateName, seLogService.getLogsList());
+        super.exportExcel(response, fileName, templateName, seLogService.selectLogsList());
     }
 }

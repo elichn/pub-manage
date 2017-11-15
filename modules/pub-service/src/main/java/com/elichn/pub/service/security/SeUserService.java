@@ -1,6 +1,5 @@
 package com.elichn.pub.service.security;
 
-import com.elichn.pub.core.model.bvo.SeUserBvo;
 import com.elichn.pub.core.model.bvo.SeUserRoleBvo;
 import com.elichn.pub.core.model.pojo.security.SeUser;
 
@@ -58,30 +57,22 @@ public interface SeUserService {
     int updateUser(SeUser user);
 
     /**
-     * selectUsersByPage 分页查询用户
+     * selectUsersList4Page 根据查询条件分页查询用户列表
      *
      * @param pageNo   pageNo
      * @param pageSize pageSize
      * @param map      map
      * @return List<SeUserRoleBvo>
      */
-    List<SeUserRoleBvo> selectUsersByPage(int pageNo, int pageSize, Map map);
+    List<SeUserRoleBvo> selectUsersList4Page(int pageNo, int pageSize, Map map);
 
     /**
-     * getRowsByName 根据名字查找用户的总记录数
+     * selectUsersListCount 根据查询条件查询用户条数
      *
      * @param map map
      * @return Integer
      */
-    Integer getRowsByName(Map map);
-
-    /**
-     * verifyEmail 验证邮箱似否已被使用
-     *
-     * @param email email
-     * @return boolean
-     */
-    boolean verifyEmail(String email);
+    Integer selectUsersListCount(Map map);
 
     /**
      * updateByPrimaryKey updateByPrimaryKey
@@ -92,42 +83,35 @@ public interface SeUserService {
     int updateByPrimaryKey(SeUser record);
 
     /**
-     * getUserByRole  getUserByRole
+     * verifyEmail 验证邮箱似否已被使用
      *
-     * @param ids ids
-     * @return List<SeUser>
+     * @param email email
+     * @return boolean
      */
-    List<SeUser> getUserByRole(List<Integer> ids);
+    boolean verifyEmail(String email);
 
     /**
-     * getUserByRoleId
+     * selectUserListByRoleIds  根据角色id列表查询用户列表
+     *
+     * @param roleIds roleIds
+     * @return List<SeUser>
+     */
+    List<SeUser> selectUserListByRoleIds(List<Integer> roleIds);
+
+    /**
+     * selectUserListByRoleId 根据角色id查询用户列表
      *
      * @param roleId roleId
      * @return List<SeUser>
      */
-    List<SeUser> getUserByRoleId(Integer roleId);
+    List<SeUser> selectUserListByRoleId(Integer roleId);
 
     /**
-     * getUsersByCode 根据code查询用户
+     * selectUserListByCodes 根据角色code列表查询用户列表
      *
      * @param code code
      * @return List<SeUser>
      */
-    List<SeUser> getUsersByCode(List<String> code);
+    List<SeUser> selectUserListByCodes(List<String> code);
 
-    /**
-     * getUserInfo  getUserInfo
-     *
-     * @param userName
-     * @return SeUserBvo
-     */
-    SeUserBvo getUserInfo(String userName);
-
-    /**
-     * getUserInfoById getUserInfoById
-     *
-     * @param userId userId
-     * @return SeUserBvo
-     */
-    SeUserBvo getUserInfoById(Integer userId);
 }

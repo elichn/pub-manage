@@ -18,7 +18,7 @@ import java.util.Map;
 public interface SeLogService {
 
     /**
-     * insert 记录操作日志
+     * insert 操作日志插入
      *
      * @param log log
      * @return int
@@ -26,15 +26,15 @@ public interface SeLogService {
     int insert(SeLog log);
 
     /**
-     * getLogsList getLogsList
+     * selectLogsList 根据查询条件分页查询操作日志列表
      *
      * @param queryBvo queryBvo
      * @return ResultBvo<SeLog>
      */
-    ResultBvo<SeLog> getLogsList(QueryBvo<SeLog> queryBvo);
+    ResultBvo<SeLog> selectLogList4Page(QueryBvo<SeLog> queryBvo);
 
     /**
-     * insert 插入日志
+     * insert 操作日志插入
      *
      * @param logType    日志类型
      * @param logContent 日志内容
@@ -44,7 +44,7 @@ public interface SeLogService {
     int insert(String logType, String logContent, String ip);
 
     /**
-     * insert 插入日志
+     * insert 操作日志插入
      *
      * @param logType    日志类型
      * @param logContent 日志内容
@@ -55,9 +55,9 @@ public interface SeLogService {
     int insert(String logType, String logContent, String ip, String userName);
 
     /**
-     * getLogsList getLogsList
+     * selectLogsList 导出-根据查询条件查询操作日志列表
      *
      * @return List<Map<String,Object>>
      */
-    List<Map<String, Object>> getLogsList();
+    List<Map<String, Object>> selectLogsList();
 }

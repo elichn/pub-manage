@@ -16,7 +16,7 @@ import java.util.List;
 public interface SePublicPermissionDao {
 
     /**
-     * selectBySystem selectBySystem
+     * selectBySystem 根据system查询PublicPermission
      *
      * @param system system
      * @return List<SePublicPermission>

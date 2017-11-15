@@ -70,16 +70,16 @@ public class SeLogServiceImpl implements SeLogService {
     }
 
     @Override
-    public ResultBvo<SeLog> getLogsList(QueryBvo<SeLog> queryBvo) {
+    public ResultBvo<SeLog> selectLogList4Page(QueryBvo<SeLog> queryBvo) {
         ResultBvo<SeLog> resultBvo = new ResultBvo<SeLog>();
-        resultBvo.setList(seLogDao.getList(queryBvo));
-        resultBvo.setTotal(seLogDao.getListCount(queryBvo));
+        resultBvo.setList(seLogDao.selectLogList4Page(queryBvo));
+        resultBvo.setTotal(seLogDao.selectLogListCount(queryBvo));
         return resultBvo;
     }
 
     @Override
-    public List<Map<String, Object>> getLogsList() {
-        return seLogDao.getLogsList();
+    public List<Map<String, Object>> selectLogsList() {
+        return seLogDao.selectLogsList();
     }
 
     /**

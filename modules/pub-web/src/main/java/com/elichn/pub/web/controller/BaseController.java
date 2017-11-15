@@ -134,12 +134,12 @@ public class BaseController<T> {
     }
 
     /**
-     * getCurrentUser 获得当前登录的用户\
+     * getCurrentUser 获得当前登录的用户
      *
      * @return SeUser
      */
     public SeUser getCurrentUser() {
-        String userName = getUserName();
+        String userName = this.getUserName();
         if (StringUtils.isNotBlank(userName)) {
             return seUserService.selectByName(userName);
         } else {

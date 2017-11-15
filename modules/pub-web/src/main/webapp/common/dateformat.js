@@ -1,8 +1,4 @@
-/**
- * 格式化输出日期
- * @param fmt
- * @returns {*|string}
- */
+// 格式化输出日期
 Date.prototype.format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1, // 月份
@@ -21,10 +17,7 @@ Date.prototype.format = function (fmt) {
     return fmt;
 };
 
-/**
- * 返回某一天是一周的周几（1-7）
- * @returns {number}
- */
+// 返回某一天是一周的周几（1-7）
 Date.prototype.getDayOfWeek = function () {
     // 1970年一月一日为周四
     var o = new Date(1970, 0, 1);
@@ -35,20 +28,12 @@ Date.prototype.getDayOfWeek = function () {
     return days;
 };
 
-/**
- *  当前日期 前移或后移days天
- * @param days
- * @returns {number}
- */
+// 当前日期 前移或后移days天
 Date.prototype.plusDays = function (days) {
     return new Date(this.getTime() + days * 24 * 3600 * 1000);
 };
 
-/**
- *  当前日期 前移或后移days天
- * @param days
- * @returns {number}
- */
+// 当前日期 前移或后移days天
 Date.prototype.minusDays = function (days) {
     return new Date(this.getTime() - days * 24 * 3600 * 1000);
 };

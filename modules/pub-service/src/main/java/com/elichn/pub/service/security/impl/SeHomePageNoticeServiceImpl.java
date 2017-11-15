@@ -1,9 +1,9 @@
 package com.elichn.pub.service.security.impl;
 
-import com.elichn.pub.core.model.bvo.QueryBvo;
-import com.elichn.pub.core.model.bvo.ResultBvo;
 import com.elichn.pub.core.dao.security.SeHomePageNoticeDao;
 import com.elichn.pub.core.dao.security.SeRoleDao;
+import com.elichn.pub.core.model.bvo.QueryBvo;
+import com.elichn.pub.core.model.bvo.ResultBvo;
 import com.elichn.pub.core.model.mapper.security.SeHomePageNoticeMapper;
 import com.elichn.pub.core.model.mapper.security.SeRoleNoticeMapper;
 import com.elichn.pub.core.model.pojo.security.SeHomePageNotice;
@@ -42,37 +42,37 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
     public void insert(SeHomePageNotice record, int[] roleIds) {
         record.setCreateTime(DateTime.now());
         seHomePageNoticeMapper.insert(record);
-        if (roleIds != null) {
-            for (int roleId : roleIds) {
-                SeRoleNotice rn = new SeRoleNotice();
-                rn.setNoticeId(record.getId());
-                rn.setRoleId(roleId);
-                seRoleNoticeMapper.insert(rn);
-            }
+        if (roleIds == null) {
+            return;
+        }
+        for (int roleId : roleIds) {
+            SeRoleNotice rn = new SeRoleNotice();
+            rn.setNoticeId(record.getId());
+            rn.setRoleId(roleId);
+            seRoleNoticeMapper.insert(rn);
         }
     }
 
     @Override
     public int updateByPrimaryKeyWithBLOBs(SeHomePageNotice record) {
-        SeHomePageNotice h = seHomePageNoticeMapper.selectByPrimaryKey(record.getId());
-        if (h != null) {
-            if (h.getType() == 1) {
-                h.setUrl(record.getUrl());
-            } else {
-                h.setContent(record.getContent());
-            }
-            h.setUpdateTime(DateTime.now());
-            return seHomePageNoticeMapper.updateByPrimaryKeyWithBLOBs(h);
+        SeHomePageNotice hn = seHomePageNoticeMapper.selectByPrimaryKey(record.getId());
+        if (hn == null) {
+            return 0;
         }
-        return 0;
+        if (hn.getType() == 1) {
+            hn.setUrl(record.getUrl());
+        } else {
+            hn.setContent(record.getContent());
+        }
+        hn.setUpdateTime(DateTime.now());
+        return seHomePageNoticeMapper.updateByPrimaryKeyWithBLOBs(hn);
     }
 
     @Override
-    public void updateRoleNotice(int hnId, List<Integer> roleIds) {
-        List<Integer> old = seHomePageNoticeDao.getRelationRole(hnId);
+    public void updateRoleNotice(Integer hnId, List<Integer> roleIds) {
+        List<Integer> old = seHomePageNoticeDao.selectRelationRoleList(hnId);
         // 取得交集
-        List<Integer> intersection = (List<Integer>) CollectionUtils
-                .intersection(roleIds, old);
+        List<Integer> intersection = (List<Integer>) CollectionUtils.intersection(roleIds, old);
         // 获取需要删除的
         List<Integer> delRel = (List<Integer>) CollectionUtils.disjunction(old, intersection);
         // 获取第二个文件中与交集的差集
@@ -93,24 +93,24 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
     }
 
     @Override
-    public int updateStatus(int hnId, int status) {
-        SeHomePageNotice h = seHomePageNoticeMapper.selectByPrimaryKey(hnId);
-        if (h != null) {
-            status = status != 0 ? 1 : 0;
-            h.setStatus(status);
-            h.setUpdateTime(DateTime.now());
-            seHomePageNoticeMapper.updateByPrimaryKey(h);
-            return 1;
+    public int updateStatus(Integer hnId, Integer status) {
+        SeHomePageNotice hn = seHomePageNoticeMapper.selectByPrimaryKey(hnId);
+        if (hn == null) {
+            return 0;
         }
-        return 0;
+        status = status != 0 ? 1 : 0;
+        hn.setStatus(status);
+        hn.setUpdateTime(DateTime.now());
+        seHomePageNoticeMapper.updateByPrimaryKey(hn);
+        return 1;
     }
 
     @Override
-    public SeHomePageNotice getHomePageNoticeByUser(int userId) {
-        List<SeRole> roles = seRoleDao.selectRolesByUser(userId);
+    public SeHomePageNotice selectHomePageNoticeByUserId(Integer userId) {
+        List<SeRole> roles = seRoleDao.selectRoleListByUserId(userId);
         SeHomePageNotice pn = null;
         for (SeRole r : roles) {
-            SeHomePageNotice hn = seHomePageNoticeDao.getHomePageNoticeByRole(r.getId());
+            SeHomePageNotice hn = seHomePageNoticeDao.selectHomePageNoticeByRole(r.getId());
             boolean isHn = (pn == null || pn.getUpdateTime().isBefore(hn.getUpdateTime()));
             if (hn != null && isHn) {
                 pn = hn;
@@ -120,26 +120,26 @@ public class SeHomePageNoticeServiceImpl implements SeHomePageNoticeService {
     }
 
     @Override
-    public ResultBvo<SeHomePageNotice> getHomePageNoticeList(QueryBvo<SeHomePageNotice> qb) {
+    public ResultBvo<SeHomePageNotice> selectHomePageNoticeList4Page(QueryBvo<SeHomePageNotice> qb) {
         ResultBvo<SeHomePageNotice> resultBvo = new ResultBvo<SeHomePageNotice>();
-        resultBvo.setList(seHomePageNoticeDao.getHomePageNoticeList(qb));
-        resultBvo.setTotal(seHomePageNoticeDao.getHomePageNoticeListCount(qb));
+        resultBvo.setList(seHomePageNoticeDao.selectHomePageNoticeList4Page(qb));
+        resultBvo.setTotal(seHomePageNoticeDao.selectHomePageNoticeListCount(qb));
         return resultBvo;
     }
 
     @Override
-    public List<Integer> getRelationRole(int hnId) {
-        return seHomePageNoticeDao.getRelationRole(hnId);
+    public List<Integer> selectRelationRoleList(Integer hnId) {
+        return seHomePageNoticeDao.selectRelationRoleList(hnId);
     }
 
     @Override
-    public int updateAsNew(int id) {
-        SeHomePageNotice h = seHomePageNoticeMapper.selectByPrimaryKey(id);
-        if (h != null) {
-            h.setUpdateTime(DateTime.now());
-            seHomePageNoticeMapper.updateByPrimaryKey(h);
-            return 1;
+    public int updateAsNew(Integer id) {
+        SeHomePageNotice hn = seHomePageNoticeMapper.selectByPrimaryKey(id);
+        if (hn == null) {
+            return 0;
         }
-        return 0;
+        hn.setUpdateTime(DateTime.now());
+        seHomePageNoticeMapper.updateByPrimaryKey(hn);
+        return 1;
     }
 }

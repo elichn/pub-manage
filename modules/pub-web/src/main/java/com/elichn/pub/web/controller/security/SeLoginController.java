@@ -120,7 +120,7 @@ public class SeLoginController extends BaseController {
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(Model model, HttpServletRequest request, HttpServletResponse response,
                         @RequestParam(value = "refer", required = false) String refer) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         if (StringUtils.isNotBlank(refer)) {
             Cookie cookie = new Cookie("refer", refer);
             cookie.setPath("/");
@@ -148,7 +148,7 @@ public class SeLoginController extends BaseController {
     @RequestMapping(value = "index4horizontally", method = RequestMethod.GET)
     public String index4horizontally(Model model, HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "refer", required = false) String refer) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         if (StringUtils.isNotBlank(refer)) {
             Cookie cookie = new Cookie("refer", refer);
             cookie.setPath("/");
@@ -259,12 +259,12 @@ public class SeLoginController extends BaseController {
         }
         Subject currentUser = SecurityUtils.getSubject();
         // 登录验证
-        String remoteAddr = getRemoteAddr(request);
+        String remoteAddr = super.getRemoteAddr(request);
         UsernamePasswordToken token = new UsernamePasswordToken(userName, password, remoteAddr);
         /** token.setRememberMe(true);*/
         try {
             currentUser.login(token);
-            SeUser user = seUserService.selectByName(getUserName());
+            SeUser user = seUserService.selectByName(super.getUserName());
             super.writeLog(request, "用户登录", null, user.getUserName());
             if (StringUtils.isNotBlank(url)) {
                 response.sendRedirect(url);
@@ -314,7 +314,7 @@ public class SeLoginController extends BaseController {
      */
     @RequestMapping(value = "logout")
     public String logout(Model model, HttpServletRequest request) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         LOG.info("用户={}退出登录", userName);
         if (userName != null) {
             SecurityUtils.getSubject().logout();
@@ -330,7 +330,7 @@ public class SeLoginController extends BaseController {
      */
     @RequestMapping(value = "islogin", method = RequestMethod.GET)
     public void islogin(Model model) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         if (StringUtils.isNotBlank(userName)) {
             model.addAttribute("flag", true);
         } else {
@@ -396,13 +396,13 @@ public class SeLoginController extends BaseController {
      */
     private List<SeResc> getRescOfUser() {
         // 获得当前用户
-        SeUser currentUser = getCurrentUser();
+        SeUser currentUser = super.getCurrentUser();
         // 根据当前用户活动当前用户的所有角色
-        List<SeRole> currentRoles = seRoleService.selectRoleListByUser(currentUser.getId().toString());
+        List<SeRole> currentRoles = seRoleService.selectRoleListByUserId(currentUser.getId());
         // 获取角色具有的所有资源
         List<SeResc> rescs = new ArrayList<SeResc>();
         for (SeRole r : currentRoles) {
-            List<SeResc> rescList = seRoleRescService.getRescByRole(r.getId());
+            List<SeResc> rescList = seRoleRescService.selectRescListByRoleId(r.getId());
             rescs.addAll(rescList);
         }
         Map<Integer, Boolean> map = new HashMap<Integer, Boolean>(16);
@@ -429,13 +429,13 @@ public class SeLoginController extends BaseController {
      */
     private List<Menu> getMenu() {
         // 获得当前用户
-        SeUser currentUser = getCurrentUser();
+        SeUser currentUser = super.getCurrentUser();
         // 根据当前用户活动当前用户的所有角色
-        List<SeRole> currentRoles = seRoleService.selectRoleListByUser(currentUser.getId().toString());
+        List<SeRole> currentRoles = seRoleService.selectRoleListByUserId(currentUser.getId());
         // 获取角色具有的所有资源
         List<SeResc> rescs = new ArrayList<SeResc>();
         for (SeRole r : currentRoles) {
-            List<SeResc> rescList = seRoleRescService.getRescByRole(r.getId());
+            List<SeResc> rescList = seRoleRescService.selectRescListByRoleId(r.getId());
             rescs.addAll(rescList);
         }
         List<Menu> menus = new ArrayList<>();
@@ -521,7 +521,7 @@ public class SeLoginController extends BaseController {
      */
     private void incrCheckCodeWrongTimes(HttpServletRequest request) {
         String today = DateTime.now().toString(DateTimeUtil.YMD);
-        BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + getRemoteAddr(request));
+        BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + super.getRemoteAddr(request));
         v.increment(1);
         v.expireAt(DateTime.now().plusDays(1).withHourOfDay(0).withMinuteOfHour(0)
                 .withSecondOfMinute(0).withMillisOfSecond(0).toDate());
@@ -534,7 +534,7 @@ public class SeLoginController extends BaseController {
      */
     private void resetCheckCodeWrongTimes(HttpServletRequest request) {
         String today = DateTime.now().toString(DateTimeUtil.YMD);
-        BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + getRemoteAddr(request));
+        BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + super.getRemoteAddr(request));
         v.expire(0, TimeUnit.MILLISECONDS);
     }
 
@@ -546,7 +546,7 @@ public class SeLoginController extends BaseController {
      */
     private int getCheckCodeWrongTimes(HttpServletRequest request) {
         String today = DateTime.now().toString(DateTimeUtil.YMD);
-        BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + getRemoteAddr(request));
+        BoundValueOperations<String, byte[]> v = redisTemplate.boundValueOps(today + "_" + super.getRemoteAddr(request));
         return this.byteArr2Int(v.get());
     }
 

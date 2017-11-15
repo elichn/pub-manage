@@ -256,7 +256,7 @@
                     var _tempFunc = eval(s.substring(index + 1));//获取方法
                     if (typeof _tempFunc == 'function') {
                         return _tempFunc.apply(null, d);
-//                        return _tempFunc(d);
+                        // return _tempFunc(d);
                     } else {
                         return "";
                     }

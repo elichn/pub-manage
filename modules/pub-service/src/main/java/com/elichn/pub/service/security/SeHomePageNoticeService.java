@@ -17,7 +17,7 @@ import java.util.List;
 public interface SeHomePageNoticeService {
 
     /**
-     * insert insert
+     * insert 首页通知插入
      *
      * @param record  record
      * @param roleIds roleIds
@@ -25,7 +25,7 @@ public interface SeHomePageNoticeService {
     void insert(SeHomePageNotice record, int[] roleIds);
 
     /**
-     * updateByPrimaryKeyWithBLOBs updateByPrimaryKeyWithBLOBs
+     * updateByPrimaryKeyWithBLOBs 根据主键更新首页通知
      *
      * @param record record
      * @return int
@@ -33,51 +33,51 @@ public interface SeHomePageNoticeService {
     int updateByPrimaryKeyWithBLOBs(SeHomePageNotice record);
 
     /**
-     * updateRoleNotice updateRoleNotice
+     * updateRoleNotice 更新角色通知
      *
      * @param hnId    hnId
      * @param roleIds roleIds
      */
-    void updateRoleNotice(int hnId, List<Integer> roleIds);
+    void updateRoleNotice(Integer hnId, List<Integer> roleIds);
 
     /**
-     * updateStatus updateStatus
+     * updateStatus 更新状态为status (发布/不发布)
      *
      * @param hnId   hnId
      * @param status status
      * @return int
      */
-    int updateStatus(int hnId, int status);
+    int updateStatus(Integer hnId, Integer status);
 
     /**
-     * getHomePageNoticeByUser getHomePageNoticeByUser
+     * selectHomePageNoticeByUserId 通过userId查询该角色的首页通知
      *
      * @param userId userId
      * @return SeHomePageNotice
      */
-    SeHomePageNotice getHomePageNoticeByUser(int userId);
+    SeHomePageNotice selectHomePageNoticeByUserId(Integer userId);
 
     /**
-     * getHomePageNoticeList getHomePageNoticeList
+     * selectHomePageNoticeList4Page 根据查询条件分页查询首页通知列表
      *
      * @param qb qb
      * @return ResultBvo<SeHomePageNotice>
      */
-    ResultBvo<SeHomePageNotice> getHomePageNoticeList(QueryBvo<SeHomePageNotice> qb);
+    ResultBvo<SeHomePageNotice> selectHomePageNoticeList4Page(QueryBvo<SeHomePageNotice> qb);
 
     /**
-     * getRelationRole getRelationRole
+     * selectRelationRoleList 通过首页通知id查询角色id列表
      *
      * @param hnId hnId
      * @return List<Integer>
      */
-    List<Integer> getRelationRole(int hnId);
+    List<Integer> selectRelationRoleList(Integer hnId);
 
     /**
-     * updateAsNew updateAsNew
+     * updateAsNew 设为最新通知
      *
      * @param id id
      * @return int
      */
-    int updateAsNew(int id);
+    int updateAsNew(Integer id);
 }

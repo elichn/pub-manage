@@ -16,34 +16,34 @@ import java.util.List;
 public interface SeHomePageNoticeDao {
 
     /**
-     * getHomePageNoticeByRole getHomePageNoticeByRole
+     * selectHomePageNoticeByRole 通过roleId获取该角色的首页通知
      *
      * @param roleId roleId
      * @return SeHomePageNotice
      */
-    SeHomePageNotice getHomePageNoticeByRole(int roleId);
+    SeHomePageNotice selectHomePageNoticeByRole(int roleId);
 
     /**
-     * getRelationRole getRelationRole
+     * selectRelationRoleList 通过首页通知id查询角色id列表
      *
      * @param hnId hnId
      * @return List<Integer>
      */
-    List<Integer> getRelationRole(int hnId);
+    List<Integer> selectRelationRoleList(int hnId);
 
     /**
-     * getHomePageNoticeList getHomePageNoticeList
+     * selectHomePageNoticeList4Page 根据查询条件查询首页通知列表
      *
      * @param qb qb
      * @return List<SeHomePageNotice>
      */
-    List<SeHomePageNotice> getHomePageNoticeList(QueryBvo<SeHomePageNotice> qb);
+    List<SeHomePageNotice> selectHomePageNoticeList4Page(QueryBvo<SeHomePageNotice> qb);
 
     /**
-     * getHomePageNoticeListCount getHomePageNoticeListCount
+     * selectHomePageNoticeListCount 根据查询条件查询首页通知条数
      *
      * @param qb qb
      * @return int
      */
-    int getHomePageNoticeListCount(QueryBvo<SeHomePageNotice> qb);
+    int selectHomePageNoticeListCount(QueryBvo<SeHomePageNotice> qb);
 }

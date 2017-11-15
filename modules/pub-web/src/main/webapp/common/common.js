@@ -5,38 +5,13 @@ function initDate(days) {
     $("#endDate").val(new Date(longTime).format("yyyy-MM-dd"));
 }
 
-/**
- * formatFen 格式化分成元显示 用千分符分割（从个位向高位,每三位加英文,） 保留2位小数
- *
- * @param value value
- * @returns value
- */
+// formatFen 格式化分成元显示 用千分符分割（从个位向高位,每三位加英文,） 保留2位小数
 function formatFen(value) {
     if (value == null || value == "") {
         return value;
     }
     try {
         var num = eval(value) / 100;
-        return formatNumber(num, 2);
-    } catch (e) {
-
-    }
-    return value;
-}
-
-/**
- * formatCustom 格式化自定义成元 用千分符分割（从个位向高位,每三位加英文,） 保留2位小数
- *
- * @param value value
- * @returns value
- */
-function formatCustom(value) {
-    if (value === null || value === undefined  || value === "") {
-        return value;
-    }
-
-    try {
-        var num = eval(value) / 1000000;
         return formatNumber(num, 2);
     } catch (e) {
 
@@ -68,9 +43,7 @@ function formatNumber(num, precision, separator) {
     return num;
 }
 
-/**
- *  isComplexPassword 密码匹配
- */
+// isComplexPassword 密码匹配
 function isComplexPassword(password) {
     var n = 0;
     if (/\d/.test(password)) n++;    // 包含数字

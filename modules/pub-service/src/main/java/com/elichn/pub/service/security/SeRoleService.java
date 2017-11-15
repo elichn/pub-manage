@@ -16,20 +16,20 @@ import java.util.List;
 public interface SeRoleService {
 
     /**
-     * selectRoleListByUser selectRoleListByUser
+     * selectRoleListByUserId 根据userId查询角色列表
      *
      * @param userId userId
-     * @return List<SeRole> 用户具有的role集合
+     * @return 用户具有的role列表
      */
-    List<SeRole> selectRoleListByUser(String userId);
+    List<SeRole> selectRoleListByUserId(Integer userId);
 
     /**
-     * selectRoles 获得角色列表
+     * selectAllRolesList 获得角色列表
      *
-     * @return List<SeRole>
+     * @return 所有角色列表
      */
 
-    List<SeRole> selectRoles();
+    List<SeRole> selectAllRolesList();
 
     /**
      * insertUserRoleKey 保存用户角色中间表
@@ -64,7 +64,7 @@ public interface SeRoleService {
     int deleteRoleById(Integer roleId);
 
     /**
-     * selectRoleById 通过角色id查询角色信息
+     * selectRoleById 根据角色id查询角色信息
      *
      * @param roleId roleId
      * @return SeRole
@@ -89,23 +89,23 @@ public interface SeRoleService {
     Boolean isRole(String descn, Integer id);
 
     /**
-     * selectRolesByUser 获取指定user拥有的role列表
+     * selectRolesListByUserId 根据userId查询拥有的角色列表
      *
-     * @param id id
+     * @param userId userId
      * @return List<SeRole>
      */
-    List<SeRole> selectRolesByUser(Integer id);
+    List<SeRole> selectRolesListByUserId(Integer userId);
 
     /**
-     * selectByPid selectByPid
+     * selectRoleListByPid 根据pid查询角色列表
      *
      * @param pid pid
      * @return List<SeRole>
      */
-    List<SeRole> selectByPid(Integer pid);
+    List<SeRole> selectRoleListByPid(Integer pid);
 
     /**
-     * selectRoleByCode 根据code获得role
+     * selectRoleByCode 根据code查询role
      *
      * @param code code
      * @return SeRole

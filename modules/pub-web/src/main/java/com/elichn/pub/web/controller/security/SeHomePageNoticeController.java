@@ -75,7 +75,7 @@ public class SeHomePageNoticeController extends BaseController {
                      @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         QueryBvo<SeHomePageNotice> qb = new QueryBvo<SeHomePageNotice>(queryBvo, pageNo, pageSize);
-        ResultBvo<SeHomePageNotice> resultBvo = seHomePageNoticeService.getHomePageNoticeList(qb);
+        ResultBvo<SeHomePageNotice> resultBvo = seHomePageNoticeService.selectHomePageNoticeList4Page(qb);
         model.addAttribute(DATAS_KEY, resultBvo);
     }
 
@@ -91,7 +91,7 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * add 首页通知添加
+     * add 添加首页通知
      *
      * @param model   model
      * @param hn      hn
@@ -121,7 +121,7 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * edit 首页通知编辑
+     * edit 编辑首页通知
      *
      * @param model model
      * @param hn    hn
@@ -143,14 +143,14 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * updateRoleNotice updateRoleNotice
+     * updateRoleNotice 更新角色通知
      *
      * @param model    model
      * @param noticeId noticeId
      * @param roleId   roleId
      */
     @RequestMapping(value = "/updateRoleNotice")
-    public void updateRoleNotice(Model model, @RequestParam("noticeId") int noticeId,
+    public void updateRoleNotice(Model model, @RequestParam("noticeId") Integer noticeId,
                                  @RequestParam("roleId") Integer[] roleId) {
         try {
             seHomePageNoticeService.updateRoleNotice(noticeId, Arrays.asList(roleId));
@@ -162,13 +162,13 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * updateAsNew updateAsNew
+     * updateAsNew 设为最新通知
      *
      * @param model model
      * @param id    id
      */
     @RequestMapping(value = "/updateAsNew")
-    public void updateAsNew(Model model, @RequestParam("id") int id) {
+    public void updateAsNew(Model model, @RequestParam("id") Integer id) {
         try {
             int re = seHomePageNoticeService.updateAsNew(id);
             if (re > 0) {
@@ -183,21 +183,21 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * getNotice getNotice
+     * getNotice 根据登录用户获取首页通知
      *
      * @param model model
      */
     @RequestMapping(value = "/getNotice", method = RequestMethod.GET)
     public void getNotice(Model model) {
-        SeUser user = getCurrentUser();
+        SeUser user = super.getCurrentUser();
         if (user != null) {
-            SeHomePageNotice hn = seHomePageNoticeService.getHomePageNoticeByUser(user.getId());
+            SeHomePageNotice hn = seHomePageNoticeService.selectHomePageNoticeByUserId(user.getId());
             model.addAttribute("hn", hn);
         }
     }
 
     /**
-     * changeStatus changeStatus
+     * changeStatus 更新状态为status (发布/不发布)
      *
      * @param model  model
      * @param id     id
@@ -214,22 +214,21 @@ public class SeHomePageNoticeController extends BaseController {
     }
 
     /**
-     * getRelationRole getRelationRole
+     * selectRelationRoleList 通过首页通知id获取角色id列表
      *
      * @param model model
      * @param hnId  hnId
      */
     @RequestMapping(value = "/getRelationRole")
     public void getRelationRole(Model model, @RequestParam("hnId") Integer hnId) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         if (StringUtils.isBlank(userName)) {
             return;
         }
         SeUser user = seUserService.selectByName(userName);
         if (user != null) {
-            List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
-            List<Integer> roles = seHomePageNoticeService.getRelationRole(hnId);
-
+            List<SeRole> list = seRoleService.selectRolesListByUserId(user.getId());
+            List<Integer> roles = seHomePageNoticeService.selectRelationRoleList(hnId);
             List<SeRoleTreeBvo> bvos = new ArrayList<SeRoleTreeBvo>();
             for (SeRole r : list) {
                 SeRoleTreeBvo bvo = SeRoleTreeBvo.copyFromRole(r);

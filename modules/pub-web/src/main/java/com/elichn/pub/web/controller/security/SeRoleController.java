@@ -87,19 +87,19 @@ public class SeRoleController extends BaseController {
      */
     @RequestMapping(value = "getRoleTree")
     public void getRoleTree(Model model) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         if (StringUtils.isBlank(userName)) {
             return;
         }
         SeUser user = seUserService.selectByName(userName);
         if (user != null) {
-            List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
+            List<SeRole> list = seRoleService.selectRolesListByUserId(user.getId());
             model.addAttribute(LIST_KEY, list);
         }
     }
 
     /**
-     * getRescByRole 查询数据权限
+     * selectRescListByRoleId 查询数据权限
      * 如果是角色是超级管理员  则直接加载所有权限
      * 如果是当前用户拥有的直接角色 则不能去查找父角色的权限
      * 如果是间接角色 则需要加载父用户的权限
@@ -114,7 +114,7 @@ public class SeRoleController extends BaseController {
             isDirect = this.isDirectRoleOfUser(id);
         } catch (Exception e) {
             model.addAttribute(MSG_KEY, e.getMessage());
-            LOG.error("getRescByRole error,", e);
+            LOG.error("selectRescListByRoleId error,", e);
             return;
         }
         // 获取当前role
@@ -127,7 +127,7 @@ public class SeRoleController extends BaseController {
         List<SeRescTreeBvo> bvos = new ArrayList<SeRescTreeBvo>();
         // 超级管理员
         if (role.getParentId() == 0) {
-            List<SeResc> list = seRoleRescService.selectRescs();
+            List<SeResc> list = seRoleRescService.selectAllRescsList();
             for (SeResc resc : list) {
                 SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
                 bvo.setChecked(true);
@@ -135,7 +135,7 @@ public class SeRoleController extends BaseController {
             }
         } else {
             if (isDirect) {
-                List<SeResc> list = seRoleRescService.getRescByRole(id);
+                List<SeResc> list = seRoleRescService.selectRescListByRoleId(id);
 
                 for (SeResc resc : list) {
                     SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
@@ -147,9 +147,9 @@ public class SeRoleController extends BaseController {
                 SeRole parentRole = seRoleService.selectRoleById(role.getParentId());
                 List<SeResc> list;
                 if (parentRole != null && parentRole.getParentId() == 0) {
-                    list = seRoleRescService.selectRescs();
+                    list = seRoleRescService.selectAllRescsList();
                 } else {
-                    list = seRoleRescService.getRescByRole(role.getParentId());
+                    list = seRoleRescService.selectRescListByRoleId(role.getParentId());
                 }
                 List<Integer> rescs = new ArrayList<Integer>();
                 // 获取当前角色的资源
@@ -342,7 +342,7 @@ public class SeRoleController extends BaseController {
      * @param roleId  roleId
      */
     private void deleteRoleRecursive(HttpServletRequest request, Integer roleId) {
-        List<SeRole> roles = seRoleService.selectByPid(roleId);
+        List<SeRole> roles = seRoleService.selectRoleListByPid(roleId);
         for (SeRole role : roles) {
             deleteRoleRecursive(request, role.getId());
         }
@@ -360,12 +360,12 @@ public class SeRoleController extends BaseController {
      * @throws Exception exception
      */
     private boolean isDirectRoleOfUser(long roleId) throws Exception {
-        String userName = getUserName();
+        String userName = super.getUserName();
         SeUser user = seUserService.selectByName(userName);
         if (user == null) {
             throw new Exception(USER_NOT_EXIST);
         }
-        List<SeRole> roleList = seRoleService.selectRoleListByUser(user.getId().toString());
+        List<SeRole> roleList = seRoleService.selectRoleListByUserId(user.getId());
         for (SeRole r : roleList) {
             if (r.getId().longValue() == roleId) {
                 return true;

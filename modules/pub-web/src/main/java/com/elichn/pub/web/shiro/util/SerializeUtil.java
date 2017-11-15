@@ -6,14 +6,14 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.io.Serializable;
 
 /**
- * <p>Title: SerializeUtils</p>
- * <p>Description: SerializeUtils</p>
+ * <p>Title: SerializeUtil</p>
+ * <p>Description: SerializeUtil</p>
  *
  * @author elichn
  * @version 1.0
  * @date 2017/10/28
  */
-public class SerializeUtils {
+public class SerializeUtil {
 
     /**
      * isEmpty isEmpty

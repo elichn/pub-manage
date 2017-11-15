@@ -29,7 +29,7 @@ public class SeRescServiceImpl implements SeRescService {
     }
 
     @Override
-    public List<SeResc> getRescByName(String name) {
+    public List<SeResc> selectRescListByName(String name) {
         SeRescExample example = new SeRescExample();
         SeRescExample.Criteria criteria = example.createCriteria();
         criteria.andNameEqualTo(name);

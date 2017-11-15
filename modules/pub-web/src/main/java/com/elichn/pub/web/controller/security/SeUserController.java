@@ -88,7 +88,7 @@ public class SeUserController extends BaseController {
      */
     @RequestMapping(value = "viewUsers")
     public void viewUsers(Model model, @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-                          @RequestParam(value = "pageSize", defaultValue = "20", required = false) Integer pageSize,
+                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
                           @RequestParam(value = "userName", required = false) String userName,
                           @RequestParam(value = "roleName", required = false) String roleName,
                           @RequestParam(value = "status", required = false) Integer status,
@@ -108,9 +108,9 @@ public class SeUserController extends BaseController {
             }
             map.put("roleNames", roleNames);
         }
-        List<SeUserRoleBvo> userList = seUserService.selectUsersByPage(page, pageSize, map);
+        List<SeUserRoleBvo> userList = seUserService.selectUsersList4Page(page, pageSize, map);
         model.addAttribute("userRoleBvoList", userList);
-        model.addAttribute("total", seUserService.getRowsByName(map));
+        model.addAttribute("total", seUserService.selectUsersListCount(map));
     }
 
     /**
@@ -134,7 +134,7 @@ public class SeUserController extends BaseController {
             }
             model.addAttribute("user", user);
             // 没有角色的用户
-            List<SeRole> list = seRoleService.selectRoleListByUser(userId.toString());
+            List<SeRole> list = seRoleService.selectRoleListByUserId(userId);
             if (list.size() == 0) {
                 return PREFIX + "/editUser";
             }
@@ -147,7 +147,7 @@ public class SeUserController extends BaseController {
      */
     @RequestMapping(value = "addUserPage", method = RequestMethod.GET)
     public String addUserPage(Model model) {
-        List<SeRole> roleList = seRoleService.selectRoles();
+        List<SeRole> roleList = seRoleService.selectAllRolesList();
         model.addAttribute("roleList", roleList);
         return PREFIX + "/addUser";
     }
@@ -299,9 +299,9 @@ public class SeUserController extends BaseController {
         List<SeRole> roles = null;
         if (userId != null) {
             // 获取被管理用户的直接角色
-            roles = seRoleService.selectRoleListByUser(userId.toString());
+            roles = seRoleService.selectRoleListByUserId(userId);
         }
-        String userName = getUserName();
+        String userName = super.getUserName();
         // userName is null
         if (StringUtils.isBlank(userName)) {
             return;
@@ -312,7 +312,7 @@ public class SeUserController extends BaseController {
             return;
         }
         // 获取当前用户的所有角色
-        List<SeRole> list = seRoleService.selectRolesByUser(user.getId());
+        List<SeRole> list = seRoleService.selectRolesListByUserId(user.getId());
         if (roles != null) {
             List<Integer> roleIdList = new ArrayList<Integer>();
             for (SeRole role : roles) {
@@ -344,7 +344,7 @@ public class SeUserController extends BaseController {
     }
 
     /**
-     * selectRoles 展示角色
+     * selectAllRolesList 展示角色
      *
      * @param model model
      */
@@ -398,7 +398,7 @@ public class SeUserController extends BaseController {
     public void updatePassword(Model model, HttpServletRequest request,
                                @RequestParam("oldPassword") String oldPassword,
                                @RequestParam("newPassword") String newPassword) {
-        String userName = getUserName();
+        String userName = super.getUserName();
         if (StringUtils.isBlank(userName)) {
             model.addAttribute(MSG_KEY, SESSION_TIME_OUT);
             model.addAttribute(SUCCESS_KEY, FAIL);
@@ -499,11 +499,11 @@ public class SeUserController extends BaseController {
      * @return List<SeRole>
      */
     private List<SeRole> getSubRoleOfCurrentUser() {
-        SeUser user = seUserService.selectByName(getUserName());
+        SeUser user = seUserService.selectByName(super.getUserName());
         if (user == null) {
             return null;
         } else {
-            return seRoleService.selectRolesByUser(user.getId());
+            return seRoleService.selectRolesListByUserId(user.getId());
         }
     }
 }

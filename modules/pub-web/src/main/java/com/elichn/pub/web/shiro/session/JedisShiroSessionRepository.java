@@ -1,6 +1,6 @@
 package com.elichn.pub.web.shiro.session;
 
-import com.elichn.pub.web.shiro.util.SerializeUtils;
+import com.elichn.pub.web.shiro.util.SerializeUtil;
 import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
         }
 
         String key = getRedisSessionKey(session.getId());
-        byte[] value = SerializeUtils.serialize(session);
+        byte[] value = SerializeUtil.serialize(session);
         redisTemplate.opsForValue().set(key, value);
         redisTemplate.expire(key, session.getTimeout(), TimeUnit.MILLISECONDS);
     }
@@ -66,7 +66,7 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
         }
 
         byte[] value = redisTemplate.opsForValue().get(getRedisSessionKey(id));
-        return (Session) SerializeUtils.deserialize(value);
+        return (Session) SerializeUtil.deserialize(value);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
 
         if (byteKeys != null && byteKeys.size() > 0) {
             for (String bs : byteKeys) {
-                Session s = (Session) SerializeUtils.deserialize(redisTemplate.opsForValue().get(bs));
+                Session s = (Session) SerializeUtil.deserialize(redisTemplate.opsForValue().get(bs));
                 sessions.add(s);
             }
         }

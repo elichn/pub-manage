@@ -38,15 +38,9 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
     }
 
     @Override
-    public List<SeResc> getRescByUserId(int id) {
-        return seRoleRescDao.getRescByUserId(id);
-    }
-
-    @Override
     public List<SeRescRoleKey> selectRescRoleKeyByRoleId(Integer roleId) {
         SeRescRoleExample rescRoleExample = new SeRescRoleExample();
         rescRoleExample.createCriteria().andRoleIdEqualTo(roleId);
-
         return seRescRoleMapper.selectByExample(rescRoleExample);
     }
 
@@ -56,8 +50,8 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
     }
 
     @Override
-    public List<SeResc> selectRescs() {
-        return seRoleRescDao.selectRescs();
+    public List<SeResc> selectAllRescsList() {
+        return seRoleRescDao.selectAllRescsList();
     }
 
     @Override
@@ -72,12 +66,12 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
 
     @Override
     public void deleteResc(Integer rescId) {
-        List<SeResc> tempRescList = getRescByFatherId(rescId);
+        List<SeResc> tempRescList = this.selectRescByFatherId(rescId);
         for (SeResc resc : tempRescList) {
-            deleteResc(resc.getId());
+            this.deleteResc(resc.getId());
         }
-        deleteRescRoleByRescId(rescId);
-        deleteRescById(rescId);
+        this.deleteRescRoleByRescId(rescId);
+        this.deleteRescById(rescId);
     }
 
     @Override
@@ -105,21 +99,21 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
     }
 
     @Override
-    public List<SeResc> getRescByFatherId(Integer fatherId) {
+    public List<SeResc> selectRescByFatherId(Integer fatherId) {
         SeRescExample rescExample = new SeRescExample();
         rescExample.createCriteria().andFatherIdEqualTo(fatherId);
         return seRescMapper.selectByExample(rescExample);
     }
 
     @Override
-    public List<SeResc> getRescByRole(Integer id) {
+    public List<SeResc> selectRescListByRoleId(Integer roleId) {
         // 通过角色获得资源
-        return seRoleRescDao.getRescByRole(id);
+        return seRoleRescDao.selectRescListByRoleId(roleId);
     }
 
     @Override
-    public List<SeResc> getRescList(List<Integer> roleIds) {
-        return seRoleRescDao.getRescList(roleIds);
+    public List<SeResc> selectRescListByRoleIds(List<Integer> roleIds) {
+        return seRoleRescDao.selectRescListByRoleIds(roleIds);
     }
 
     @Override
@@ -128,7 +122,7 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
     }
 
     @Override
-    public List<SeResc> getRescByIds(List<Integer> rescIds) {
+    public List<SeResc> selectRescListByIds(List<Integer> rescIds) {
         if (rescIds != null && rescIds.size() > 0) {
             SeRescExample rescExample = new SeRescExample();
             SeRescExample.Criteria criteria = rescExample.createCriteria();
@@ -140,10 +134,15 @@ public class SeRoleRescServiceImpl implements SeRoleRescService {
     }
 
     @Override
-    public List<SeRescRoleKey> getRoleIdByRescId(Integer rescId) {
+    public List<SeRescRoleKey> selectRoleIdByRescId(Integer rescId) {
         SeRescRoleExample example = new SeRescRoleExample();
         SeRescRoleExample.Criteria criteria = example.createCriteria();
         criteria.andRescIdEqualTo(rescId);
         return seRescRoleMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<SeResc> selectRescListByUserId(Integer userId) {
+        return seRoleRescDao.selectRescListByUserId(userId);
     }
 }

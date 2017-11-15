@@ -16,7 +16,7 @@ import java.util.List;
 public interface SeRoleRescService {
 
     /**
-     * selectRescById 通过id取得一条资源信息
+     * selectRescById 根据rescId查询一条资源信息
      *
      * @param rescId rescId
      * @return SeResc
@@ -24,22 +24,14 @@ public interface SeRoleRescService {
     SeResc selectRescById(Integer rescId);
 
     /**
-     * getRescByUserId 获取用户拥有的资源
-     *
-     * @param id id
-     * @return List<SeResc>
-     */
-    List<SeResc> getRescByUserId(int id);
-
-    /**
-     * selectRescs 获得所有资源信息集合
+     * selectAllRescsList 查询所有资源列表
      *
      * @return List<SeResc>
      */
-    List<SeResc> selectRescs();
+    List<SeResc> selectAllRescsList();
 
     /**
-     * selectRescRoleKeyByRoleId 通过角色id取得中间表
+     * selectRescRoleKeyByRoleId 根据roleId取得资源角色中间表
      *
      * @param roleId roleId
      * @return List<SeRescRoleKey>
@@ -62,16 +54,15 @@ public interface SeRoleRescService {
     void deleteResc(Integer rescId);
 
     /**
-     * rescId 通过id删除当前资源信息
+     * rescId 根据资源id删除当前资源信息
      *
      * @param rescId rescId
      * @return int
      */
-
     int deleteRescById(Integer rescId);
 
     /**
-     * deleteRescRoleByRescId 通过rescId删除角色资源中间表信息
+     * deleteRescRoleByRescId 根据rescId删除角色资源中间表信息
      *
      * @param rescId rescId
      * @return int
@@ -79,7 +70,7 @@ public interface SeRoleRescService {
     int deleteRescRoleByRescId(Integer rescId);
 
     /**
-     * deleteRescRoleByRoleId 通过id删除角色资源中间表信息
+     * deleteRescRoleByRoleId 根据id删除角色资源中间表信息
      *
      * @param roleId roleId
      * @return int
@@ -103,31 +94,31 @@ public interface SeRoleRescService {
     int insertRescRole(SeRescRoleKey rescRole);
 
     /**
-     * getRescByFatherId根据资源id获取他下面的子孩子
+     * selectRescByFatherId 根据资源id获取他下面的子孩子
      *
      * @param fatherId fatherId
      * @return List<SeResc>
      */
-    List<SeResc> getRescByFatherId(Integer fatherId);
+    List<SeResc> selectRescByFatherId(Integer fatherId);
 
     /**
-     * getRescByRole  获取指定role的资源树
+     * selectRescListByRoleId  根据roleId查询资源列表(获取指定role的资源树)
      *
-     * @param id id
+     * @param roleId roleId
      * @return List<SeResc>
      */
-    List<SeResc> getRescByRole(Integer id);
+    List<SeResc> selectRescListByRoleId(Integer roleId);
 
     /**
-     * getRescList getRescList
+     * selectRescListByRoleIds 根据roleId列表查询资源列表
      *
      * @param roleIds roleIds
      * @return List<SeResc>
      */
-    List<SeResc> getRescList(List<Integer> roleIds);
+    List<SeResc> selectRescListByRoleIds(List<Integer> roleIds);
 
     /**
-     * deleteByPrimaryKey deleteByPrimaryKey
+     * deleteByPrimaryKey 根据主键删除角色资源中间表信息
      *
      * @param key key
      * @return int
@@ -135,18 +126,26 @@ public interface SeRoleRescService {
     int deleteByPrimaryKey(SeRescRoleKey key);
 
     /**
-     * getRescByIds 根据资源id获取所以资源
+     * selectRescListByIds 根据资源id列表获取所有资源
      *
      * @param rescIds
      * @return List<SeResc>
      */
-    List<SeResc> getRescByIds(List<Integer> rescIds);
+    List<SeResc> selectRescListByIds(List<Integer> rescIds);
 
     /**
-     * getRoleIdByRescId 根据资源id查询出拥有该资源的角色id
+     * selectRoleIdByRescId 根据资源id查询出拥有该资源的角色id
      *
      * @param rescId rescId
      * @return List<SeRescRoleKey>
      */
-    List<SeRescRoleKey> getRoleIdByRescId(Integer rescId);
+    List<SeRescRoleKey> selectRoleIdByRescId(Integer rescId);
+
+    /**
+     * 根据userId查询资源列表(获取用户拥有的资源)
+     *
+     * @param userId userId
+     * @return List<SeResc>
+     */
+    List<SeResc> selectRescListByUserId(Integer userId);
 }

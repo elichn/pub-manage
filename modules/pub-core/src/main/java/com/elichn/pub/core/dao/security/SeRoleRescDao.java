@@ -15,33 +15,33 @@ import java.util.List;
 public interface SeRoleRescDao {
 
     /**
-     * selectRescs selectRescs
+     * selectAllRescsList 查询所有资源列表
      *
      * @return List<SeResc>
      */
-    List<SeResc> selectRescs();
+    List<SeResc> selectAllRescsList();
 
     /**
-     * getRescByUserId getRescByUserId
+     * selectRescListByUserId 根据userId查询资源列表(获取用户拥有的资源)
      *
-     * @param id id
+     * @param userId userId
      * @return List<SeResc>
      */
-    List<SeResc> getRescByUserId(int id);
+    List<SeResc> selectRescListByUserId(int userId);
 
     /**
-     * getRescByRole 获取角色拥有的资源
+     * selectRescListByRoleId 根据roleId查询资源列表(获取角色拥有的资源)
      *
-     * @param id id
+     * @param roleId roleId
      * @return List<SeResc>
      */
-    List<SeResc> getRescByRole(Integer id);
+    List<SeResc> selectRescListByRoleId(Integer roleId);
 
     /**
-     * getRescList getRescList
+     * selectRescListByRoleIds 根据roleId列表查询资源列表
      *
      * @param roleIds roleIds
      * @return List<SeResc>
      */
-    List<SeResc> getRescList(List<Integer> roleIds);
+    List<SeResc> selectRescListByRoleIds(List<Integer> roleIds);
 }

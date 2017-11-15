@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elichn.pub.core.dao.security.SeHomePageNoticeDao">
-    <select id="getHomePageNoticeByRole"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeHomePageNoticeMapper.ResultMapWithBLOBs"
-            parameterType="int">
-        select hn.* from se_role_notice rn left join se_home_page_notice hn
+    <!--通过roleId获取该角色的首页通知-->
+    <select id="selectHomePageNoticeByRole" parameterType="int"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeHomePageNoticeMapper.ResultMapWithBLOBs">
+        select
+          hn.*
+        from
+          se_role_notice rn
+        left join se_home_page_notice hn
         on rn.notice_id = hn.id
-        <where>
-            rn.role_id = #{_paramater}
-            and hn.status = 1
-        </where>
-
+        where rn.role_id = #{roleId} and hn.status = 1
         order by hn.update_time desc limit 1;
     </select>
 
-    <select id="getRelationRole"
-            resultType="int"
-            parameterType="int">
-        select rn.role_id from se_role_notice rn WHERE rn.notice_id = #{_paramater}
+    <!--通过首页通知id获取角色id列表-->
+    <select id="selectRelationRoleList" resultType="int" parameterType="int">
+        select rn.role_id from se_role_notice rn WHERE rn.notice_id = #{hnId}
+    </select>
+
+    <!--根据查询条件获取首页通知列表-->
+    <select id="selectHomePageNoticeList4Page" parameterType="com.elichn.pub.core.model.bvo.QueryBvo"
+            resultMap="com.elichn.pub.core.model.mapper.security.SeHomePageNoticeMapper.ResultMapWithBLOBs">
+        select o.* from se_home_page_notice o
+        <include refid="homePageNoticeSql"/>
+        order by o.update_time desc
+    </select>
+
+    <!--根据查询条件获取首页通知条数-->
+    <select id="selectHomePageNoticeListCount" parameterType="com.elichn.pub.core.model.bvo.QueryBvo" resultType="int">
+        select count(1) from se_home_page_notice o
+        <include refid="homePageNoticeSql"/>
     </select>
 
     <sql id="homePageNoticeSql">
@@ -31,21 +44,4 @@
             </if>
         </where>
     </sql>
-
-    <select id="getHomePageNoticeList"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeHomePageNoticeMapper.ResultMapWithBLOBs"
-            parameterType="com.elichn.pub.core.model.bvo.QueryBvo">
-        select o.* from se_home_page_notice o
-
-        <include refid="homePageNoticeSql"/>
-
-        order by o.update_time desc
-    </select>
-
-    <select id="getHomePageNoticeListCount" parameterType="com.elichn.pub.core.model.bvo.QueryBvo"
-            resultType="int">
-        select count(*) from se_home_page_notice o
-
-        <include refid="homePageNoticeSql"/>
-    </select>
 </mapper>

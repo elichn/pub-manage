@@ -17,25 +17,25 @@ import java.util.Map;
 public interface SeLogDao {
 
     /**
-     * getList getList
+     * selectLogList4Page 根据查询条件分页查询操作日志列表
      *
      * @param queryBvo queryBvo
      * @return List<SeLog>
      */
-    List<SeLog> getList(QueryBvo<SeLog> queryBvo);
+    List<SeLog> selectLogList4Page(QueryBvo<SeLog> queryBvo);
 
     /**
-     * getListCount getListCount
+     * selectLogListCount 根据查询条件查询操作日志条数
      *
      * @param queryBvo queryBvo
      * @return int
      */
-    int getListCount(QueryBvo<SeLog> queryBvo);
+    int selectLogListCount(QueryBvo<SeLog> queryBvo);
 
     /**
-     * getLogsList getLogsList
+     * selectLogsList 导出-根据查询条件查询操作日志列表
      *
      * @return List<Map<String,Object>>
      */
-    List<Map<String, Object>> getLogsList();
+    List<Map<String, Object>> selectLogsList();
 }

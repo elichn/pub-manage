@@ -16,23 +16,15 @@ import java.util.List;
 public interface SeRoleDao {
 
     /**
-     * selectRoleListByUser selectRoleListByUser
+     * selectRoleListByUserId 根据userId查询角色列表
      *
      * @param userId userId
      * @return List<SeRole>
      */
-    List<SeRole> selectRoleListByUser(String userId);
+    List<SeRole> selectRoleListByUserId(Integer userId);
 
     /**
-     * selectRolesByUser selectRolesByUser
-     *
-     * @param id selectRoleListByUser
-     * @return List<SeRole>
-     */
-    List<SeRole> selectRolesByUser(Integer id);
-
-    /**
-     * selectRoleByCode selectRoleByCode
+     * selectRoleByCode 根据角色code查询角色
      *
      * @param code code
      * @return SeRole

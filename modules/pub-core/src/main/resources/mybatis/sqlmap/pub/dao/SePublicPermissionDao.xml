@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elichn.pub.core.dao.security.SePublicPermissionDao">
+    <!--根据system查询PublicPermission-->
     <select id="selectBySystem"
             resultMap="com.elichn.pub.core.model.mapper.security.SePublicPermissionMapper.BaseResultMap">
         select * from se_public_permission
@@ -10,6 +11,5 @@
             </if>
             or system is null
         </where>
-
     </select>
 </mapper>

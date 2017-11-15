@@ -73,7 +73,7 @@ public class SeRescController extends BaseController {
             resc = seRoleRescService.insertResc(resc);
             // 记录日志
             super.writeLog(request, CommonConstats.ADD_RESOURCE, CommonConstats.ADD_RESOURCE
-                    + "(资源名:" + resc.getName() + ",资源ID:" + resc.getId() + ")", getUserName());
+                    + "(资源名:" + resc.getName() + ",资源ID:" + resc.getId() + ")", super.getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("addResc error,", e);
@@ -109,7 +109,7 @@ public class SeRescController extends BaseController {
             // 记录日志
             super.writeLog(request, CommonConstats.UPDATE_RESOURCE, CommonConstats.UPDATE_RESOURCE
                     + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>"
-                    + "详细信息:<br>" + oldInfo + "<br>" + newInfo, getUserName());
+                    + "详细信息:<br>" + oldInfo + "<br>" + newInfo, super.getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("updateResc error,", e);
@@ -131,7 +131,7 @@ public class SeRescController extends BaseController {
         try {
             seRoleRescService.deleteResc(rescId);
             super.writeLog(request, CommonConstats.DELETE_RESOURCE,
-                    CommonConstats.DELETE_RESOURCE + "(资源ID:" + rescId + ")", getUserName());
+                    CommonConstats.DELETE_RESOURCE + "(资源ID:" + rescId + ")", super.getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("deleteResc error,", e);
@@ -157,9 +157,9 @@ public class SeRescController extends BaseController {
      */
     private List<SeResc> getRescListByRole() {
         // 获得当前用户
-        SeUser currentUser = seUserService.selectByName(getUserName());
+        SeUser currentUser = seUserService.selectByName(super.getUserName());
         // 根据当前用户活动当前用户的所有角色
-        List<SeRole> currentRoles = seRoleService.selectRoleListByUser(currentUser.getId().toString());
+        List<SeRole> currentRoles = seRoleService.selectRoleListByUserId(currentUser.getId());
         Set<Integer> rescSet = new HashSet<Integer>();
         // 获取当前角色的资源 id
         for (SeRole role : currentRoles) {
@@ -168,7 +168,7 @@ public class SeRescController extends BaseController {
                 rescSet.add(key.getRescId());
             }
         }
-        List<SeResc> list = seRoleRescService.getRescByIds(new ArrayList<Integer>(rescSet));
+        List<SeResc> list = seRoleRescService.selectRescListByIds(new ArrayList<Integer>(rescSet));
         Collections.sort(list, new Comparator<SeResc>() {
             @Override
             public int compare(SeResc o1, SeResc o2) {

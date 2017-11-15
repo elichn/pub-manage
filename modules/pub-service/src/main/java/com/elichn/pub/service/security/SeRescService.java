@@ -15,7 +15,7 @@ import java.util.List;
 public interface SeRescService {
 
     /**
-     * selectByPrimaryKey selectByPrimaryKey
+     * selectByPrimaryKey 根据主键查询资源
      *
      * @param id id
      * @return SeResc
@@ -23,10 +23,10 @@ public interface SeRescService {
     SeResc selectByPrimaryKey(Integer id);
 
     /**
-     * getRescByName  getRescByName
+     * selectRescListByName  根据资源名称查询资源列表
      *
      * @param name name
      * @return List<SeResc>
      */
-    List<SeResc> getRescByName(String name);
+    List<SeResc> selectRescListByName(String name);
 }

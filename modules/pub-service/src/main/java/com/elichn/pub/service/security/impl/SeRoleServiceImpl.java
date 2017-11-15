@@ -33,12 +33,12 @@ public class SeRoleServiceImpl implements SeRoleService {
     private SeUserRoleMapper seUserRoleMapper;
 
     @Override
-    public List<SeRole> selectRoleListByUser(String userId) {
-        return seRoleDao.selectRoleListByUser(userId);
+    public List<SeRole> selectRoleListByUserId(Integer userId) {
+        return seRoleDao.selectRoleListByUserId(userId);
     }
 
     @Override
-    public List<SeRole> selectRoles() {
+    public List<SeRole> selectAllRolesList() {
         return seRoleMapper.selectByExample(null);
     }
 
@@ -86,9 +86,8 @@ public class SeRoleServiceImpl implements SeRoleService {
     }
 
     @Override
-    public List<SeRole> selectRolesByUser(Integer id) {
-        List<SeRole> roles = seRoleDao.selectRolesByUser(id);
-
+    public List<SeRole> selectRolesListByUserId(Integer userId) {
+        List<SeRole> roles = seRoleDao.selectRoleListByUserId(userId);
         List<SeRole> children = new ArrayList<SeRole>();
         for (SeRole role : roles) {
             children.addAll(this.getChildRoles(role.getId()));
@@ -98,7 +97,7 @@ public class SeRoleServiceImpl implements SeRoleService {
     }
 
     @Override
-    public List<SeRole> selectByPid(Integer pid) {
+    public List<SeRole> selectRoleListByPid(Integer pid) {
         SeRoleExample example = new SeRoleExample();
         SeRoleExample.Criteria criteria = example.createCriteria();
         criteria.andParentIdEqualTo(pid);

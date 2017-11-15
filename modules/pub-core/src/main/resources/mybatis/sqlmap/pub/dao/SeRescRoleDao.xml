@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.elichn.pub.core.dao.security.SeRoleRescDao">
-    <select id="selectRescs" resultType="com.elichn.pub.core.model.pojo.security.SeResc"
-            resultMap="com.elichn.pub.core.model.mapper.security.SeRescMapper.BaseResultMap">
+    <!--查询所有资源列表-->
+    <select id="selectAllRescsList" resultMap="com.elichn.pub.core.model.mapper.security.SeRescMapper.BaseResultMap">
           select * from se_resc order by priority;
     </select>
 
-    <select id="getRescByUserId" parameterType="java.lang.Integer"
+    <!--根据userId查询资源列表(获取用户拥有的资源)-->
+    <select id="selectRescListByUserId" parameterType="java.lang.Integer"
             resultMap="com.elichn.pub.core.model.mapper.security.SeRescMapper.BaseResultMap">
         select
           distinct r.*
@@ -18,20 +19,31 @@
         and u.id = #{id}
     </select>
 
-    <select id="getRescByRole" parameterType="java.lang.Integer"
-            resultType="com.elichn.pub.core.model.pojo.security.SeResc"
+    <!--根据roleId查询资源列表(获取角色拥有的资源)-->
+    <select id="selectRescListByRoleId" parameterType="java.lang.Integer"
             resultMap="com.elichn.pub.core.model.mapper.security.SeRescMapper.BaseResultMap">
-        select s.* from se_resc_role rr join se_resc s on rr.resc_id = s.id where rr.role_id = #{id}
+        select
+          s.*
+        from
+          se_resc_role rr
+        join se_resc s
+        on rr.resc_id = s.id
+        where rr.role_id = #{id}
     </select>
 
-    <select id="getRescList" parameterType="List"
-            resultType="com.elichn.pub.core.model.pojo.security.SeResc"
+    <!--根据roleId列表查询资源列表-->
+    <select id="selectRescListByRoleIds" parameterType="List"
             resultMap="com.elichn.pub.core.model.mapper.security.SeRescMapper.BaseResultMap">
-        select s.* from se_resc_role rr join se_resc s on rr.resc_id = s.id
+        select
+          s.*
+        from
+          se_resc_role rr
+        join se_resc s
+        on rr.resc_id = s.id
         <where>
             rr.role_id in
-            <foreach collection="list" item="e" open="(" close=")" separator=",">
-                #{e}
+            <foreach collection="list" item="item" open="(" close=")" separator=",">
+                #{item}
             </foreach>
         </where>
     </select>
