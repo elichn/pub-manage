@@ -66,24 +66,17 @@ public class CustomJdbcRealm extends JdbcRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        // if (principals == null) {
-        //    throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
-        // }
-
         String userName = (String) getAvailablePrincipal(principals);
         SeUser user = seUserService.selectByName(userName);
-
         Set<String> permissions = new HashSet<String>();
         Set<String> roleNames = new HashSet<String>();
         if (user != null) {
             List<SeRole> roleList = seRoleService.selectRoleListByUserId(user.getId());
-
             List<Integer> roleIds = new ArrayList<Integer>();
             for (SeRole r : roleList) {
                 roleNames.add(r.getId().toString());
                 roleIds.add(r.getId());
             }
-
             if (permissionsLookupEnabled && roleIds.size() > 0) {
                 List<SeResc> rescList = seRoleRescService.selectRescListByRoleIds(roleIds);
                 for (SeResc resc : rescList) {
@@ -94,7 +87,6 @@ public class CustomJdbcRealm extends JdbcRealm {
                 }
             }
         }
-
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
         info.setStringPermissions(permissions);
         return info;
@@ -105,20 +97,15 @@ public class CustomJdbcRealm extends JdbcRealm {
         if (principals == null) {
             return null;
         }
-
         AuthorizationInfo info = null;
-
         if (LOG.isTraceEnabled()) {
             LOG.trace("Retrieving AuthorizationInfo for principals [" + principals + "]");
         }
-
-        // Cache<Object, AuthorizationInfo> cache = getAvailableAuthorizationCache();
         Cache<Object, byte[]> cache = redisCacheManager.getCache((String) principals.getPrimaryPrincipal());
         if (cache != null) {
             if (LOG.isTraceEnabled()) {
                 LOG.trace("Attempting to retrieve the AuthorizationInfo from cache.");
             }
-            // Object key = getAuthorizationCacheKey(principals);
             info = (AuthorizationInfo) SerializeUtil.deserialize(cache.get(principals.getPrimaryPrincipal()));
             if (LOG.isTraceEnabled()) {
                 if (info == null) {
@@ -128,7 +115,6 @@ public class CustomJdbcRealm extends JdbcRealm {
                 }
             }
         }
-
         if (info == null) {
             // Call template method if the info was not found in a cache
             info = doGetAuthorizationInfo(principals);
@@ -137,11 +123,9 @@ public class CustomJdbcRealm extends JdbcRealm {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("Caching authorization info for principals: [" + principals + "].");
                 }
-                // Object key = getAuthorizationCacheKey(principals);
                 cache.put(principals.getPrimaryPrincipal(), SerializeUtil.serialize(info));
             }
         }
-
         return info;
     }
 

@@ -104,7 +104,6 @@ public class RedisCache<K, V> implements Cache<K, V> {
         }
     }
 
-    // @SuppressWarnings("unchecked")
     @Override
     public Set<K> keys() {
         try {

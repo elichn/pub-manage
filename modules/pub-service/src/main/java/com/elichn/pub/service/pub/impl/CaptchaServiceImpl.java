@@ -101,7 +101,6 @@ public class CaptchaServiceImpl implements CaptchaService {
         return font[random.nextInt(5)];
     }
 
-
     /**
      * generateCaptchaCode 生成随机验证码
      *
@@ -129,22 +128,18 @@ public class CaptchaServiceImpl implements CaptchaService {
         Graphics2D graph = (Graphics2D) baseImage.getGraphics();
         int imageHeight = baseImage.getHeight();
         int imageWidth = baseImage.getWidth();
-
         // want lines put them in a variable so we might configure these later
         int horizontalLines = imageHeight / 7;
         int verticalLines = imageWidth / 7;
-
         // calculate space between lines
         int horizontalGaps = imageHeight / (horizontalLines + 1);
         int verticalGaps = imageWidth / (verticalLines + 1);
-
         Color c = new Color(200, 200, 200);
         // draw the horizontal stripes
         for (int i = horizontalGaps; i < imageHeight; i = i + horizontalGaps) {
             graph.setColor(c);
             graph.drawLine(0, i, imageWidth, i);
         }
-
         c = new Color(10, 10, 10);
         // draw the vertical stripes
         for (int i = verticalGaps; i < imageWidth; i = i + verticalGaps) {
@@ -165,17 +160,13 @@ public class CaptchaServiceImpl implements CaptchaService {
         int imageHeight = baseImage.getHeight();
         int imageWidth = baseImage.getWidth();
         Random random = new Random();
-
         // want lines put them in a variable so we might configure these later
         int horizontalLines = imageHeight / 7;
         int verticalLines = imageWidth / 7;
-
         // calculate space between lines
         int horizontalGaps = imageHeight / (horizontalLines + 1);
         int verticalGaps = imageWidth / (verticalLines + 1);
-
         Color c = new Color(10, 10, 10);
-
         int startv = imageWidth / 2;
         // draw the vertical stripes
         int fixedValue = 5;
@@ -184,7 +175,6 @@ public class CaptchaServiceImpl implements CaptchaService {
             startv = startv - random.nextInt(fixedValue);
             graph.drawLine(startv, i, startv, i + fixedValue);
         }
-
         return baseImage;
     }
 
@@ -201,7 +191,6 @@ public class CaptchaServiceImpl implements CaptchaService {
         // we need this later to do the operations on..
         int[] pix = new int[imageHeight * imageWidth];
         int j = 0;
-
         for (int j1 = 0; j1 < imageWidth; j1++) {
             for (int k1 = 0; k1 < imageHeight; k1++) {
                 pix[j] = baseImage.getRGB(j1, k1);
@@ -212,17 +201,13 @@ public class CaptchaServiceImpl implements CaptchaService {
         // put the distortion in the (dead) middle
         int widthMiddle = baseImage.getWidth() / 2;
         int heightMiddle = baseImage.getHeight() / 2;
-
         // again iterate over all pixels..
         for (int x = 0; x < baseImage.getWidth(); x++) {
             for (int y = 0; y < baseImage.getHeight(); y++) {
-
                 int relX = x - widthMiddle;
                 int relY = y - heightMiddle;
-
                 double d1 = Math.sqrt(relX * relX + relY * relY);
                 if (d1 < distance) {
-
                     int j2 = widthMiddle
                             + (int) (((fishEyeFormula(d1 / distance) * distance) / d1) * (double) (x - widthMiddle));
                     int k2 = heightMiddle
@@ -284,19 +269,15 @@ public class CaptchaServiceImpl implements CaptchaService {
         Color color = new Color(0, 0, 0);
         Graphics2D g2D = image.createGraphics();
         g2D.setColor(color);
-
         RenderingHints hints = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         hints.add(new RenderingHints(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY));
         g2D.setRenderingHints(hints);
-
         FontRenderContext frc = g2D.getFontRenderContext();
-
         int startPosX = width / (2 + word.length());
         int startPosY = (height - fontSize) / 5 + fontSize;
-
         char[] wordChars = word.toCharArray();
         for (int i = 0; i < wordChars.length; i++) {
             Font chosenFont = getFont(Font.BOLD, fontSize);
@@ -311,10 +292,8 @@ public class CaptchaServiceImpl implements CaptchaService {
             g2D.drawChars(charToDraw, 0, charToDraw.length, startPosX - random.nextInt(3), random.nextInt(height - fontSize) / 2 + fontSize);
             startPosX = startPosX + (int) charWidth + 2;
         }
-
         g.dispose();
         image = getDistortedImage(image);
-
         return image;
     }
 
@@ -332,9 +311,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         Random random = new Random();
         g.setColor(new Color(255, 255, 255));
         g.fillRect(0, 0, width, height);
-
         image = getBackground(image);
-
         int x = 0;
         for (int i = 0; i < text.length(); i++) {
             // 设置图形验证码中字符串的字体和大小
@@ -347,12 +324,10 @@ public class CaptchaServiceImpl implements CaptchaService {
             g.setColor(new Color(0, 0, 0));
             x = x - random.nextInt(3) + fontSize;
             int y = random.nextInt(height - fontSize) / 2 + fontSize;
-
             g.drawString(tmp, x, y);
         }
         g.dispose();
         image = getDistortedImage(image);
-
         return image;
     }
 }

@@ -81,31 +81,4 @@ public class SeLogServiceImpl implements SeLogService {
     public List<Map<String, Object>> selectLogsList() {
         return seLogDao.selectLogsList();
     }
-
-    /**
-     * getWheresString getWheresString
-     *
-     * @param userName userName
-     * @param datetime datetime
-     * @param logtype  logtype
-     * @return String
-     */
-    private String getWheresString(String userName, String datetime, String logtype) {
-        String where = "";
-        if (StringUtils.isNotBlank(userName)) {
-            where += " and user_name like '%" + userName + "%'";
-        }
-        if (datetime != null && StringUtils.isNotBlank(datetime)) {
-            where += " and date(log_time)='" + datetime + "'";
-        }
-        if (StringUtils.isNotBlank(logtype)) {
-            where += " and log_type='" + logtype + "'";
-        }
-
-        if (StringUtils.isNotBlank(where)) {
-            where = " where" + where;
-        }
-        where = where.replace("where and", "where");
-        return where;
-    }
 }

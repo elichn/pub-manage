@@ -65,7 +65,6 @@ public class PasswordUtil {
                         arr = NUM;
                         break;
                 }
-
                 buf.append(arr[(int) Math.floor(Math.random() * arr.length)]);
             }
             String password = buf.toString();
@@ -112,7 +111,6 @@ public class PasswordUtil {
         if (otherCaseCheck.matcher(password).find()) {
             n++;
         }
-
         return n;
     }
 }

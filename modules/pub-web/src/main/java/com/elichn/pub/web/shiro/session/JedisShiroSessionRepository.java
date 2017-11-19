@@ -73,7 +73,6 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
     public Collection<Session> getAllSessions() {
         Set<Session> sessions = new HashSet<Session>();
         Set<String> byteKeys = redisTemplate.keys(this.REDIS_SHIRO_SESSION + securityGroup + ":" + "*");
-
         if (byteKeys != null && byteKeys.size() > 0) {
             for (String bs : byteKeys) {
                 Session s = (Session) SerializeUtil.deserialize(redisTemplate.opsForValue().get(bs));

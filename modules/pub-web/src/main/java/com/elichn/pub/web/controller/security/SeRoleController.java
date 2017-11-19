@@ -136,7 +136,6 @@ public class SeRoleController extends BaseController {
         } else {
             if (isDirect) {
                 List<SeResc> list = seRoleRescService.selectRescListByRoleId(id);
-
                 for (SeResc resc : list) {
                     SeRescTreeBvo bvo = SeRescTreeBvo.copyFromResc(resc);
                     bvo.setChecked(false);

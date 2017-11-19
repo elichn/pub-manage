@@ -19,7 +19,6 @@ public class DateTimeWrapper extends DefaultObjectWrapper {
         if (obj instanceof AbstractInstant) {
             return new SimpleDate(((AbstractInstant) obj).toDate(), TemplateDateModel.DATETIME);
         }
-
         return super.wrap(obj);
     }
 }

@@ -38,18 +38,15 @@ public class RescFilter extends AuthorizationFilter {
     protected boolean isAccessAllowed(ServletRequest request,
                                       ServletResponse response, Object mappedValue) throws Exception {
         String path = getPathWithinApplication(request);
-
         // 去除.json的后缀
         if (path.endsWith(jsonName)) {
             path = path.substring(0, path.length() - 5);
         }
-
         // 忽略（通过）特定后缀的访问
         String ext = getExt(path);
         if (ext != null && !jsonName.equals(ext)) {
             return true;
         }
-
         if (ignoreHeadList != null) {
             for (String s : ignoreHeadList) {
                 if (path.startsWith(s)) {
@@ -57,12 +54,10 @@ public class RescFilter extends AuthorizationFilter {
                 }
             }
         }
-
         // 忽略（通过）的url
         if (ignoreList != null && ignoreList.contains(path)) {
             return true;
         }
-
         // url改写 如/site/add  改为/site:add，就是把后面的操作（方法）区分出来
         int i = path.lastIndexOf('/');
         if (i > 0) {
@@ -70,12 +65,10 @@ public class RescFilter extends AuthorizationFilter {
         } else if (i == 0) {
             path = "/:" + path.substring(1, path.length());
         }
-
         // 进行权限验证
         Subject subject = getSubject(request, response);
         boolean isPermitted = subject.isPermitted(path);
         LOG.info(path + ":" + isPermitted);
-
         return isPermitted;
     }
 
@@ -112,13 +105,11 @@ public class RescFilter extends AuthorizationFilter {
              *  If no unauthorized URL is specified, just return an unauthorized HTTP status code
              */
             String unauthorizedUrl = getUnauthorizedUrl();
-
             String path = getPathWithinApplication(request);
             // 如果以.json的形式访问 则返回.json形式的提醒
             if (path.endsWith(jsonName)) {
                 unauthorizedUrl += jsonName;
             }
-
             // SHIRO-142 - ensure that redirect _or_ error code occurs - both cannot happen due to response commit:
             if (org.apache.shiro.util.StringUtils.hasText(unauthorizedUrl)) {
                 WebUtils.issueRedirect(request, response, unauthorizedUrl);
