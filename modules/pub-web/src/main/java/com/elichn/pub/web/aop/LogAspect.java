@@ -1,8 +1,8 @@
 package com.elichn.pub.web.aop;
 
 
-import com.elichn.pub.web.annotation.CrudMethodAfter;
-import com.elichn.pub.web.annotation.CrudMethodBefore;
+import com.elichn.pub.web.annotation.MethodAfter;
+import com.elichn.pub.web.annotation.MethodBefore;
 import com.elichn.pub.web.log.LogWriter;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.SecurityUtils;
@@ -46,11 +46,11 @@ public class LogAspect {
     @Autowired(required = false)
     private HttpServletRequest request;
 
-    @Pointcut("@annotation(com.elichn.pub.web.annotation.CrudMethodBefore)")
+    @Pointcut("@annotation(com.elichn.pub.web.annotation.MethodBefore)")
     public void before() {
     }
 
-    @Pointcut("@annotation(com.elichn.pub.web.annotation.CrudMethodAfter)")
+    @Pointcut("@annotation(com.elichn.pub.web.annotation.MethodAfter)")
     public void after() {
     }
 
@@ -59,7 +59,7 @@ public class LogAspect {
         try {
             MethodSignature ms = (MethodSignature) jp.getSignature();
             Method method = ms.getMethod();
-            CrudMethodBefore before = method.getAnnotation(CrudMethodBefore.class);
+            MethodBefore before = method.getAnnotation(MethodBefore.class);
             this.writeLog(jp, before.methodDesc(), before.log());
         } catch (Exception e) {
             LOG.warn("before AOP异常,", e);
@@ -71,7 +71,7 @@ public class LogAspect {
         try {
             MethodSignature ms = (MethodSignature) jp.getSignature();
             Method method = ms.getMethod();
-            CrudMethodAfter after = method.getAnnotation(CrudMethodAfter.class);
+            MethodAfter after = method.getAnnotation(MethodAfter.class);
             this.writeLog(jp, after.methodDesc(), after.log());
         } catch (Exception e) {
             LOG.warn("after AOP异常,", e);

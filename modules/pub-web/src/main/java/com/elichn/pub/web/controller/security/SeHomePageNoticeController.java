@@ -11,7 +11,7 @@ import com.elichn.pub.service.security.SeHomePageNoticeService;
 import com.elichn.pub.service.security.SeRoleService;
 import com.elichn.pub.service.security.SeUserService;
 import com.elichn.pub.web.controller.BaseController;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

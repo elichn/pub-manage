@@ -8,7 +8,7 @@ import com.elichn.pub.core.model.pojo.security.SeUser;
 import com.elichn.pub.service.security.SeRoleRescService;
 import com.elichn.pub.service.security.SeRoleService;
 import com.elichn.pub.service.security.SeUserService;
-import com.elichn.pub.web.annotation.CrudMethodAfter;
+import com.elichn.pub.web.annotation.MethodAfter;
 import com.elichn.pub.web.controller.BaseController;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -90,7 +90,7 @@ public class SeRescController extends BaseController {
      * @param request request
      * @param resc    resc
      */
-     @CrudMethodAfter(methodDesc = "修改资源", log = "oldSeResc:$resc;newSeResc:" +
+     @MethodAfter(methodDesc = "修改资源", log = "oldSeResc:$resc;newSeResc:" +
              "${model.asMap().get('currentResc')};结果:${model.asMap().get('msg')}")
     @RequestMapping(value = "updateResc", method = RequestMethod.POST)
     public void updateResc(Model model, HttpServletRequest request, SeResc resc) {

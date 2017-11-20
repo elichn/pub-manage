@@ -39,7 +39,6 @@ function addDiyDom(treeId, treeNode) {
         icoObj = $("#" + treeNode.tId + "_ico");
     switchObj.remove();
     icoObj.before(switchObj);
-
     if (treeNode.level > 1) {
         var spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level) + "px'></span>";
         switchObj.before(spaceStr);
@@ -64,9 +63,17 @@ $(function () {
             initTree(menuList);
         }
     });
-
     var o = $('#centerTab');
     addTab(19, "欢迎", "/welcome", false);
+    var obj = $(".easyui-searchbox").searchbox("textbox");
+    $(obj).keyup(function() {
+        var str = $(this).val();
+        if (str == null || str.trim() == '') {
+            var zTree = $.fn.zTree.getZTreeObj("menu");
+            var nodes = zTree.getNodesByParam("isHidden", true);
+            zTree.showNodes(nodes);
+        }
+    })
 });
 
 /**
@@ -81,13 +88,10 @@ function addTab(tabId, title, url, close, forceRefresh) {
     if (close == null) {
         close = true
     }
-
     // 当选项卡不存在的时候，即第一次打开选项卡
     var o = $('#centerTab');
-
     var name = 'iframe_' + tabId;
     var content = "<iframe width='100%' height='100%' frameborder='0' scrolling='auto' name='" + name + "' id='" + tabId + "' src='" + url + "'></iframe>";
-
     if (url != null && url.trim() != '') {
         o.tabs('add', {
             id: tabId,
@@ -113,21 +117,19 @@ function colseTab(title) {
 
 function searchMenu(key) {
     var zTree = $.fn.zTree.getZTreeObj("menu");
+    var nodes = zTree.getNodesByParam("isHidden", true);
+    zTree.showNodes(nodes);
+
     if (key != null && key.trim() != '') {
-        var nodes = zTree.getNodesByFilter(function (node) {
+        nodes = zTree.getNodesByFilter(function (node) {
             return !(node.name.indexOf(key) > -1)
         });
-
         zTree.hideNodes(nodes);
-
         nodes = zTree.getNodesByParam("isHidden", false);
         showChildren(zTree, nodes);
         $.each(nodes, function (k, v) {
             showParent(zTree, v);
         })
-    } else {
-        var nodes = zTree.getNodesByParam("isHidden", true);
-        zTree.showNodes(nodes);
     }
 }
 
@@ -153,7 +155,6 @@ function initTree(nodes) {
     var zTree = $.fn.zTree.init(treeObj, setting, nodes);
     var curMenu = zTree.getNodes()[0];
     zTree.selectNode(curMenu);
-
     treeObj.hover(function () {
         if (!treeObj.hasClass("showIcon")) {
             treeObj.addClass("showIcon");
@@ -161,7 +162,6 @@ function initTree(nodes) {
     }, function () {
         treeObj.removeClass("showIcon");
     });
-
     var refer = $.cookie("refer");
     if (refer != null) {
         var url = getUrl(refer);
@@ -174,7 +174,6 @@ function initTree(nodes) {
             zTree.expandNode(node.getParentNode(), true, true, true);
             zTree.selectNode(node);
         }
-
         $.cookie('refer', '', {expires: -1});
     }
 }

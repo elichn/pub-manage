@@ -6,11 +6,9 @@ $(function () {
                 $("#navBar > ul > li.dropdown").removeClass("open");
                 $obj.addClass("open");
             });
-
             $obj.mouseout(function () {
                 $("#navBar > ul > li.dropdown").removeClass("open");
             });
-
             $obj.find("ul").mouseout(function () {
                 $obj.removeClass("open");
             });

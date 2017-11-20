@@ -3,8 +3,8 @@ package com.elichn.pub.web.annotation;
 import java.lang.annotation.*;
 
 /**
- * <p>Title: CrudMethodBefore</p>
- * <p>Description: CrudMethodBefore</p>
+ * <p>Title: MethodAfter</p>
+ * <p>Description: MethodAfter</p>
  *
  * @author elichn
  * @version 1.0
@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CrudMethodBefore {
+public @interface MethodAfter {
 
     /**
      * methodDesc 方法描述
