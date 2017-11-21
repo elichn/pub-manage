@@ -123,7 +123,6 @@
             window.location.href = "/user/addUserPage";
         }
     }
-
     function editUser(id) {
         var style = ${style};
         if (style == 0) {

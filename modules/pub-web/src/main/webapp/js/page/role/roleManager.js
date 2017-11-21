@@ -48,11 +48,9 @@ $(function () {
                     beforeRename: beforeRename
                 }
             };
-
             $.fn.zTree.init($("#roleTree"), setting, data.list);
         }
     });
-
     $("#form").validate({
         rules: {
             roleName: {
@@ -114,7 +112,6 @@ $(function () {
             modifyRole();
         }
     });
-
     rMenu = $("#rMenu");
 });
 
@@ -152,7 +149,6 @@ function buildRescTree(roleId) {
                     onCheck: showSaveBtn
                 }
             };
-
             $.fn.zTree.init($("#rescTree"), setting, data.list);
         }
     });
@@ -176,7 +172,6 @@ function saveRescModify() {
     if (roleNodes.length > 0) {
         var treeObj = $.fn.zTree.getZTreeObj("rescTree");
         var nodes = treeObj.getChangeCheckedNodes();
-
         if (nodes.length > 0) {
             var list = "[";
             for (var i = 0; i < nodes.length; i++) {
@@ -186,7 +181,6 @@ function saveRescModify() {
                 list += "{\"id\":" + nodes[i].id + ",\"checked\":" + nodes[i].checked + "}"
             }
             list += "]";
-
             $.ajax({
                 type: "post",
                 url: "/role/updateRoleResc.json",
@@ -257,7 +251,6 @@ function viewResc(node) {
 // 右键事件
 function onRightClick(event, treeId, treeNode) {
     var treeObj = $.fn.zTree.getZTreeObj("roleTree");
-
     if(treeNode.id != 2) {
         if (treeNode && !treeNode.getParentNode()) {
             // treeObj.cancelSelectedNode();

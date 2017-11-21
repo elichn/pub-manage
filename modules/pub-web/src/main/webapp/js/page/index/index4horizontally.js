@@ -14,7 +14,6 @@ $(function () {
             });
         });
     }
-
     $(window).resize(function () {
         var iframe = document.getElementById("showIFrame");
         iframe.height = $(window).height() - 50;

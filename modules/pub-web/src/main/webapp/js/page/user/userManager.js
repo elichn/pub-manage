@@ -1,5 +1,4 @@
 // document.domain="yourwebsite.com";
-
 $(function () {
     (function (d) {
         d['okValue'] = '确定';
@@ -7,11 +6,10 @@ $(function () {
         d['title'] = '消息';
         // [more..]
     })($.dialog.defaults);
-
     var param = $("#form").serialize();
     var s = $("#resultTable").bsTable({
         url: '/user/viewUsers.json',
-        ajaxType: "POST",  // ajax 提交方式 post 或者 get
+        ajaxType: "post",  // ajax 提交方式 post 或者 get
         pageNo: 1,
         pageNoAlias: 'page',
         pageSize: 10,
@@ -20,12 +18,10 @@ $(function () {
         countRoot: "total",
         dataRoot: "userRoleBvoList"
     });
-
     $("#searchBtn").on('click', function () {
         var param = $("#form").serialize();
         s.reload(param);
     });
-
     $("#userName").on('keydown', function (event) {
         if (event.keyCode == 13) {
             search();
@@ -57,7 +53,6 @@ function getOperate(row) {
                 html += "&nbsp;&nbsp;<a href='javascript:void(0);' onclick='setStatus(" + row.userId + ")' class='btn btn-success btn-xs'>启用</a>";
             }
         }
-
         return html;
     } else {
         return "";
@@ -115,7 +110,6 @@ function renderUserType(userType) {
 function pullUser() {
     var userNameEdit = $("#userNameEdit");
     userNameEdit.html("");
-
     var editWin = $.dialog({
         title: "LDAP用户拉取",
         lock: true,
@@ -124,7 +118,7 @@ function pullUser() {
         ok: function () {
             var userName = userNameEdit.val();
             $.ajax({
-                type: "GET",
+                type: "get",
                 url: "/user/pullUser.json",
                 data: {userName: userName},
                 success: function (data) {

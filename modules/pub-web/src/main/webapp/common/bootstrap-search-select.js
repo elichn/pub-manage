@@ -8,7 +8,6 @@
         var KEY_UP = 38;
         var KEY_DOWN = 40;
         var KEY_ENTER = 13;
-
         var defaults = {
             keyEl: null,      // 键值存放的元素
             data: null,       // 可遍历的数据
@@ -20,13 +19,11 @@
             zIndex: 100,
             showAll:true      // 展示“全部”字样，选中该值为空
         };
-
         // 初始化组件
         _.init = function (el, s) {
             _.o = $.extend({}, defaults, s);
             var o = _.o;
             var div = $("<div></div>");
-
             div.css({
                 position: "absolute",
                 border: "1px solid #CCCCCC",
@@ -39,7 +36,6 @@
                 "z-index": o.zIndex,
                 background: "#f0f6e4", "border-radius": "4px"
             }).attr("data-type", "ss-body");
-
             div.appendTo($("body"));
             o.body = div;
 
@@ -59,7 +55,6 @@
 
             input.on("keyup", searchInStore);
             el.on("focus", showBody);
-
             $(window).resize(resize);
         };
 
@@ -72,10 +67,8 @@
             fillData(o.data);
             // 重新初始化
             o.focusItem = null;
-
             // 定位下拉框位置
             resize();
-
             // 显示 绑定事件
             o.body.show();
             $(_).attr("readonly", "readonly");
@@ -137,7 +130,6 @@
                 if (focusIndex > 0) {
                     var item = o.items[focusIndex - 1];
                     item.focus();
-
                     var itemY = item.offset().top;
                     // var divH = o.selectDiv.height();
                     var divY = o.selectDiv.offset().top;
@@ -163,7 +155,6 @@
                 if (focusIndex < size - 1) {
                     var item = o.items[focusIndex + 1];
                     item.focus();
-
                     var itemY = item.offset().top;
                     var divH = o.selectDiv.height();
                     var divY = o.selectDiv.offset().top;
@@ -184,7 +175,6 @@
             if (e.keyCode == 40 || e.keyCode == 38) {
                 return;
             }
-
             var key = $(this).val().trim();
             var re = {};
             $.each(_.o.data, function (k, v) {
@@ -192,23 +182,19 @@
                 if (typeof _.o.getValue == 'function') {
                     val = _.o.getValue(k, v);
                 }
-
                 if (val == key) {
                     re[k] = v;
                 }
             });
-
             $.each(_.o.data, function (k, v) {
                 var val = v;
                 if (typeof _.o.getValue == 'function') {
                     val = _.o.getValue(k, v);
                 }
-
                 if (val.indexOf(key) >= 0 && val != key) {
                     re[k] = v;
                 }
             });
-
             fillData(re);
         }
 
@@ -221,7 +207,6 @@
                 var table = $("<table class='table' style='margin-bottom: 0'></table>");
                 var tbody = $("<tbody></tbody>");
                 tbody.appendTo(table);
-
                 _.o.items = [];
                 if(_.o.showAll){
                     row(tbody, _.o.defaultKey || "", _.o.defaultVal || "全部", true);
@@ -229,7 +214,6 @@
                 $.each(data, function (k, v) {
                     row(tbody, k.replace("o_", ""), v);
                 });
-
                 $("table", _.o.body).remove();
                 table.appendTo(_.o.selectDiv);
                 resize();
@@ -246,22 +230,18 @@
         function row(tbody, k, v, flag) {
             var tr = $("<tr></tr>");
             var td = $("<td></td>");
-
             var key = k;
             var val = v;
             if (typeof _.o.getKey == 'function' && !flag) {
                 key = _.o.getKey(k, v);
             }
-
             if (typeof _.o.getValue == 'function' && !flag) {
                 val = _.o.getValue(k, v);
             }
-
             td.html(val);
             if (null != val) {
                 td.appendTo(tr);
             }
-
             tr.on("click", function (e) {
                 $(_).val(val);
                 if (_.o.keyEl != null) {
@@ -277,7 +257,6 @@
             tr.appendTo(tbody);
             tr.index = _.o.items.length;
             _.o.items.push(tr);
-
             // 注册focus和loseFocus事件
             tr.focus(function () {
                 if (_.o.focusItem) {
@@ -286,11 +265,9 @@
                 _.o.focusItem = tr;
                 tr.css({"background": "#33ccff"});
             });
-
             tr.loseFocus = function () {
                 tr.css({"background": "#f0f6e4"});
             };
-
             tr.mouseenter(function () {
                 tr.focus();
             });
@@ -309,18 +286,15 @@
             if (y + th > wh) {
                 y = y - th - el.outerHeight();
             }
-
             o.body.css({
                 left: ot.left + "px",
                 top: y + "px",
                 width: el.outerWidth()
             });
         }
-
         _.each(function (k, v) {
             _.init($(v), settings);
         });
-
         return _;
     };
 })(jQuery);

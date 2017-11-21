@@ -119,7 +119,6 @@ function searchMenu(key) {
     var zTree = $.fn.zTree.getZTreeObj("menu");
     var nodes = zTree.getNodesByParam("isHidden", true);
     zTree.showNodes(nodes);
-
     if (key != null && key.trim() != '') {
         nodes = zTree.getNodesByFilter(function (node) {
             return !(node.name.indexOf(key) > -1)
@@ -168,7 +167,6 @@ function initTree(nodes) {
         var node = zTree.getNodesByFilter(function (n) {
             return getUrl(n.showUrl) == url;
         }, true);
-
         if (node != null) {
             addTab(node.id, node.name, refer);
             zTree.expandNode(node.getParentNode(), true, true, true);

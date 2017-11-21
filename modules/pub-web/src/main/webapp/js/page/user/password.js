@@ -6,13 +6,10 @@ $(function () {
             }
         }
     });
-
     $.validator.addMethod("complexPwd", function (value, element) {
         return isComplexPassword(value) >= 3;
 
     }, "密码中必须包含数字，小写字母，大写字母，特殊字符中的三种以上");
-
-
     $("#form").validate({
         rules: {
             oldPassword: {

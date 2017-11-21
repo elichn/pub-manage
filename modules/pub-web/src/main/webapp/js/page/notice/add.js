@@ -14,7 +14,6 @@ var um = UM.getEditor('content', {
         '| justifyleft justifycenter justifyright justifyjustify |',
         'link unlink | emotion ',
         '| horizontal preview fullscreen', 'drafts'
-        //  , 'formula'
     ]
 });
 
@@ -60,7 +59,6 @@ function initRoleTree() {
                     onCheck: onCheck
                 }
             };
-
             $.fn.zTree.init($("#roleTree"), setting, data.list);
         }
     });
@@ -81,18 +79,15 @@ function addNotice() {
             return;
         }
     }
-
     var zTree = $.fn.zTree.getZTreeObj("roleTree");
     var nodes = zTree.getCheckedNodes(true);
-
     var v = "";
     for (var i = 0, l = nodes.length; i < l; i++) {
         v += "&roleIds=" + nodes[i].id;
     }
-
     $.ajax({
         url: "/homePageNotice/add.json",
-        type: "POST",
+        type: "post",
         data: $("#form").serialize() + v,
         success: function (data) {
             if (data && data.msg == "SUCCESS") {

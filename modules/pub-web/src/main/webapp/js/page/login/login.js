@@ -1,5 +1,4 @@
 // document.domain="yourwebsite.com";
-
 if (window.top.location.href != window.location.href) {
     window.top.location.replace(window.location.href);
 }
@@ -14,7 +13,6 @@ function cleanErrorTips() {
 }
 
 $(function () {
-
     $("#form").validate({
         rules: {
             userName: {

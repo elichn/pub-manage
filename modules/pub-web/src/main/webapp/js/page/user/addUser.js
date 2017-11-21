@@ -28,7 +28,7 @@ $(function () {
             userName: {
                 required: true,
                 rangelength: [4, 20],
-//                    regex: "^[_a-zA-Z0-9]*$",
+                // regex: "^[_a-zA-Z0-9]*$",
                 remote: {
                     url: "/user/isUser.json",
                     type: "get",
@@ -138,7 +138,6 @@ $(function () {
                     }
                 }
             };
-
             var obj = $.fn.zTree.init($("#roleDiv"), setting, data.list);
             var nodes = obj.getCheckedNodes(true);
             disableNodes(obj, nodes);
@@ -153,7 +152,6 @@ function disableNodes(treeObj, nodes) {
         var subNodes = treeObj.getNodesByFilter(function () {
             return true;
         }, false, treeNode);
-
         for (var m in subNodes) {
             treeObj.setChkDisabled(subNodes[m], true);
         }
@@ -163,13 +161,11 @@ function disableNodes(treeObj, nodes) {
 // 保存修改
 function saveModify() {
     var param = $("#form").serialize();
-
     var treeObj = $.fn.zTree.getZTreeObj("roleDiv");
     // var nodes = treeObj.getChangeCheckedNodes();
     var nodes = treeObj.getNodesByFilter(function (node) {
         return node.checked != node.checkedOld;
     }, false);
-
     if (nodes.length > 0) {
         var list = "[";
         for (var i = 0; i < nodes.length; i++) {
@@ -181,9 +177,7 @@ function saveModify() {
         list += "]";
         param += "&roleList=" + list;
     }
-
     var url = "/user/addUser.json";
-
     $.post(url, param, function (data) {
         if (data) {
             $.alert("操作成功").time(2000);

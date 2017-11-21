@@ -7,7 +7,6 @@
 var rMenu;
 $(function () {
     rMenu = $("#rMenu");
-
     $.ajax({
         type: "get",
         url: "/resc/getResourceListByRole.json",
@@ -37,13 +36,11 @@ $(function () {
             $.fn.zTree.init($("#rescTree"), setting, data.list);
         }
     });
-
     $.validator.setDefaults({
         submitHandler: function () {
             modifyResc();
         }
     });
-
     $("#form").validate({
         rules: {
             name: {
@@ -111,7 +108,6 @@ function showRMenu(type, x, y) {
     } else {
         $("#m_del").show();
     }
-
     if ($("#rMenu").height() > 0) {
         $("#rMenu table").show();
         rMenu.css({"top": y + "px", "left": x + "px", "display": "block"});
@@ -198,7 +194,6 @@ function removeTreeNode() {
                 flag = true;
             }
         }
-
         if (flag) {
             treeObj.removeNode(nodes[0]);
             $.ajax({
@@ -227,7 +222,6 @@ function showEditWin(node, pid) {
     $("#form span").remove();
     $("#form label.error").remove();
     $("#form div").removeClass("has-error has-success has-feedback");
-
     var title = "增加资源";
     if (node) {
         title = "编辑资源";
@@ -238,7 +232,6 @@ function showEditWin(node, pid) {
         $("#resString").val(node.resString);
         $("#priority").val(node.priority);
         $("#showMenu").attr("checked", node.showMenu == 1);
-
         $("#descn").val(node.descn);
         $("#form").attr("action", "/resc/updateResc.json");
     } else {
@@ -252,7 +245,6 @@ function showEditWin(node, pid) {
         $("#descn").val("");
         $("#form").attr("action", "/resc/addResc.json");
     }
-
     $("#showMenu").change(function () {
         if ($(this).attr("checked")) {
             $("#showMenuVal").val(1);
@@ -260,9 +252,7 @@ function showEditWin(node, pid) {
             $("#showMenuVal").val(0);
         }
     });
-
     $("#showMenu").change();
-
     editWin = $.dialog({
         title: title,
         width: 600,

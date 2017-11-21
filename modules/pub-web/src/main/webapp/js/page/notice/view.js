@@ -1,5 +1,4 @@
 // document.domain="yourwebsite.com";
-
 (function (d) {
     d['okValue'] = '确定';
     d['cancelValue'] = '取消';
@@ -10,7 +9,7 @@ var bsTable;
 $(function () {
     bsTable = $("#resultTable").bsTable({
         url: '/homePageNotice/list.json',
-        ajaxType: "POST",  // ajax 提交方式 post 或者 get
+        ajaxType: "post",     // ajax 提交方式 post 或者 get
         pageNo: 1,
         pageSize: 20,
         pagingAlign: "right",
@@ -33,7 +32,6 @@ var um = UM.getEditor('content', {
         '| justifyleft justifycenter justifyright justifyjustify |',
         'link unlink | emotion ',
         '| horizontal preview', 'drafts'
-        // , 'formula'
     ]
 });
 
@@ -49,13 +47,11 @@ function getOperate(row) {
     } else {
         html += "<a href='javascript:void(0);' onclick='deploy(" + row.id + ")' class='btn btn-danger btn-xs'>发布</a>";
     }
-
     if (row.type == 1) {
         html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateLink(" + row.id + ")' class='btn btn-info btn-xs'>编辑</a>";
     } else {
         html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateContent(" + row.id + ")' class='btn btn-info btn-xs'>编辑</a>";
     }
-
     html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateRn(" + row.id + ")' class='btn btn-success btn-xs'>展示给</a>";
     html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='updateAsNew(" + row.id + ")' class='btn btn-warning btn-xs'>设为最新通知</a>";
     return html;
@@ -72,7 +68,7 @@ function undeploy(id) {
 function changeStatus(id, status) {
     $.ajax({
         url: "/homePageNotice/changeStatus.json",
-        type: "POST",
+        type: "post",
         data: {id: id, status: status},
         success: function (data) {
             if (data && data.msg == "SUCCESS") {
@@ -105,7 +101,6 @@ function updateLink(id) {
             break;
         }
     }
-
     var editWin = $.dialog({
         title: "编辑",
         lock: true,
@@ -114,7 +109,7 @@ function updateLink(id) {
             var close = true;
             $.ajax({
                 url: "/homePageNotice/edit.json",
-                type: "POST",
+                type: "post",
                 async: false,
                 data: {id: id, url: $("#url").val(), type: 1},
                 success: function (data) {
@@ -141,7 +136,6 @@ function updateContent(id) {
             break;
         }
     }
-
     var editWin = $.dialog({
         title: "编辑",
         lock: true,
@@ -150,7 +144,7 @@ function updateContent(id) {
             var close = true;
             $.ajax({
                 url: "/homePageNotice/edit.json",
-                type: "POST",
+                type: "post",
                 async: false,
                 data: {id: id, content: um.getContent(), type: 2},
                 success: function (data) {
@@ -195,11 +189,9 @@ function updateRn(id) {
                     }
                 }
             };
-
             $.fn.zTree.init($("#roleTree"), setting, data.list);
         }
     });
-
     var editWin = $.dialog({
         title: "展示给",
         lock: true,
@@ -208,17 +200,14 @@ function updateRn(id) {
             var close = true;
             var zTree = $.fn.zTree.getZTreeObj("roleTree");
             var nodes = zTree.getCheckedNodes(true);
-
             var param = "";
             for (var i = 0, l = nodes.length; i < l; i++) {
                 param += "&roleId=" + nodes[i].id;
             }
-
             param = "noticeId=" + id + param;
-
             $.ajax({
                 url: "/homePageNotice/updateRoleNotice.json",
-                type: "POST",
+                type: "post",
                 async: false,
                 data: param,
                 success: function (data) {
@@ -241,7 +230,7 @@ function updateAsNew(id) {
     $.confirm("需要将此通知设为最新通知吗？", function () {
         $.ajax({
             url: "/homePageNotice/updateAsNew.json",
-            type: "POST",
+            type: "post",
             data: {id: id},
             success: function (data) {
                 if (data && data.msg == "SUCCESS") {

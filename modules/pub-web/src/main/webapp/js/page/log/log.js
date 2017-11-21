@@ -2,7 +2,7 @@ $(function () {
     var param = $("#form").serialize();
     var s = $("#resultTable").bsTable({
         url: '/log/logList.json',
-        ajaxType: "POST",  // ajax 提交方式 post 或者 get
+        ajaxType: "post",  // ajax 提交方式 post 或者 get
         pageNo: 1,
         pageSize: 10,
         pagingAlign: "right",
@@ -10,7 +10,6 @@ $(function () {
         countRoot: "datas.total",
         dataRoot: "datas.list"
     });
-
     $("#searchBtn").on('click', function () {
         var param = $("#form").serialize();
         s.reload(param);

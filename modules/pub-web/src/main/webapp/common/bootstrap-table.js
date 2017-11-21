@@ -28,7 +28,6 @@
             // onSort: null,           // 排序
             bindForm: null             // 排序绑定的form Id
         };
-
         // 初始化table
         _.init = function (el, s) {
             _.o = $.extend({}, defaults, s);
@@ -37,13 +36,11 @@
             if (typeof o.onInit == "function") {
                 o.onInit();
             }
-
             registSort(o);
             generateTable();
         };
 
         function registSort(o) {
-            // if (typeof o.onSort == 'function') {
             var thead = $("thead", $(_));
             $("tr > th", thead).each(function (k, v) {
                 var thiz = $(this);
@@ -56,7 +53,6 @@
                         } else {
                             order = 'desc';
                         }
-
                         // o.onSort(col, order);
                         _.reload("orderBy=" + col + "&sortType=" + order + "&" + $("#" + o.bindForm).serialize());
                         $("tr > th > i").remove();
@@ -69,9 +65,7 @@
                     });
                 }
             });
-            // }
         }
-
         // 根据参数重新加载table
         _.reload = function (param) {
             if (param != null) {
@@ -79,7 +73,6 @@
                 _.gotoPage(1);
             }
         };
-
         // 获取数据 生成table
         function generateTable(pageNo, pageSize) {
             var o = _.o;
@@ -87,7 +80,6 @@
                 pageNo = pageNo || o.pageNo || 1;
                 pageSize = pageSize || o.pageSize || 10;
                 o.pageNo = pageNo;
-
                 var param = o.param || {};
                 if (typeof param == 'string') {
                     param += "&" + o.pageNoAlias + "=" + pageNo
@@ -96,7 +88,6 @@
                     param[o.pageNoAlias] = pageNo;
                     param[o.pageSizeAlias] = pageSize;
                 }
-
                 $.ajax({
                     url: o.url,
                     type: o.ajaxType.toUpperCase(),
@@ -113,7 +104,6 @@
                         if (typeof o.onLoadSuccess == 'function') {
                             o.onLoadSuccess(data);
                         }
-
                         _.load(data);
                     },
                     error: function (e) {
@@ -124,38 +114,31 @@
                 });
             }
         }
-
         // 生成li元素
         function li(parentEl, cls, clickFunc, content, paging) {
             var li = $("<li></li>");
             if (cls != null) {
                 li.addClass(cls);
             }
-
             if (typeof clickFunc == 'function') {
                 li.on("click", clickFunc);
             }
-
             if (paging != null) {
                 li.attr("data-page", paging);
             }
-
             $("<a href='javascript:void(0);'>" + content + "</a>").appendTo(li);
             li.appendTo(parentEl);
         }
-
         // 生成分页组件
         function generatePagination() {
             var o = _.o;
             if (!o.isPaging) return;
-
             var el = $(_);
             var foot = $("tfoot", el);
             if (foot.length == 0) {
                 foot = $("<tfoot></tfoot>");
                 foot.appendTo(el);
             }
-
             var max = 99;
             var row = $("<tr><td colspan='" + max + "'></td></tr>").appendTo(foot);
             var td = $("td", row);
@@ -195,17 +178,14 @@
                     }, i, i);
                 }
             }
-
             if (end < pageCount - 1) {
                 li(ul, "disabled", null, "...", null);
             }
-
             if (end < pageCount) {
                 li(ul, null, function () {
                     _.gotoPage(parseInt($(this).attr("data-page")));
                 }, pageCount, pageCount);
             }
-
             if (o.pageNo >= pageCount) {
                 li(ul, "disabled", null, "下一页&nbsp;&raquo;");
             } else {
@@ -213,7 +193,6 @@
                     _.nextPage();
                 }, "下一页&nbsp;&raquo;");
             }
-
             var div = $("<div></div>").css("display", "inline-block");
             $("<label style='margin-left: 5px;'>跳转到：</label>").appendTo(div);
             $("<input type='text' class='form-control' style='width: 60px;display: inline; margin-right: 5px' value='" + o.pageNo + "'>").appendTo(div);
@@ -271,7 +250,6 @@
             o.count = getData(data, o.countRoot) || 0;
             o.datas = {};
             var arr = o.dataRoot.split(",");
-
             var output = "";
             o.template.each(function (i) {
                 var datas = getData(data, arr[i]) || [];
@@ -279,7 +257,6 @@
                 if (typeof  datas == 'string') {
                     datas = eval("(" + datas + ")");
                 }
-
                 o.datas[arr[i]] = datas;
                 for (var d in datas) {
                     var dat = datas[d];
@@ -292,7 +269,6 @@
                     }
                 }
             });
-
             var el = $(_);
             $("tbody", el).html(output);
             generatePagination();
@@ -300,7 +276,6 @@
                 o.onDataShowComplete();
             }
         };
-
         // 下一页
         _.nextPage = function () {
             var pageNo = _.o.pageNo + 1;
@@ -308,7 +283,6 @@
             pageNo > maxPage ? pageNo = maxPage : true;
             generateTable(pageNo);
         };
-
         // 改变分页大小
         _.changePageSize = function (n) {
             n = parseInt(n);
@@ -318,14 +292,12 @@
             _.o.pageSize = n;
             _.gotoPage(1);
         };
-
         // 前一页
         _.previousPage = function () {
             var pageNo = _.o.pageNo - 1;
             pageNo < 1 ? pageNo = 1 : true;
             generateTable(pageNo);
         };
-
         // 跳转到指定的页
         _.gotoPage = function (n) {
             if (n == null) return;
@@ -334,7 +306,6 @@
             n < 1 ? n = 1 : true;
             generateTable(n);
         };
-
         // 获取列表数据
         _.getDatas = function (root) {
             if (root == null) {
@@ -346,26 +317,21 @@
                 return _.o.datas[root];
             }
         };
-
         // 获取记录总条数
         _.getCount = function () {
             return _.o.count;
         };
-
         // 获取页码
         _.getPageNo = function () {
             return _.o.pageNo;
         };
-
         _.refresh = function () {
             return generateTable(_.o.pageNo);
         }
-
         // 获取页面显示数据条数
         _.getPageSize = function () {
             return _.o.pageSize;
         };
-
         _.each(function (k, v) {
             _.init($(v), settings);
         });

@@ -30,14 +30,6 @@ function formatNumber(num, precision, separator) {
         parts = numStr.split('.');
         // 整数部分加[separator]分隔, 借用一个著名的正则表达式
         parts[0] = parts[0].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + (separator || ','));
-        // if (parts.length > 1) {
-        //     parts[1] = parts[1].toString().replace(/[0]+$/g, '');
-        //     if (parts[1] == null || parts[1].toString().length <= 0) {
-        //         return parts[0].toString();
-        //     }
-        // }
-
-        // alert(parts);
         return parts.join(".");
     }
     return num;
@@ -50,6 +42,5 @@ function isComplexPassword(password) {
     if (/[a-z]/.test(password)) n++; // 包含小写字母
     if (/[A-Z]/.test(password)) n++; // 包含大写字母
     if (/\W/.test(password)) n++;    // 包含其他字符
-
     return n;
 }

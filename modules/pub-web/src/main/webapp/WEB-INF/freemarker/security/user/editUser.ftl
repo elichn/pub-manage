@@ -119,13 +119,11 @@
                                 if (treeNode.checked) {
                                     treeObj.checkNode(nodes[k], false);
                                 }
-
                                 treeObj.setChkDisabled(nodes[k], treeNode.checked);
                             }
                         }
                     }
                 };
-
                 var obj = $.fn.zTree.init($("#roleDiv"), setting, data.list);
                 var nodes = obj.getCheckedNodes(true);
                 disableNodes(obj, nodes);

@@ -84,13 +84,11 @@ function disableNodes(treeObj, nodes) {
 // 保存修改
 function saveModify() {
     var param = $("#form").serialize();
-
     var treeObj = $.fn.zTree.getZTreeObj("roleDiv");
     // var nodes = treeObj.getChangeCheckedNodes();
     var nodes = treeObj.getNodesByFilter(function (node) {
         return node.checked != node.checkedOld;
     }, false);
-
     if (nodes.length > 0) {
         var list = "[";
         for (var i = 0; i < nodes.length; i++) {
@@ -102,7 +100,6 @@ function saveModify() {
         list += "]";
         param += "&roleList=" + list;
     }
-
     var url = "/user/updateUser.json";
     $.post(url, param, function (data) {
         if (data) {
