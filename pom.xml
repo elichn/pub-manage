@@ -17,7 +17,7 @@
     </modules>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Dependency Versions -->
         <spring.version>4.3.1.RELEASE</spring.version>
         <spring.data.redis.version>1.7.2.RELEASE</spring.data.redis.version>
         <junit.version>4.12</junit.version>
@@ -28,8 +28,8 @@
         <cglib.version>2.2</cglib.version>
         <freemarker.version>2.3.23</freemarker.version>
         <joda.time.version>2.9.4</joda.time.version>
-        <mybatis.version>3.2.7</mybatis.version>
-        <mybatis.spring.version>1.2.2</mybatis.spring.version>
+        <mybatis.version>3.4.1</mybatis.version>
+        <mybatis.spring.version>1.3.0</mybatis.spring.version>
         <servlet.version>3.1.0</servlet.version>
         <aspectjweaver.version>1.8.9</aspectjweaver.version>
         <commons.collections.version>3.2.2</commons.collections.version>
@@ -42,6 +42,18 @@
         <velocity.version>1.7</velocity.version>
         <google.guava.version>16.0</google.guava.version>
         <mysql.connector.version>5.1.39</mysql.connector.version>
+
+        <!-- Plugin Versions -->
+        <maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
+        <maven-war-plugin.version>2.4</maven-war-plugin.version>
+        <maven-jetty-plugin.version>8.0.0.M2</maven-jetty-plugin.version>
+        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
+        <mybatis-generator-maven-plugin.version>1.3.5</mybatis-generator-maven-plugin.version>
+
+        <!-- Project configuration -->
+        <project.build.sourceVersion>1.7</project.build.sourceVersion>
+        <project.build.targetVersion>1.7</project.build.targetVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
@@ -51,16 +63,15 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${project.build.sourceVersion}</source>
+                    <target>${project.build.targetVersion}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
