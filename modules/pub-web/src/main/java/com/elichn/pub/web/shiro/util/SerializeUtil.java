@@ -36,7 +36,6 @@ public class SerializeUtil {
         if (isEmpty(bytes)) {
             return null;
         }
-
         return SerializationUtils.deserialize(bytes);
     }
 

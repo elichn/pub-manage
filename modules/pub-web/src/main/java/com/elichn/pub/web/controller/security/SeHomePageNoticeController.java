@@ -36,7 +36,7 @@ import java.util.List;
  * @date 2017/10/28
  */
 @Controller
-@RequestMapping(value = "/homePageNotice")
+@RequestMapping(value = "/homePageNotice/")
 public class SeHomePageNoticeController extends BaseController {
 
     private final static Logger LOG = LoggerFactory.getLogger(SeHomePageNoticeController.class);
@@ -56,7 +56,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param model model
      * @return String
      */
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    @RequestMapping(value = "view", method = RequestMethod.GET)
     public String view(Model model) {
         model.addAttribute("style", SecurityUtils.getSubject().getSession().getAttribute(CommonConstats.STYLE));
         return PREFIX + "/view";
@@ -70,7 +70,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param pageNo   queryBvo
      * @param pageSize pageSize
      */
-    @RequestMapping(value = "/list")
+    @RequestMapping(value = "list")
     public void list(Model model, SeHomePageNotice queryBvo,
                      @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
@@ -85,7 +85,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param model model
      * @return String
      */
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     public String add(Model model) {
         return PREFIX + "/add";
     }
@@ -97,7 +97,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param hn      hn
      * @param roleIds roleIds
      */
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public void add(Model model, SeHomePageNotice hn, int[] roleIds) {
         if (hn.getType() == 1) {
             String welcomePath = "/welcome";
@@ -126,7 +126,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param model model
      * @param hn    hn
      */
-    @RequestMapping(value = "/edit")
+    @RequestMapping(value = "edit")
     public void edit(Model model, SeHomePageNotice hn) {
         if (hn.getType() == 1) {
             Assert.isTrue(StringUtils.isNotBlank(hn.getUrl()));
@@ -149,7 +149,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param noticeId noticeId
      * @param roleId   roleId
      */
-    @RequestMapping(value = "/updateRoleNotice")
+    @RequestMapping(value = "updateRoleNotice")
     public void updateRoleNotice(Model model, @RequestParam("noticeId") Integer noticeId,
                                  @RequestParam("roleId") Integer[] roleId) {
         try {
@@ -167,7 +167,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param model model
      * @param id    id
      */
-    @RequestMapping(value = "/updateAsNew")
+    @RequestMapping(value = "updateAsNew")
     public void updateAsNew(Model model, @RequestParam("id") Integer id) {
         try {
             int re = seHomePageNoticeService.updateAsNew(id);
@@ -187,7 +187,7 @@ public class SeHomePageNoticeController extends BaseController {
      *
      * @param model model
      */
-    @RequestMapping(value = "/getNotice", method = RequestMethod.GET)
+    @RequestMapping(value = "getNotice", method = RequestMethod.GET)
     public void getNotice(Model model) {
         SeUser user = super.getCurrentUser();
         if (user != null) {
@@ -203,7 +203,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param id     id
      * @param status id
      */
-    @RequestMapping(value = "/changeStatus")
+    @RequestMapping(value = "changeStatus")
     public void changeStatus(Model model, @RequestParam("id") Integer id, @RequestParam("status") Integer status) {
         int re = seHomePageNoticeService.updateStatus(id, status);
         if (re > 0) {
@@ -219,7 +219,7 @@ public class SeHomePageNoticeController extends BaseController {
      * @param model model
      * @param hnId  hnId
      */
-    @RequestMapping(value = "/getRelationRole")
+    @RequestMapping(value = "getRelationRole")
     public void getRelationRole(Model model, @RequestParam("hnId") Integer hnId) {
         String userName = super.getUserName();
         if (StringUtils.isBlank(userName)) {

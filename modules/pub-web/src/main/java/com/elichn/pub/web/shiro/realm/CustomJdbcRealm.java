@@ -54,15 +54,13 @@ public class CustomJdbcRealm extends JdbcRealm {
             throw new AccountException("Null usernames are not allowed by this realm.");
         }
         // 暂定都是标准用户,密码都保存在db中
-        String password = getDbPassword(userName);
+        String password = this.getDbPassword(userName);
         // password = getPassWordByLdap(upToken);  // ldap验证口
         if (StringUtils.isBlank(password)) {
             throw new UnknownAccountException("No account found for user [" + userName + "]");
         }
-
         return new SimpleAuthenticationInfo(userName, password.toCharArray(), getName());
     }
-
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {

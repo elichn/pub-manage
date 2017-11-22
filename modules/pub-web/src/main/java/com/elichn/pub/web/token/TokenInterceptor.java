@@ -44,7 +44,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
                 }
                 boolean needRemoveSession = annotation.remove();
                 if (needRemoveSession) {
-                    if (isRepeatSubmit(request)) {
+                    if (this.isRepeatSubmit(request)) {
                         return false;
                     }
                     request.getSession(false).removeAttribute("token");

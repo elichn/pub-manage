@@ -90,8 +90,8 @@ public class SeRescController extends BaseController {
      * @param request request
      * @param resc    resc
      */
-     @MethodAfter(methodDesc = "修改资源", log = "oldSeResc:$resc;newSeResc:" +
-             "${model.asMap().get('currentResc')};结果:${model.asMap().get('msg')}")
+    @MethodAfter(methodDesc = "修改资源", log = "oldSeResc:${model.asMap().get('oldResc')};newSeResc:" +
+            "${model.asMap().get('currentResc')};结果:${model.asMap().get('msg')}")
     @RequestMapping(value = "updateResc", method = RequestMethod.POST)
     public void updateResc(Model model, HttpServletRequest request, SeResc resc) {
         boolean success = true;
@@ -102,16 +102,9 @@ public class SeRescController extends BaseController {
             resc.setShowUrl(null);
         }
         SeResc oldResc = seRoleRescService.selectRescById(resc.getId());
-        // 信息封装
-        String oldInfo = "原始信息:资源名:" + oldResc.getName() + ",资源ShowUrl:" + oldResc.getShowUrl()
-                + ",资源ResString:" + oldResc.getResString() + ",资源FatherId:" + oldResc.getFatherId();
-        String newInfo = "修改信息:资源名:" + resc.getName() + ",资源ShowUrl:" + resc.getShowUrl() + ",资源ResString:" + resc.getResString();
+        model.addAttribute("oldResc", oldResc);
         try {
             seRoleRescService.updateResc(resc);
-            // 记录日志
-            super.writeLog(request, CommonConstats.UPDATE_RESOURCE, CommonConstats.UPDATE_RESOURCE
-                    + "(资源名:" + resc.getDescn() + ",资源ID:" + resc.getId() + ")" + "<br>"
-                    + "详细信息:<br>" + oldInfo + "<br>" + newInfo, super.getUserName());
         } catch (Exception e) {
             success = false;
             LOG.error("updateResc error,", e);

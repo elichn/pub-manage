@@ -43,7 +43,7 @@ public class RescFilter extends AuthorizationFilter {
             path = path.substring(0, path.length() - 5);
         }
         // 忽略（通过）特定后缀的访问
-        String ext = getExt(path);
+        String ext = this.getExt(path);
         if (ext != null && !jsonName.equals(ext)) {
             return true;
         }
@@ -70,22 +70,6 @@ public class RescFilter extends AuthorizationFilter {
         boolean isPermitted = subject.isPermitted(path);
         LOG.info(path + ":" + isPermitted);
         return isPermitted;
-    }
-
-    /**
-     * getExt 获取后缀  .js .css等
-     *
-     * @param path path
-     * @return String
-     */
-    private String getExt(String path) {
-        if (path != null) {
-            int index = path.lastIndexOf(".");
-            if (index >= 0) {
-                return path.substring(index, path.length());
-            }
-        }
-        return null;
     }
 
     @Override
@@ -118,6 +102,22 @@ public class RescFilter extends AuthorizationFilter {
             }
         }
         return false;
+    }
+
+    /**
+     * getExt 获取后缀  .js .css等
+     *
+     * @param path path
+     * @return String
+     */
+    private String getExt(String path) {
+        if (path != null) {
+            int index = path.lastIndexOf(".");
+            if (index >= 0) {
+                return path.substring(index, path.length());
+            }
+        }
+        return null;
     }
 
     public void setIgnoreHeadList(List<String> ignoreHeadList) {

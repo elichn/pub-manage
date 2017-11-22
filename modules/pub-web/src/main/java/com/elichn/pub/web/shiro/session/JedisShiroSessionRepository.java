@@ -41,8 +41,7 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
             LOG.error("session或者session id为空");
             return;
         }
-
-        String key = getRedisSessionKey(session.getId());
+        String key = this.getRedisSessionKey(session.getId());
         byte[] value = SerializeUtil.serialize(session);
         redisTemplate.opsForValue().set(key, value);
         redisTemplate.expire(key, session.getTimeout(), TimeUnit.MILLISECONDS);
@@ -54,8 +53,7 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
             LOG.error("id为空");
             return;
         }
-
-        redisTemplate.delete(getRedisSessionKey(id));
+        redisTemplate.delete(this.getRedisSessionKey(id));
     }
 
     @Override
@@ -64,7 +62,6 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
             LOG.error("id为空");
             return null;
         }
-
         byte[] value = redisTemplate.opsForValue().get(getRedisSessionKey(id));
         return (Session) SerializeUtil.deserialize(value);
     }
