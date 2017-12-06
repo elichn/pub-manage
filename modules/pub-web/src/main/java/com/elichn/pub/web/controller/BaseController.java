@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class BaseController<T> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
     /**
      * 成功
