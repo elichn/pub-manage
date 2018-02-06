@@ -10,10 +10,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>modules/pub-core</module>
-        <module>modules/pub-service</module>
-        <module>modules/pub-web</module>
-        <module>modules/pub-mybatis</module>
+        <module>pub-core</module>
+        <module>pub-service</module>
+        <module>pub-web</module>
+        <module>pub-mybatis</module>
     </modules>
 
     <properties>
